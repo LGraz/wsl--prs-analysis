@@ -1,0 +1,27 @@
+*_files/
+*_cache/
+_book/
+/.quarto/
+cache/
+rendered/site_libs
+
+_freeze/
+_manuscript/
+figure/
+
+*.png
+# *.csl
+*.numbers
+*.tmp
+*.rtf
+~$*
+.~lock.*
+*.rmarkdown.knit.md
+*.rmarkdown
+
+.DS_Store
+
+renv/
+
+.stignore
+.Rprofile
