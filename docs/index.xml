@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving
+and Interchange DTD v1.2 20190208//EN" "JATS-archivearticle1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.2" article-type="other">
+  <front>
+    <article-meta>
+      <title-group>
+        <article-title>PRS Analysis for WSL</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" corresp="yes">
+          <contrib-id contrib-id-type="orcid">0009-0003-5147-8370</contrib-id>
+          <name>
+            <surname>Graz</surname>
+            <given-names>Lukas</given-names>
+          </name>
+          <string-name>Lukas Graz</string-name>
+          <role vocab="https://credit.niso.org" vocab-term="writing – original draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">writing</role>
+          <xref ref-type="aff" rid="aff-1">a</xref>
+          <xref ref-type="corresp" rid="cor-1">*</xref>
+        </contrib>
+      </contrib-group>
+      <aff id="aff-1">
+        <institution-wrap>
+          <institution>ETH Zurich</institution>
+        </institution-wrap>
+        <city>Zurich</city>
+        <state>Switzerland</state>
+        <ext-link ext-link-type="uri" xlink:href="www.ethz.ch">www.ethz.ch</ext-link>
+      </aff>
+      <author-notes>
+        <corresp id="cor-1"/>
+      </author-notes>
+      <history/>
+    </article-meta>
+  </front>
+  <body>
+    <sec id="release-notes">
+      <title>Release Notes</title>
+      <sec id="v0.1">
+        <title>V0.1</title>
+        <list list-type="bullet">
+          <list-item>
+            <p>Initial release (Technical Setup)</p>
+          </list-item>
+          <list-item>
+            <p>Data Preparation</p>
+            <list list-type="bullet">
+              <list-item>
+                <p>Conducted sanity checks on data (duplications, type
+            consistency, and comparison with
+            <monospace>df_varlookup_for_lukas.xlsx</monospace>)</p>
+              </list-item>
+              <list-item>
+                <p>Performed type encoding</p>
+              </list-item>
+              <list-item>
+                <p>Created 14 dictionaries for translating ordinal
+            categorical variables to numeric (e.g., mapping: Very:5,
+            Quite:4, Fair:3, Little:2, Not:1)</p>
+              </list-item>
+            </list>
+          </list-item>
+          <list-item>
+            <p>Filtered observations according to criteria described in
+        <monospace>_INFO_for_Lukas.docx</monospace></p>
+          </list-item>
+          <list-item>
+            <p>Missing Values</p>
+            <list list-type="bullet">
+              <list-item>
+                <p>Checked patterns of missingness for PRS-Variables,
+            Mediators, and GIS-Variables</p>
+              </list-item>
+              <list-item>
+                <p>For PRS-Variables: Compared imputation methods:
+            MissForest, Column-wise Mean, Observation-wise Mean</p>
+              </list-item>
+              <list-item>
+                <p>Imputed missing values for all relevant variables using
+            MissForest (each chunk separately) - later to be done
+            separately for Train/Test data</p>
+              </list-item>
+            </list>
+          </list-item>
+          <list-item>
+            <p>Initial Modeling Completed - results to be updated with
+        imputed data and PC1-4</p>
+          </list-item>
+        </list>
+      </sec>
+    </sec>
+    <sec id="main-analysis">
+      <title>Main Analysis</title>
+      <sec id="which-response-to-use">
+        <title>Which Response to Use?</title>
+        <p>Initial Idea was to use: - Aggregated MEAN - PRS1 (Fascination) -
+    PRS2 (Being Away) - PRS3 (Extent Coherence) - PRS4
+    (Compatibility)</p>
+        <p><bold>Verify</bold> if this is a good approach with
+    <bold>PCA</bold>. Findings so far:</p>
+        <list list-type="bullet">
+          <list-item>
+            <p>PCA suggests that the data can be well approximated with 3-4
+        dimensions.</p>
+          </list-item>
+          <list-item>
+            <p>Unsurprisingly, the first dimension is close to a weighted
+        average of all variables. Projecting on PC1 yields a correlation
+        &gt;0.99.</p>
+          </list-item>
+          <list-item>
+            <p>PRS3 (Extent Coherence) differs the most from the others (see
+        PC2)</p>
+          </list-item>
+          <list-item>
+            <p>PRS1 (Fascination) and PRS2 (Being Away) are rather similar
+        (see PC1-PC3)</p>
+          </list-item>
+          <list-item>
+            <p>The aggregated PRS variables are also justified given the PCA
+        results (similar values in rotation). Therefore, it is justified
+        to use the mean.</p>
+          </list-item>
+        </list>
+        <p>We will continue to investigate the PCA projections as
+    alternative response variables (along with PRS1-4).</p>
+      </sec>
+    </sec>
+  </body>
+  <back>
+</back>
+</article>

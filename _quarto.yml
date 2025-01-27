@@ -1,6 +1,7 @@
 project:
   type: manuscript
   execute-dir: project
+  output-dir: docs
 
 manuscript:
   article: index.qmd

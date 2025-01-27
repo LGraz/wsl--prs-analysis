@@ -4,6 +4,7 @@ _book/
 /.quarto/
 cache/
 rendered/site_libs
+/_site/
 
 _freeze/
 _manuscript/
