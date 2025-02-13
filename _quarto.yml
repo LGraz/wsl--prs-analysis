@@ -18,16 +18,13 @@ manuscript:
   #   - data/cars.csv
 
 format:
-  html:
-    comments:
-      hypothesis: true
-    # other-links:
-    #   - text: NASA Open Data
-    #     href: https://data.nasa.gov/
   docx: default
   jats: default
   pdf: default
-
+  html:
+    toc-depth: 4
+    comments:
+      hypothesis: true
 execute:
   freeze: auto
 

@@ -9,11 +9,6 @@ include-in-header:
         display: none;
       }
       </style>
-format:
-  html:
-    toc-depth: 4
-    grid: 
-      body-width: 1200px
 ---
 
 ```{r}

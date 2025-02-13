@@ -2,9 +2,6 @@
 title: Prediction Analysis for WSL
 author: Lukas Graz
 date: 2025-02-13
-format:
-  html:
-    toc-depth: 3
 ---
 
 ```{r}

@@ -1,0 +1,1634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving
+and Interchange DTD v1.2 20190208//EN" "JATS-archivearticle1.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.2" article-type="other">
+  <front>
+    <article-meta>
+      <title-group>
+        <article-title>PRS Analysis for WSL</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" corresp="yes">
+          <contrib-id contrib-id-type="orcid">0009-0003-5147-8370</contrib-id>
+          <name>
+            <surname>Graz</surname>
+            <given-names>Lukas</given-names>
+          </name>
+          <string-name>Lukas Graz</string-name>
+          <role vocab="https://credit.niso.org" vocab-term="writing – original draft" vocab-term-identifier="https://credit.niso.org/contributor-roles/writing-original-draft/">writing</role>
+          <xref ref-type="aff" rid="aff-1">a</xref>
+          <xref ref-type="corresp" rid="cor-1">*</xref>
+        </contrib>
+      </contrib-group>
+      <aff id="aff-1">
+        <institution-wrap>
+          <institution>ETH Zurich</institution>
+        </institution-wrap>
+        <city>Zurich</city>
+        <state>Switzerland</state>
+        <ext-link ext-link-type="uri" xlink:href="www.ethz.ch">www.ethz.ch</ext-link>
+      </aff>
+      <author-notes>
+        <corresp id="cor-1"/>
+      </author-notes>
+      <history/>
+    </article-meta>
+  </front>
+  <body>
+    <sec id="release-notes">
+      <title>Release Notes</title>
+      <sec id="v0.2">
+        <title>V0.2</title>
+        <list list-type="bullet">
+          <list-item>
+            <p>Transformations of GIS variables (mostly sqrt)</p>
+          </list-item>
+          <list-item>
+            <p>Machine Learning in mlr3 framework:</p>
+            <list list-type="bullet">
+              <list-item>
+                <p>Testing prediction quality of GIS_vars → Mediators →
+            PRS_vars</p>
+                <list list-type="bullet">
+                  <list-item>
+                    <p>comparing performances + inference</p>
+                  </list-item>
+                </list>
+              </list-item>
+              <list-item>
+                <p>Linear models, Random Forests, XGBoost (with parameter
+            tuning)</p>
+              </list-item>
+            </list>
+          </list-item>
+          <list-item>
+            <p>Improved code structure by separating data preparation,
+        machine learning, and hypothesis testing</p>
+          </list-item>
+          <list-item>
+            <p>Hypothethis testing:</p>
+            <list list-type="order">
+              <list-item>
+                <p>Train data X imputation using MissForest (simplified
+            approach as uncertainties not needed for feature
+            selection)</p>
+              </list-item>
+              <list-item>
+                <p>Feature selection based on correlation/VIF analysis</p>
+              </list-item>
+              <list-item>
+                <p>Feature selection implemented due to high VIF</p>
+              </list-item>
+              <list-item>
+                <p>Additionally inspecting all interactions</p>
+              </list-item>
+            </list>
+          </list-item>
+        </list>
+      </sec>
+      <sec id="v0.1">
+        <title>V0.1</title>
+        <list list-type="bullet">
+          <list-item>
+            <p>Initial release (Technical Setup)</p>
+          </list-item>
+          <list-item>
+            <p>Data Preparation</p>
+            <list list-type="bullet">
+              <list-item>
+                <p>Conducted sanity checks on data (duplications, type
+            consistency, comparison with
+            <monospace>df_varlookup_for_lukas.xlsx</monospace>)</p>
+              </list-item>
+              <list-item>
+                <p>Performed type encoding</p>
+              </list-item>
+              <list-item>
+                <p>Created 14 dictionaries for translating ordinal
+            categorical variables to numeric (e.g., Very:5, Quite:4,
+            Fair:3, Little:2, Not:1)</p>
+              </list-item>
+            </list>
+          </list-item>
+          <list-item>
+            <p>Filtered observations according to criteria in
+        <monospace>_INFO_for_Lukas.docx</monospace></p>
+          </list-item>
+          <list-item>
+            <p>Missing Values</p>
+            <list list-type="bullet">
+              <list-item>
+                <p>Checked patterns of missingness for PRS-Variables,
+            Mediators, and GIS-Variables</p>
+              </list-item>
+              <list-item>
+                <p>For PRS-Variables: Compared imputation methods
+            (MissForest, column-wise mean, observation-wise mean)</p>
+              </list-item>
+              <list-item>
+                <p>Imputed missing values using MissForest (each chunk
+            separately) - to be done separately for train/test data</p>
+              </list-item>
+            </list>
+          </list-item>
+          <list-item>
+            <p>Initial modeling completed - results to be updated with
+        imputed data and PC1-4</p>
+          </list-item>
+        </list>
+      </sec>
+    </sec>
+    <sec id="data-preparation">
+      <title>Data Preparation</title>
+    </sec>
+    <sec id="main-analysis">
+      <title>Main Analysis</title>
+      <sec id="response-variable-selection">
+        <title>Response Variable Selection</title>
+        <p>Initial approach: - Aggregated MEAN - LA (Fascination) - BA
+    (Being Away) - EC (Extent Coherence) - ES (Compatibility)</p>
+        <p><bold>PCA Verification</bold> of this approach. Key findings:</p>
+        <list list-type="bullet">
+          <list-item>
+            <p>Data can be well approximated with 3-4 dimensions</p>
+          </list-item>
+          <list-item>
+            <p>First dimension is close to weighted average of all variables
+        (correlation &gt;0.99)</p>
+          </list-item>
+          <list-item>
+            <p>EC (Extent Coherence) shows most divergence (see PC2)</p>
+          </list-item>
+          <list-item>
+            <p>LA (Fascination) and BA (Being Away) show similarity (see
+        PC1-PC3)</p>
+          </list-item>
+          <list-item>
+            <p>Aggregated PRS variables justified by PCA results (similar
+        rotation values), supporting use of mean</p>
+          </list-item>
+        </list>
+        <p>PCA projections will be further investigated as alternative
+    response variables (alongside LA-4).</p>
+      </sec>
+      <sec id="prediction-analysis">
+        <title>Prediction Analysis</title>
+        <p>Details in
+    <ext-link ext-link-type="uri" xlink:href="notebooks/mlr3.qmd">the
+    notebook</ext-link>.</p>
+        <p>Following RESTORE project approach, investigating links between
+    PRS, Mediators, and GIS variables using: - Linear Models - XGBoost
+    (with trees + parameter tuning) - Random Forests</p>
+        <p>Evaluation: Percentage of explained variance on hold-out data.
+    Missing values imputed with MissForest (no p-values → no assumptions
+    needed).</p>
+        <sec id="results">
+          <title>Results</title>
+          <list list-type="bullet">
+            <list-item>
+              <p>GIS shows limited predictive power for PRS on ES (5%
+          variance explained)</p>
+            </list-item>
+            <list-item>
+              <p>GIS + Mediators explain 25% of PRS variance</p>
+            </list-item>
+            <list-item>
+              <p>Mediators alone explain majority of PRS variance</p>
+              <list list-type="bullet">
+                <list-item>
+                  <p>GIS primarily helps with ES through tree-based
+              methods</p>
+                </list-item>
+                <list-item>
+                  <p>Suggests GIS effect is more interaction-based than
+              direct</p>
+                </list-item>
+                <list-item>
+                  <p>Similar reduction in tree-based methods observed in
+              BA</p>
+                </list-item>
+              </list>
+            </list-item>
+          </list>
+        </sec>
+      </sec>
+      <sec id="hypothesis-testing">
+        <title>Hypothesis Testing</title>
+        <p>Details in
+    <ext-link ext-link-type="uri" xlink:href="notebooks/hypothethis-tests.qmd">the
+    notebook</ext-link>.</p>
+        <p>Process: 1. Train data X imputation using MissForest (simplified
+    approach as uncertainties not needed for feature selection) 2.
+    Feature selection based on correlation/VIF analysis 3. Feature
+    selection implemented due to high VIF</p>
+        <sec id="results-1">
+          <title>Results</title>
+          <list list-type="bullet">
+            <list-item>
+              <p>Continuous mediator outperforms categorical (scaled to mean
+          0, sd 1)</p>
+            </list-item>
+            <list-item>
+              <p>HM_NOISELVL not significant (pre-p-adjustment)</p>
+            </list-item>
+            <list-item>
+              <p>Full <monospace>mice</monospace> NA-handling likely
+          unnecessary</p>
+              <list list-type="bullet">
+                <list-item>
+                  <p>Models use few variables</p>
+                </list-item>
+                <list-item>
+                  <p>Only LNOISE shows high NA count</p>
+                </list-item>
+                <list-item>
+                  <p>Information detection still fails</p>
+                </list-item>
+              </list>
+            </list-item>
+            <list-item>
+              <p>Significant edges remain in SEM (see all interactions)</p>
+            </list-item>
+          </list>
+        </sec>
+      </sec>
+    </sec>
+  </body>
+  <back>
+</back>
+  <sub-article article-type="notebook" id="nb-1-nb-1">
+    <front-stub>
+      <title-group>
+        <article-title>Prediction Analysis for WSL</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Graz</surname>
+            <given-names>Lukas</given-names>
+          </name>
+          <string-name>Lukas Graz</string-name>
+        </contrib>
+      </contrib-group>
+    </front-stub>
+    <body>
+      <sec specific-use="notebook-content">
+        <code language="r script">source("R/data_prep.R")
+</code>
+        <boxed-text>
+          <preformat>Number of matches per filter criteria (not disjoint)
+  Headphone  PRS_all_NA    Distance Activity_NA    Duration  HMNoise_NA 
+        303         226         221         102          96          96 
+JourneyTime 
+         20 
+Keep  1494 of 2206 observations</preformat>
+        </boxed-text>
+        <boxed-text>
+          <preformat>Imputing PRS_orig_vars</preformat>
+        </boxed-text>
+        <boxed-text>
+          <preformat>TODO: Remove PCA?</preformat>
+        </boxed-text>
+        <boxed-text>
+          <preformat>Imputing mediators &amp; GIS_vars for MLR</preformat>
+        </boxed-text>
+      </sec>
+      <sec id="setup-nb-1">
+        <title>Setup</title>
+        <sec specific-use="notebook-content">
+          <code language="r script">library(mlr3verse, quietly = TRUE)
+library(GGally, quietly = TRUE, warn.conflicts = FALSE)
+  </code>
+          <boxed-text>
+            <preformat>Registered S3 method overwritten by 'GGally':
+  method from   
+  +.gg   ggplot2</preformat>
+          </boxed-text>
+          <code language="r script">mse &lt;- msrs(c("regr.mse"))
+
+if (!interactive())
+  lgr::get_logger("mlr3")$set_threshold("warn")
+
+get_benchi_table &lt;- function(tasks, nfolds = 3) {
+  set.seed(123)
+  learners &lt;- lrns(c("regr.featureless", "regr.lm", "regr.xgboost", "regr.ranger"))
+  learners$regr.xgboost$param_set$set_values(
+    eta = 0.03, 
+    nrounds = 300, 
+    max_depth = 2
+  )
+
+  benchi &lt;- xfun::cache_rds({
+    benchmark(benchmark_grid(
+      tasks, 
+      learners, 
+      rsmp("cv", folds = nfolds)
+    ))
+  }, 
+  file = "benchmark.rds", 
+  dir = "cache/",
+  hash = list(tasks, nfolds)
+  )
+  
+  res &lt;- tidyr::pivot_wider(benchi$aggregate(mse), 
+    id_cols = task_id,
+    names_from = learner_id,
+    values_from = regr.mse
+  ) |&gt; as.data.frame()
+  
+  rownames(res) &lt;- res$task_id
+  res &lt;- res[, -1]
+  colnames(res) &lt;- gsub("regr.", "", colnames(res))
+  stopifnot(any(colnames(res) == "featureless"))
+  res &lt;- 1 - res / res$featureless
+  res[, -1, drop = FALSE] |&gt; round(2)
+}
+  </code>
+        </sec>
+        <p>Testing prediction quality of GIS_vars -&gt; Mediators -&gt;
+  PRS_vars using</p>
+        <list list-type="bullet">
+          <list-item>
+            <p>Linear models</p>
+          </list-item>
+          <list-item>
+            <p>Random forests (default parameters)</p>
+          </list-item>
+          <list-item>
+            <p>XGBoost (with parameter tuning)</p>
+          </list-item>
+          <list-item>
+            <p>LASSO (not shown since inferior)</p>
+          </list-item>
+        </list>
+        <p>
+          <bold>GIS Variables:</bold>
+        </p>
+        <sec specific-use="notebook-content">
+          <code language="r script">GIS_vars
+  </code>
+          <boxed-text>
+            <preformat> [1] "LCARTIF_sqrt"   "LCFOREST_sqrt"  "HETER"          "OVDIST_sqrt"   
+ [5] "VIS5K_sqrt"     "RL_NDVI"        "RL_NOISE"       "DISTKM_sqrt"   
+ [9] "JNYTIME_sqrt"   "STRIMP123_sqrt" "STRIMP999_sqrt"</preformat>
+          </boxed-text>
+        </sec>
+        <p>
+          <bold>Mediators:</bold>
+        </p>
+        <sec specific-use="notebook-content">
+          <code language="r script">Mediator_vars
+  </code>
+          <boxed-text>
+            <preformat>[1] "FEELNAT"  "LNOISE"   "LOC_SENS" "LOC_SOUN" "LOC_SCEN" "LOC_VISE" "LOC_VEGE"
+[8] "LOC_FAUN"</preformat>
+          </boxed-text>
+        </sec>
+        <sec id="prs-gis-nb-1">
+          <title>PRS ~ GIS</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">tasks_GIS &lt;- lapply(PRS_vars, \(y) 
+  as_task_regr(
+    subset(Dmlr, select = c(y, GIS_vars)),
+    target = y,
+    id = y
+  ))
+get_benchi_table(tasks_GIS) 
+    </code>
+            <boxed-text>
+              <preformat>       lm xgboost ranger
+LA   0.00    0.02   0.00
+BA   0.00   -0.02  -0.03
+EC  -0.01   -0.05  -0.05
+ES   0.05    0.04   0.03
+PC1 -0.01   -0.01  -0.03
+PC2  0.04    0.01   0.00
+PC3  0.03    0.04   0.02
+PC4 -0.01   -0.01  -0.01</preformat>
+            </boxed-text>
+          </sec>
+          <p>GIS variables alone show poor predictive performance.</p>
+        </sec>
+        <sec id="prs-gis-mediators-nb-1">
+          <title>PRS ~ GIS + Mediators</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">tasks_GIS_MED &lt;- lapply(PRS_vars, \(y) 
+  as_task_regr(
+    subset(Dmlr, select = c(y, Mediator_vars, GIS_vars)),
+    target = y,
+    id = y
+  ))
+get_benchi_table(tasks_GIS_MED) 
+    </code>
+            <boxed-text>
+              <preformat>      lm xgboost ranger
+LA  0.22    0.25   0.24
+BA  0.13    0.14   0.12
+EC  0.02    0.00   0.01
+ES  0.15    0.16   0.15
+PC1 0.22    0.23   0.23
+PC2 0.07    0.04   0.06
+PC3 0.02    0.04   0.04
+PC4 0.01    0.01   0.01</preformat>
+            </boxed-text>
+          </sec>
+        </sec>
+        <sec id="prs-mediators-nb-1">
+          <title>PRS ~ Mediators</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">tasks_MED &lt;- lapply(PRS_vars, \(y) 
+  as_task_regr(
+    subset(Dmlr, select = c(y, Mediator_vars)),
+    target = y,
+    id = y
+  ))
+get_benchi_table(tasks_MED) 
+    </code>
+            <boxed-text>
+              <preformat>      lm xgboost ranger
+LA  0.21    0.24   0.20
+BA  0.14    0.13   0.09
+EC  0.03    0.02  -0.03
+ES  0.13    0.11   0.06
+PC1 0.22    0.23   0.20
+PC2 0.06    0.05   0.02
+PC3 0.00   -0.02  -0.06
+PC4 0.00   -0.01  -0.03</preformat>
+            </boxed-text>
+          </sec>
+        </sec>
+        <sec id="mediators-gis-nb-1">
+          <title>Mediators ~ GIS</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">tasks_MED_by_GIS &lt;- lapply(Mediator_vars, \(y) 
+  as_task_regr(
+    subset(Dmlr, select = c(y, GIS_vars)),
+    target = y,
+    id = y
+  ))
+get_benchi_table(tasks_MED_by_GIS)
+    </code>
+            <boxed-text>
+              <preformat>           lm xgboost ranger
+FEELNAT  0.13    0.12   0.09
+LNOISE   0.09    0.07   0.07
+LOC_SENS 0.01   -0.01  -0.02
+LOC_SOUN 0.05    0.00   0.00
+LOC_SCEN 0.04    0.04   0.02
+LOC_VISE 0.00   -0.03  -0.04
+LOC_VEGE 0.06    0.05   0.04
+LOC_FAUN 0.06    0.07   0.04</preformat>
+            </boxed-text>
+          </sec>
+        </sec>
+        <sec id="legacy-code-nb-1">
+          <title>Legacy Code</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">
+# Get parameter estimates for XGBoost
+t &lt;- as_task_regr(
+  subset(Dmlr, select = c("FEELNAT", GIS_vars)),
+  target = "FEELNAT"
+)
+
+l &lt;- lrn("regr.xgboost",
+  nrounds = 500  # More iterations due to lower learning rate
+)
+
+# Create search space
+ps &lt;- ps(
+  max_depth = p_int(2, 3),
+  eta = p_dbl(0.001, 0.3, tags = "logscale")
+)
+
+# Setup tuning
+instance &lt;- ti(
+  task = t,
+  learner = l,
+  resampling = rsmp("cv", folds = 3),
+  measure = msr("regr.mse"),
+  terminator = trm("none"),
+  search_space = ps
+)
+
+# Grid search
+tuner &lt;- mlr3tuning::tnr("grid_search")
+tuner$optimize(instance)
+instance$result
+    </code>
+          </sec>
+          <sec specific-use="notebook-content">
+            <code language="r script">
+library(randomForest)
+
+fit &lt;- lm(as.formula(paste0(
+    "cbind(", paste(PRS_vars, collapse = ", "), ")",
+    " ~ ",
+    paste(Mediator_vars, collapse = " + ")
+  )), 
+  D)
+coef(fit) |&gt; round(2)
+
+rsq.lm &lt;- sapply(summary(fit), \(x) x$r.sq)
+rsq.rf &lt;- sapply(PRS_vars, \(x) {
+  rf &lt;- randomForest(as.formula(paste0(
+    x, " ~ ", paste(Mediator_vars, collapse = " + ")
+  )), 
+  D, na.action = na.omit
+  ) 
+  rf$rsq[500]
+})
+
+cbind(lm = rsq.lm, rf = rsq.rf) |&gt; round(2)
+    </code>
+          </sec>
+          <sec specific-use="notebook-content">
+            <code language="r script">
+autoplot(mytsk1, type = "pairs")
+mytsk1 &lt;- as_task_regr(
+  subset(Dmlr, select = c("LA", Mediator_vars, GIS_vars)),
+  feature = c(Mediator_vars, GIS_vars),
+  target = "LA",
+  id = "bla"
+)
+
+lrn_xgb &lt;- lrn("regr.xgboost")
+lrn_avg &lt;- lrn("regr.featureless")
+splits &lt;- partition(mytsk1)
+lrn_xgb$train(mytsk1, splits$train)$predict(mytsk1, splits$test)$score(mse)
+lrn_avg$train(mytsk1, splits$train)$predict(mytsk1, splits$test)$score(mse)
+rr &lt;- resample(mytsk1, lrn_xgb, cv3)
+rr$aggregate(mse)
+
+learners &lt;- lrns(c("regr.featureless", "regr.lm", "regr.xgboost", "regr.ranger"))
+learners$regr.xgboost$param_set$set_values(eta = 0.03, nrounds = 300, max_depth = 2)
+learners &lt;- c("regr.featureless", "regr.lm")
+    </code>
+          </sec>
+        </sec>
+      </sec>
+    </body>
+    <back>
+</back>
+  </sub-article>
+  <sub-article article-type="notebook" id="nb-5-nb-2">
+    <front-stub>
+      <title-group>
+        <article-title>Hypothesis Testing</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Graz</surname>
+            <given-names>Lukas</given-names>
+          </name>
+          <string-name>Lukas Graz</string-name>
+        </contrib>
+      </contrib-group>
+    </front-stub>
+    <body>
+      <sec specific-use="notebook-content">
+        <code language="r script"># interactive &lt;- function() FALSE
+source("R/data_prep.R")
+</code>
+        <boxed-text>
+          <preformat>Number of matches per filter criteria (not disjoint)
+  Headphone  PRS_all_NA    Distance Activity_NA    Duration  HMNoise_NA 
+        303         226         221         102          96          96 
+JourneyTime 
+         20 
+Keep  1494 of 2206 observations</preformat>
+        </boxed-text>
+        <boxed-text>
+          <preformat>Imputing PRS_orig_vars</preformat>
+        </boxed-text>
+        <boxed-text>
+          <preformat>TODO: Remove PCA?</preformat>
+        </boxed-text>
+        <boxed-text>
+          <preformat>Imputing mediators &amp; GIS_vars for MLR</preformat>
+        </boxed-text>
+        <code language="r script">D_trn$HM_NOISE_nrm &lt;- scale(D_trn$HM_NOISE)
+D_tst$HM_NOISE_nrm &lt;- scale(D_tst$HM_NOISE)
+
+options(digits = 3)
+
+# No suspicious patterns in missing data
+# mice::md.pattern(D[c(Mediator_vars, GIS_vars)[nNAs&gt;0]], plot = FALSE)
+# mice::md.pattern(D[PRS_orig_vars])
+</code>
+      </sec>
+      <sec id="linear-modeling---testing-hm_noise-normalized-nb-2">
+        <title>Linear Modeling - Testing HM_NOISE (Normalized)</title>
+        <sec id="imputation-with-missforest-on-training-data-nb-2">
+          <title>Imputation with MissForest on Training Data</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">sapply(D[Mediator_vars], \(x) sum(is.na(x)))
+    </code>
+            <boxed-text>
+              <preformat> FEELNAT   LNOISE LOC_SENS LOC_SOUN LOC_SCEN LOC_VISE LOC_VEGE LOC_FAUN 
+      16      291       28       30       36       62       69       88 </preformat>
+            </boxed-text>
+            <code language="r script">sapply(D[GIS_vars], \(x) sum(is.na(x)))
+    </code>
+            <boxed-text>
+              <preformat>  LCARTIF_sqrt  LCFOREST_sqrt          HETER    OVDIST_sqrt     VIS5K_sqrt 
+             0              0              0              0              0 
+       RL_NDVI       RL_NOISE    DISTKM_sqrt   JNYTIME_sqrt STRIMP123_sqrt 
+             0              0              0             86              0 
+STRIMP999_sqrt 
+             0 </preformat>
+            </boxed-text>
+          </sec>
+          <sec specific-use="notebook-content">
+            <code language="r script"># Mediator imputation
+D_trn[Mediator_vars] &lt;- xfun::cache_rds({
+  missForest(as.matrix(D_trn[Mediator_vars]))
+  }, 
+  file = "Mediator_imputation.rds", 
+  dir = "cache/",
+  hash = list(as.matrix(D_trn[Mediator_vars]))
+)$ximp |&gt; as.data.frame()
+
+# GIS imputation (missForest)
+D_trn[GIS_vars] &lt;- xfun::cache_rds({
+  missForest(as.matrix(D_trn[GIS_vars]))
+  }, 
+  file = "GIS_imputation.rds", 
+  dir = "cache/",
+  hash = list(as.matrix(D_trn[GIS_vars]))
+)$ximp |&gt; as.data.frame()
+    </code>
+          </sec>
+        </sec>
+        <sec id="testing-vif-nb-2">
+          <title>Testing VIF</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">car::vif(lm(as.formula(paste0(
+  PRS_vars[1], " ~ ", paste(Mediator_vars, collapse = " + ")
+)), D_trn))
+    </code>
+            <boxed-text>
+              <preformat> FEELNAT   LNOISE LOC_SENS LOC_SOUN LOC_SCEN LOC_VISE LOC_VEGE LOC_FAUN 
+    1.55     1.43     1.48     1.96     2.16     1.68     1.85     1.40 </preformat>
+            </boxed-text>
+          </sec>
+          <sec specific-use="notebook-content">
+            <code language="r script">car::vif(lm(as.formula(paste0(
+  Mediator_vars[1], " ~ ", paste(GIS_vars, collapse = " + ")
+)), D_trn))
+    </code>
+            <boxed-text>
+              <preformat>  LCARTIF_sqrt  LCFOREST_sqrt          HETER    OVDIST_sqrt     VIS5K_sqrt 
+          4.88           2.20           1.14           2.00           1.24 
+       RL_NDVI       RL_NOISE    DISTKM_sqrt   JNYTIME_sqrt STRIMP123_sqrt 
+          2.79           2.29           1.35           1.37           1.93 
+STRIMP999_sqrt 
+          2.65 </preformat>
+            </boxed-text>
+          </sec>
+          <sec specific-use="notebook-content">
+            <code language="r script">car::vif(fit_PRS_MED &lt;- lm(as.formula(paste0(
+  PRS_vars[1], " ~ ", 
+  "HM_NOISE_nrm * (", paste(Mediator_vars, collapse = " + "), ")"
+)), D_trn))
+    </code>
+            <boxed-text>
+              <preformat>there are higher-order terms (interactions) in this model
+consider setting type = 'predictor'; see ?vif</preformat>
+            </boxed-text>
+            <boxed-text>
+              <preformat>         HM_NOISE_nrm               FEELNAT                LNOISE 
+                60.63                  1.59                  1.53 
+             LOC_SENS              LOC_SOUN              LOC_SCEN 
+                 1.54                  1.98                  2.17 
+             LOC_VISE              LOC_VEGE              LOC_FAUN 
+                 1.71                  1.88                  1.42 
+ HM_NOISE_nrm:FEELNAT   HM_NOISE_nrm:LNOISE HM_NOISE_nrm:LOC_SENS 
+                51.26                 51.52                 22.91 
+HM_NOISE_nrm:LOC_SOUN HM_NOISE_nrm:LOC_SCEN HM_NOISE_nrm:LOC_VISE 
+                45.89                 33.97                 38.10 
+HM_NOISE_nrm:LOC_VEGE HM_NOISE_nrm:LOC_FAUN 
+                47.68                 10.68 </preformat>
+            </boxed-text>
+          </sec>
+          <sec specific-use="notebook-content">
+            <code language="r script">car::vif(fit_MED_GIS &lt;- lm(as.formula(paste0(
+  Mediator_vars[1], " ~ ", 
+  "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
+)), D_trn))
+    </code>
+            <boxed-text>
+              <preformat>there are higher-order terms (interactions) in this model
+consider setting type = 'predictor'; see ?vif</preformat>
+            </boxed-text>
+            <boxed-text>
+              <preformat>               HM_NOISE_nrm                LCARTIF_sqrt 
+                     108.08                        5.01 
+              LCFOREST_sqrt                       HETER 
+                       2.22                        1.17 
+                OVDIST_sqrt                  VIS5K_sqrt 
+                       2.06                        1.25 
+                    RL_NDVI                    RL_NOISE 
+                       2.82                        2.44 
+                DISTKM_sqrt                JNYTIME_sqrt 
+                       1.40                        1.40 
+             STRIMP123_sqrt              STRIMP999_sqrt 
+                       2.00                        2.71 
+  HM_NOISE_nrm:LCARTIF_sqrt  HM_NOISE_nrm:LCFOREST_sqrt 
+                       8.60                        6.29 
+         HM_NOISE_nrm:HETER    HM_NOISE_nrm:OVDIST_sqrt 
+                      11.55                       11.52 
+    HM_NOISE_nrm:VIS5K_sqrt        HM_NOISE_nrm:RL_NDVI 
+                       7.87                       29.26 
+      HM_NOISE_nrm:RL_NOISE    HM_NOISE_nrm:DISTKM_sqrt 
+                      49.14                        3.66 
+  HM_NOISE_nrm:JNYTIME_sqrt HM_NOISE_nrm:STRIMP123_sqrt 
+                       6.58                        2.80 
+HM_NOISE_nrm:STRIMP999_sqrt 
+                      34.07 </preformat>
+            </boxed-text>
+          </sec>
+          <p>Since we model with interactions later, these are also the
+    p-values we want to use.</p>
+        </sec>
+        <sec id="mediators-gis-nb-2">
+          <title>Mediators ~ GIS</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">Res1 &lt;- list()
+for (mediator in Mediator_vars) {
+  full_model &lt;- lm(as.formula(paste0(
+    mediator, " ~ ", 
+    "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
+  )), D_trn)
+  small_model &lt;- step(full_model, trace = FALSE, k = log(nrow(D_trn)))
+  Res1[[mediator]] &lt;- lm(formula(small_model), D_tst)
+}
+lapply(Res1, summary)
+    </code>
+            <boxed-text>
+              <preformat>$FEELNAT
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.159 -0.439  0.271  0.653  2.015 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                5.84700    0.25292   23.12  &lt; 2e-16 ***
+HM_NOISE_nrm              -0.05734    0.05243   -1.09    0.274    
+LCARTIF_sqrt              -0.87932    0.19991   -4.40  1.3e-05 ***
+HETER                      0.13549    0.09619    1.41    0.159    
+OVDIST_sqrt                0.00216    0.00477    0.45    0.650    
+RL_NDVI                    0.49972    0.21719    2.30    0.022 *  
+HM_NOISE_nrm:LCARTIF_sqrt -0.25672    0.13600   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.995 on 731 degrees of freedom
+  (9 observations deleted due to missingness)
+Multiple R-squared:  0.118, Adjusted R-squared:  0.111 
+F-statistic: 16.3 on 6 and 731 DF,  p-value: &lt;2e-16
+
+
+$LNOISE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9861 -0.3934  0.0089  0.5050  1.2110 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5.11477    0.14748   34.68  &lt; 2e-16 ***
+LCARTIF_sqrt -0.34259    0.13422   -2.55    0.011 *  
+RL_NOISE     -0.01952    0.00394   -4.95  9.7e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.706 on 596 degrees of freedom
+  (148 observations deleted due to missingness)
+Multiple R-squared:  0.11,  Adjusted R-squared:  0.107 
+F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16
+
+
+$LOC_SENS
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.289 -0.215 -0.021  0.845  1.293 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     3.8595     0.1534   25.17   &lt;2e-16 ***
+LCARTIF_sqrt   -0.2124     0.1726   -1.23   0.2189    
+LCFOREST_sqrt  -0.1945     0.1454   -1.34   0.1813    
+HETER           0.2946     0.0953    3.09   0.0021 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.01 on 729 degrees of freedom
+  (14 observations deleted due to missingness)
+Multiple R-squared:  0.0148,    Adjusted R-squared:  0.0107 
+F-statistic: 3.65 on 3 and 729 DF,  p-value: 0.0124
+
+
+$LOC_SOUN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.430 -0.380  0.456  0.661  1.432 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1276     0.1175   35.12  &lt; 2e-16 ***
+LCARTIF_sqrt  -0.6158     0.1307   -4.71  2.9e-06 ***
+HETER          0.2570     0.0877    2.93   0.0035 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.931 on 731 degrees of freedom
+  (13 observations deleted due to missingness)
+Multiple R-squared:  0.0344,    Adjusted R-squared:  0.0317 
+F-statistic:   13 on 2 and 731 DF,  p-value: 2.82e-06
+
+
+$LOC_SCEN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.207 -0.225  0.071  0.855  1.903 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.245      0.127   25.64  &lt; 2e-16 ***
+RL_NDVI        1.134      0.190    5.98  3.5e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 727 degrees of freedom
+  (18 observations deleted due to missingness)
+Multiple R-squared:  0.0469,    Adjusted R-squared:  0.0456 
+F-statistic: 35.8 on 1 and 727 DF,  p-value: 3.48e-09
+
+
+$LOC_VISE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.1528 -0.1528 -0.0242  0.8743  1.1157 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1528     0.0545   76.27   &lt;2e-16 ***
+LCARTIF_sqrt  -0.2712     0.1433   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 714 degrees of freedom
+  (31 observations deleted due to missingness)
+Multiple R-squared:  0.00499,   Adjusted R-squared:  0.0036 
+F-statistic: 3.58 on 1 and 714 DF,  p-value: 0.0589
+
+
+$LOC_VEGE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.513 -0.422  0.303  0.604  1.311 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  4.01519    0.13243   30.32  &lt; 2e-16 ***
+HM_NOISE_nrm                -0.06008    0.03919   -1.53   0.1258    
+RL_NDVI                      0.82777    0.17042    4.86  1.5e-06 ***
+JNYTIME_sqrt                -0.04678    0.01459   -3.21   0.0014 ** 
+STRIMP123_sqrt              -0.00649    0.00339   -1.91   0.0561 .  
+HM_NOISE_nrm:STRIMP123_sqrt  0.00316    0.00295    1.07   0.2847    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.84 on 668 degrees of freedom
+  (73 observations deleted due to missingness)
+Multiple R-squared:  0.0635,    Adjusted R-squared:  0.0565 
+F-statistic: 9.05 on 5 and 668 DF,  p-value: 2.43e-08
+
+
+$LOC_FAUN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.782 -1.225  0.365  1.134  2.410 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  3.58687    0.07175   49.99  &lt; 2e-16 ***
+HM_NOISE_nrm                -0.10758    0.06164   -1.75    0.081 .  
+LCARTIF_sqrt                -0.95553    0.21664   -4.41  1.2e-05 ***
+STRIMP123_sqrt              -0.00545    0.00558   -0.98    0.329    
+HM_NOISE_nrm:STRIMP123_sqrt  0.00268    0.00454    0.59    0.555    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.33 on 699 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.0518,    Adjusted R-squared:  0.0464 
+F-statistic: 9.55 on 4 and 699 DF,  p-value: 1.61e-07</preformat>
+            </boxed-text>
+          </sec>
+        </sec>
+        <sec id="prs-mediators-nb-2">
+          <title>PRS ~ Mediators</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">Res2 &lt;- list()
+for (mediator in Mediator_vars) {
+  full_model &lt;- lm(as.formula(paste0(
+    mediator, " ~ ", 
+    "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
+  )), D_trn)
+  small_model &lt;- step(full_model, trace = FALSE, k = log(nrow(D_trn)))
+  Res2[[mediator]] &lt;- lm(formula(small_model), D_tst)
+}
+lapply(Res2, summary)
+    </code>
+            <boxed-text>
+              <preformat>$FEELNAT
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.159 -0.439  0.271  0.653  2.015 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                5.84700    0.25292   23.12  &lt; 2e-16 ***
+HM_NOISE_nrm              -0.05734    0.05243   -1.09    0.274    
+LCARTIF_sqrt              -0.87932    0.19991   -4.40  1.3e-05 ***
+HETER                      0.13549    0.09619    1.41    0.159    
+OVDIST_sqrt                0.00216    0.00477    0.45    0.650    
+RL_NDVI                    0.49972    0.21719    2.30    0.022 *  
+HM_NOISE_nrm:LCARTIF_sqrt -0.25672    0.13600   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.995 on 731 degrees of freedom
+  (9 observations deleted due to missingness)
+Multiple R-squared:  0.118, Adjusted R-squared:  0.111 
+F-statistic: 16.3 on 6 and 731 DF,  p-value: &lt;2e-16
+
+
+$LNOISE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9861 -0.3934  0.0089  0.5050  1.2110 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5.11477    0.14748   34.68  &lt; 2e-16 ***
+LCARTIF_sqrt -0.34259    0.13422   -2.55    0.011 *  
+RL_NOISE     -0.01952    0.00394   -4.95  9.7e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.706 on 596 degrees of freedom
+  (148 observations deleted due to missingness)
+Multiple R-squared:  0.11,  Adjusted R-squared:  0.107 
+F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16
+
+
+$LOC_SENS
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.289 -0.215 -0.021  0.845  1.293 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     3.8595     0.1534   25.17   &lt;2e-16 ***
+LCARTIF_sqrt   -0.2124     0.1726   -1.23   0.2189    
+LCFOREST_sqrt  -0.1945     0.1454   -1.34   0.1813    
+HETER           0.2946     0.0953    3.09   0.0021 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.01 on 729 degrees of freedom
+  (14 observations deleted due to missingness)
+Multiple R-squared:  0.0148,    Adjusted R-squared:  0.0107 
+F-statistic: 3.65 on 3 and 729 DF,  p-value: 0.0124
+
+
+$LOC_SOUN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.430 -0.380  0.456  0.661  1.432 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1276     0.1175   35.12  &lt; 2e-16 ***
+LCARTIF_sqrt  -0.6158     0.1307   -4.71  2.9e-06 ***
+HETER          0.2570     0.0877    2.93   0.0035 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.931 on 731 degrees of freedom
+  (13 observations deleted due to missingness)
+Multiple R-squared:  0.0344,    Adjusted R-squared:  0.0317 
+F-statistic:   13 on 2 and 731 DF,  p-value: 2.82e-06
+
+
+$LOC_SCEN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.207 -0.225  0.071  0.855  1.903 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.245      0.127   25.64  &lt; 2e-16 ***
+RL_NDVI        1.134      0.190    5.98  3.5e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 727 degrees of freedom
+  (18 observations deleted due to missingness)
+Multiple R-squared:  0.0469,    Adjusted R-squared:  0.0456 
+F-statistic: 35.8 on 1 and 727 DF,  p-value: 3.48e-09
+
+
+$LOC_VISE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.1528 -0.1528 -0.0242  0.8743  1.1157 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1528     0.0545   76.27   &lt;2e-16 ***
+LCARTIF_sqrt  -0.2712     0.1433   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 714 degrees of freedom
+  (31 observations deleted due to missingness)
+Multiple R-squared:  0.00499,   Adjusted R-squared:  0.0036 
+F-statistic: 3.58 on 1 and 714 DF,  p-value: 0.0589
+
+
+$LOC_VEGE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.513 -0.422  0.303  0.604  1.311 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  4.01519    0.13243   30.32  &lt; 2e-16 ***
+HM_NOISE_nrm                -0.06008    0.03919   -1.53   0.1258    
+RL_NDVI                      0.82777    0.17042    4.86  1.5e-06 ***
+JNYTIME_sqrt                -0.04678    0.01459   -3.21   0.0014 ** 
+STRIMP123_sqrt              -0.00649    0.00339   -1.91   0.0561 .  
+HM_NOISE_nrm:STRIMP123_sqrt  0.00316    0.00295    1.07   0.2847    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.84 on 668 degrees of freedom
+  (73 observations deleted due to missingness)
+Multiple R-squared:  0.0635,    Adjusted R-squared:  0.0565 
+F-statistic: 9.05 on 5 and 668 DF,  p-value: 2.43e-08
+
+
+$LOC_FAUN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.782 -1.225  0.365  1.134  2.410 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  3.58687    0.07175   49.99  &lt; 2e-16 ***
+HM_NOISE_nrm                -0.10758    0.06164   -1.75    0.081 .  
+LCARTIF_sqrt                -0.95553    0.21664   -4.41  1.2e-05 ***
+STRIMP123_sqrt              -0.00545    0.00558   -0.98    0.329    
+HM_NOISE_nrm:STRIMP123_sqrt  0.00268    0.00454    0.59    0.555    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.33 on 699 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.0518,    Adjusted R-squared:  0.0464 
+F-statistic: 9.55 on 4 and 699 DF,  p-value: 1.61e-07</preformat>
+            </boxed-text>
+          </sec>
+        </sec>
+        <sec id="all-interactions-mediators-gis-hm_noise2-nb-2">
+          <title>All Interactions: Mediators ~ (GIS + HM_NOISE)^2</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">Res3 &lt;- list()
+for (mediator in Mediator_vars) {
+  intercept_model &lt;- lm(as.formula(paste0(
+    mediator, " ~ 1")), D_trn)
+  step_model &lt;- step(intercept_model, 
+    scope = as.formula(paste0(
+      mediator, " ~ ", 
+      "(HM_NOISE_nrm + ", paste(GIS_vars, collapse = " + "), ")^2"
+    )),
+    trace = FALSE, k = log(nrow(D_trn))
+  )
+  Res3[[mediator]] &lt;- lm(formula(step_model), D_tst)
+}
+lapply(Res3, summary, signif.legend = FALSE)
+    </code>
+            <boxed-text>
+              <preformat>$FEELNAT
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.231 -0.412  0.278  0.641  1.777 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           6.19417    0.23315   26.57  &lt; 2e-16 ***
+LCARTIF_sqrt         -2.00802    0.44187   -4.54  6.4e-06 ***
+RL_NDVI               0.17949    0.25803    0.70   0.4869    
+OVDIST_sqrt           0.00281    0.00470    0.60   0.5511    
+LCARTIF_sqrt:RL_NDVI  2.22177    0.77894    2.85   0.0045 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1 on 733 degrees of freedom
+  (9 observations deleted due to missingness)
+Multiple R-squared:  0.106, Adjusted R-squared:  0.101 
+F-statistic: 21.8 on 4 and 733 DF,  p-value: &lt;2e-16
+
+
+$LNOISE
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9861 -0.3934  0.0089  0.5050  1.2110 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5.11477    0.14748   34.68  &lt; 2e-16 ***
+LCARTIF_sqrt -0.34259    0.13422   -2.55    0.011 *  
+RL_NOISE     -0.01952    0.00394   -4.95  9.7e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.706 on 596 degrees of freedom
+  (148 observations deleted due to missingness)
+Multiple R-squared:  0.11,  Adjusted R-squared:  0.107 
+F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16
+
+
+$LOC_SENS
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.370 -0.220 -0.007  0.844  1.411 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     3.93628    0.16398   24.00  &lt; 2e-16 ***
+HETER           0.32821    0.09670    3.39  0.00073 ***
+STRIMP999_sqrt -0.00561    0.00296   -1.90  0.05837 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.01 on 730 degrees of freedom
+  (14 observations deleted due to missingness)
+Multiple R-squared:  0.0168,    Adjusted R-squared:  0.0141 
+F-statistic: 6.22 on 2 and 730 DF,  p-value: 0.00209
+
+
+$LOC_SOUN
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.430 -0.380  0.456  0.661  1.432 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1276     0.1175   35.12  &lt; 2e-16 ***
+LCARTIF_sqrt  -0.6158     0.1307   -4.71  2.9e-06 ***
+HETER          0.2570     0.0877    2.93   0.0035 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.931 on 731 degrees of freedom
+  (13 observations deleted due to missingness)
+Multiple R-squared:  0.0344,    Adjusted R-squared:  0.0317 
+F-statistic:   13 on 2 and 731 DF,  p-value: 2.82e-06
+
+
+$LOC_SCEN
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.207 -0.225  0.071  0.855  1.903 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.245      0.127   25.64  &lt; 2e-16 ***
+RL_NDVI        1.134      0.190    5.98  3.5e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 727 degrees of freedom
+  (18 observations deleted due to missingness)
+Multiple R-squared:  0.0469,    Adjusted R-squared:  0.0456 
+F-statistic: 35.8 on 1 and 727 DF,  p-value: 3.48e-09
+
+
+$LOC_VISE
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.1528 -0.1528 -0.0242  0.8743  1.1157 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1528     0.0545   76.27   &lt;2e-16 ***
+LCARTIF_sqrt  -0.2712     0.1433   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 714 degrees of freedom
+  (31 observations deleted due to missingness)
+Multiple R-squared:  0.00499,   Adjusted R-squared:  0.0036 
+F-statistic: 3.58 on 1 and 714 DF,  p-value: 0.0589
+
+
+$LOC_VEGE
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.412 -0.423  0.381  0.607  1.374 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.8999     0.1176   33.18  &lt; 2e-16 ***
+RL_NDVI        0.9336     0.1624    5.75  1.4e-08 ***
+JNYTIME_sqrt  -0.0436     0.0145   -3.01   0.0027 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.842 on 671 degrees of freedom
+  (73 observations deleted due to missingness)
+Multiple R-squared:  0.0549,    Adjusted R-squared:  0.052 
+F-statistic: 19.5 on 2 and 671 DF,  p-value: 6.03e-09
+
+
+$LOC_FAUN
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.591 -1.248  0.409  1.087  2.379 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.5908     0.0713   50.38  &lt; 2e-16 ***
+LCARTIF_sqrt  -1.0847     0.1873   -5.79  1.1e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.33 on 702 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.0456,    Adjusted R-squared:  0.0442 
+F-statistic: 33.5 on 1 and 702 DF,  p-value: 1.05e-08</preformat>
+            </boxed-text>
+          </sec>
+        </sec>
+        <sec id="all-interactions-prs-mediators-gis-hm_noise2-nb-2">
+          <title>All Interactions: PRS ~ (Mediators + GIS +
+    HM_NOISE)^2</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">Res4 &lt;- list()
+for (prs in PRS_vars) {
+  intercept_model &lt;- lm(as.formula(paste0(
+    prs, " ~ 1")), D_trn)
+  step_model &lt;- step(intercept_model, 
+    scope = as.formula(paste0(
+      prs, " ~ ", 
+      "(HM_NOISE_nrm + ", paste(GIS_vars, collapse = " + "), " + ", 
+      paste(Mediator_vars, collapse = " + "), ")^2"
+    )),
+    trace = FALSE, k = log(nrow(D_trn))
+  )
+  Res4[[prs]] &lt;- lm(formula(step_model), D_tst)
+}
+lapply(Res4, summary)
+    </code>
+            <boxed-text>
+              <preformat>$LA
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.766 -0.576  0.103  0.657  2.851 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       2.35411    0.70674    3.33  0.00092 ***
+LOC_SCEN          0.10364    0.19350    0.54  0.59246    
+LOC_VISE          0.13862    0.04460    3.11  0.00198 ** 
+FEELNAT           0.18417    0.11824    1.56  0.11991    
+RL_NDVI          -1.22692    0.69103   -1.78  0.07636 .  
+LOC_FAUN          0.14348    0.03391    4.23  2.7e-05 ***
+LNOISE            0.19811    0.05974    3.32  0.00097 ***
+LOC_SCEN:FEELNAT -0.00175    0.03140   -0.06  0.95556    
+LOC_SCEN:RL_NDVI  0.12534    0.17737    0.71  0.48007    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.96 on 556 degrees of freedom
+  (182 observations deleted due to missingness)
+Multiple R-squared:  0.256, Adjusted R-squared:  0.245 
+F-statistic: 23.9 on 8 and 556 DF,  p-value: &lt;2e-16
+
+
+$BA
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.584 -0.587  0.082  0.750  2.783 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   2.6261     0.2731    9.62  &lt; 2e-16 ***
+LOC_VISE      0.1345     0.0456    2.95  0.00326 ** 
+FEELNAT       0.2054     0.0404    5.08  4.7e-07 ***
+LOC_SENS      0.1696     0.0462    3.67  0.00026 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.1 on 700 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.114, Adjusted R-squared:  0.11 
+F-statistic:   30 on 3 and 700 DF,  p-value: &lt;2e-16
+
+
+$EC
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.767 -0.702 -0.058  0.878  3.052 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.93448    0.23119   17.02  &lt; 2e-16 ***
+LOC_SENS       0.18239    0.05176    3.52  0.00045 ***
+LCFOREST_sqrt -0.36748    0.15510   -2.37  0.01808 *  
+LOC_SCEN       0.00353    0.05024    0.07  0.94407    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.27 on 719 degrees of freedom
+  (24 observations deleted due to missingness)
+Multiple R-squared:  0.03,  Adjusted R-squared:  0.0259 
+F-statistic:  7.4 on 3 and 719 DF,  p-value: 6.88e-05
+
+
+$ES
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.005 -0.769  0.205  0.977  3.280 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)      0.8466     1.4628    0.58    0.563  
+LNOISE           0.3171     0.3831    0.83    0.408  
+LOC_SENS         0.1400     0.0575    2.44    0.015 *
+DISTKM_sqrt      0.1015     0.0499    2.03    0.042 *
+FEELNAT          0.3920     0.2464    1.59    0.112  
+LNOISE:FEELNAT  -0.0101     0.0621   -0.16    0.871  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.36 on 576 degrees of freedom
+  (165 observations deleted due to missingness)
+Multiple R-squared:  0.142, Adjusted R-squared:  0.134 
+F-statistic:   19 on 5 and 576 DF,  p-value: &lt;2e-16
+
+
+$PC1
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-8.493 -1.651 -0.105  1.726  8.114 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5.5273     1.8192   -3.04   0.0025 ** 
+LOC_VISE           0.4828     0.1202    4.02  6.7e-05 ***
+FEELNAT           -0.0720     0.3016   -0.24   0.8114    
+LOC_SENS          -0.6160     0.4751   -1.30   0.1953    
+LNOISE             0.6880     0.1594    4.32  1.9e-05 ***
+FEELNAT:LOC_SENS   0.1505     0.0766    1.96   0.0500 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.62 on 567 degrees of freedom
+  (174 observations deleted due to missingness)
+Multiple R-squared:  0.186, Adjusted R-squared:  0.179 
+F-statistic: 25.9 on 5 and 567 DF,  p-value: &lt;2e-16
+
+
+$PC2
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-6.617 -1.140  0.119  1.204  6.573 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      1.7570     0.5807    3.03  0.00259 ** 
+LCARTIF_sqrt     1.4985     0.4056    3.69  0.00024 ***
+LNOISE          -0.3576     0.1079   -3.31  0.00098 ***
+STRIMP999_sqrt  -0.0143     0.0082   -1.75  0.08124 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.9 on 595 degrees of freedom
+  (148 observations deleted due to missingness)
+Multiple R-squared:  0.0544,    Adjusted R-squared:  0.0496 
+F-statistic: 11.4 on 3 and 595 DF,  p-value: 2.81e-07
+
+
+$PC3
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.372 -1.053 -0.113  0.843  6.802 
+
+Coefficients:
+                         Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)               -0.1826     0.1548   -1.18   0.2386    
+DISTKM_sqrt                0.0478     0.0780    0.61   0.5401    
+LCARTIF_sqrt               1.4707     0.3623    4.06  5.4e-05 ***
+DISTKM_sqrt:LCARTIF_sqrt  -0.5682     0.2044   -2.78   0.0056 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.65 on 743 degrees of freedom
+Multiple R-squared:  0.0316,    Adjusted R-squared:  0.0277 
+F-statistic: 8.08 on 3 and 743 DF,  p-value: 2.65e-05
+
+
+$PC4
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-7.101 -0.682  0.033  0.785  5.375 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   0.1200     0.2023    0.59  0.55307    
+LOC_FAUN     -0.1319     0.0395   -3.34  0.00089 ***
+RL_NDVI       0.5255     0.2689    1.95  0.05101 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.41 on 701 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.0182,    Adjusted R-squared:  0.0154 
+F-statistic:  6.5 on 2 and 701 DF,  p-value: 0.0016</preformat>
+            </boxed-text>
+          </sec>
+        </sec>
+        <sec id="legacy-code-nb-2">
+          <title>Legacy Code</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">
+# library(grpreg)
+# fit &lt;- cv.grpreg(X = model.matrix(fit_MED_GIS)[,-1], y = D_trn[Mediator_vars[1:2]])
+# coef(fit) |&gt; t()
+# fit$beta
+# plot(fit)
+    </code>
+          </sec>
+          <sec specific-use="notebook-content">
+            <code language="r script">
+Y &lt;- D[]
+
+library(mice, quietly = TRUE)
+library(car, quietly = TRUE)
+library(miceadds, quietly = TRUE)
+data(nhanes2, package = "mice")
+set.seed(9090)
+
+mi.res &lt;- miceadds::mice.1chain(nhanes2, burnin = 4, iter = 20, Nimp = 8)
+an2a &lt;- miceadds::mi.anova(mi.res = mi.res, formula = "bmi ~ age * chl")
+
+mod1 &lt;- with(mi.res, stats::lm(bmi ~ age * chl))
+mod0 &lt;- with(mi.res, stats::lm(bmi ~ age + chl))
+
+mitml::testModels(model = mod1$analyses, null.model = mod0$analyses, method = "D1")
+mitml::testModels(model = mod1$analyses, null.model = mod0$analyses, method = "D2")
+
+an2b &lt;- miceadds::mi.anova(mi.res = mi.res, formula = "bmi ~ age * chl", type = 3)
+    </code>
+          </sec>
+        </sec>
+      </sec>
+    </body>
+    <back>
+</back>
+  </sub-article>
+</article>
