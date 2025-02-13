@@ -8,7 +8,7 @@
     <meta name="author" content="Lukas Graz">
     <meta name="dcterms.date" content="2025-02-13">
 
-    <title>Hypothethis Testing</title>
+    <title>Hypothesis Testing</title>
     <style>
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
@@ -183,7 +183,7 @@
      <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Hypothethis Testing</h1>
+      <h1 class="title">Hypothesis Testing</h1>
           </div>
 
     
@@ -223,20 +223,15 @@
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#linear-modelling---testing-hm_noise-normalized" id="toc-linear-modelling---testing-hm_noise-normalized" class="nav-link active" data-scroll-target="#linear-modelling---testing-hm_noise-normalized">Linear Modelling - testing HM_NOISE (normalized)</a>
+  <li><a href="#linear-modeling---testing-hm_noise-normalized" id="toc-linear-modeling---testing-hm_noise-normalized" class="nav-link active" data-scroll-target="#linear-modeling---testing-hm_noise-normalized">Linear Modeling - Testing HM_NOISE (Normalized)</a>
   <ul>
-  <li><a href="#imputation-with-missforest-on-train-data" id="toc-imputation-with-missforest-on-train-data" class="nav-link" data-scroll-target="#imputation-with-missforest-on-train-data">Imputation with MissForest on Train Data</a></li>
-  <li><a href="#testing-vif" id="toc-testing-vif" class="nav-link" data-scroll-target="#testing-vif">Testing VIF</a>
-  <ul class="collapse">
+  <li><a href="#imputation-with-missforest-on-training-data" id="toc-imputation-with-missforest-on-training-data" class="nav-link" data-scroll-target="#imputation-with-missforest-on-training-data">Imputation with MissForest on Training Data</a></li>
+  <li><a href="#testing-vif" id="toc-testing-vif" class="nav-link" data-scroll-target="#testing-vif">Testing VIF</a></li>
   <li><a href="#mediators-gis" id="toc-mediators-gis" class="nav-link" data-scroll-target="#mediators-gis">Mediators ~ GIS</a></li>
   <li><a href="#prs-mediators" id="toc-prs-mediators" class="nav-link" data-scroll-target="#prs-mediators">PRS ~ Mediators</a></li>
-  </ul></li>
-  <li><a href="#all-interactions" id="toc-all-interactions" class="nav-link" data-scroll-target="#all-interactions">All interactions</a>
-  <ul class="collapse">
-  <li><a href="#mediators-gis-1" id="toc-mediators-gis-1" class="nav-link" data-scroll-target="#mediators-gis-1">Mediators ~ GIS</a></li>
-  <li><a href="#prs-mediators-1" id="toc-prs-mediators-1" class="nav-link" data-scroll-target="#prs-mediators-1">PRS ~ Mediators</a></li>
-  </ul></li>
-  <li><a href="#legacy-code" id="toc-legacy-code" class="nav-link" data-scroll-target="#legacy-code">legacy code</a></li>
+  <li><a href="#all-interactions-mediators-gis-hm_noise2" id="toc-all-interactions-mediators-gis-hm_noise2" class="nav-link" data-scroll-target="#all-interactions-mediators-gis-hm_noise2">All Interactions: Mediators ~ (GIS + HM_NOISE)^2</a></li>
+  <li><a href="#all-interactions-prs-mediators-gis-hm_noise2" id="toc-all-interactions-prs-mediators-gis-hm_noise2" class="nav-link" data-scroll-target="#all-interactions-prs-mediators-gis-hm_noise2">All Interactions: PRS ~ (Mediators + GIS + HM_NOISE)^2</a></li>
+  <li><a href="#legacy-code" id="toc-legacy-code" class="nav-link" data-scroll-target="#legacy-code">Legacy Code</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -249,7 +244,7 @@
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interactive &lt;- function() FALSE</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/data_prep.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Nr of matches per filtercriteria (not disjoint)
+<pre><code>Number of matches per filter criteria (not disjoint)
   Headphone  PRS_all_NA    Distance Activity_NA    Duration  HMNoise_NA 
         303         226         221         102          96          96 
 JourneyTime 
@@ -257,30 +252,30 @@ JourneyTime
 Keep  1494 of 2206 observations</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Impute PRS_orig_vars</code></pre>
+<pre><code>Imputing PRS_orig_vars</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>TODO: remove pca ?</code></pre>
+<pre><code>TODO: Remove PCA?</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>impute mediators &amp; GIS_vars for mlr</code></pre>
+<pre><code>Imputing mediators &amp; GIS_vars for MLR</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>HM_NOISE_nrm <span class="ot">&lt;-</span> <span class="fu">scale</span>(D_trn<span class="sc">$</span>HM_NOISE)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>HM_NOISE_nrm <span class="ot">&lt;-</span> <span class="fu">scale</span>(D_tst<span class="sc">$</span>HM_NOISE)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[c(Mediator_vars, GIS_vars)[nNAs&gt;0]], plot=FALSE)</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[PRS_orig_vars])</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">##-&gt; no suspicous patterns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># No suspicious patterns in missing data</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[c(Mediator_vars, GIS_vars)[nNAs&gt;0]], plot = FALSE)</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[PRS_orig_vars])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-<section id="linear-modelling---testing-hm_noise-normalized" class="level2">
-<h2 class="anchored" data-anchor-id="linear-modelling---testing-hm_noise-normalized">Linear Modelling - testing HM_NOISE (normalized)</h2>
-<section id="imputation-with-missforest-on-train-data" class="level3">
-<h3 class="anchored" data-anchor-id="imputation-with-missforest-on-train-data">Imputation with MissForest on Train Data</h3>
+<section id="linear-modeling---testing-hm_noise-normalized" class="level2">
+<h2 class="anchored" data-anchor-id="linear-modeling---testing-hm_noise-normalized">Linear Modeling - Testing HM_NOISE (Normalized)</h2>
+<section id="imputation-with-missforest-on-training-data" class="level3">
+<h3 class="anchored" data-anchor-id="imputation-with-missforest-on-training-data">Imputation with MissForest on Training Data</h3>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
 <details class="code-fold">
-<summary>Nr. of NA’s in Mediators and GIS vars</summary>
+<summary>Number of NAs in Mediators and GIS variables</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(D[Mediator_vars], \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -288,7 +283,7 @@ Keep  1494 of 2206 observations</code></pre>
       16      291       28       30       36       62       69       88 </code></pre>
 </div>
 <details class="code-fold">
-<summary>Nr. of NA’s in Mediators and GIS vars</summary>
+<summary>Number of NAs in Mediators and GIS variables</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(D[GIS_vars], \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -302,22 +297,24 @@ STRIMP999_sqrt
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
 <details class="code-fold">
-<summary>Impute missing values with MissForest</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mediator imputation (missForest)</span></span>
+<summary>Impute missing values using MissForest</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mediator imputation</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>D_trn[Mediator_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  }, </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"Mediator_imputation.rds"</span>, <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># GIS imputation (missForest)</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>D_trn[GIS_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  }, </span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"GIS_imputation.rds"</span>, <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"Mediator_imputation.rds"</span>, </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># GIS imputation (missForest)</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>D_trn[GIS_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  }, </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"GIS_imputation.rds"</span>, </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div></div>
 </section>
@@ -327,7 +324,7 @@ STRIMP999_sqrt
 <details class="code-fold">
 <summary>VIF: PRS ~ Mediators + HM_NOISE (without interaction)</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(<span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse=</span><span class="st">" + "</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)), D_trn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -339,7 +336,7 @@ STRIMP999_sqrt
 <details class="code-fold">
 <summary>VIF: Mediators ~ GIS + HM_NOISE (without interaction)</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(<span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  Mediator_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  Mediator_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>)), D_trn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -353,10 +350,10 @@ STRIMP999_sqrt
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
 <details class="code-fold">
-<summary>VIF: PRS ~ Mediators * HM_NOISE (+interaction)</summary>
+<summary>VIF: PRS ~ Mediators * HM_NOISE (with interaction)</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit_PRS_MED <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"HM_NOISE_nrm *("</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"HM_NOISE_nrm * ("</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")"</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>)), D_trn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
@@ -380,10 +377,10 @@ HM_NOISE_nrm:LOC_VEGE HM_NOISE_nrm:LOC_FAUN
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
 <details class="code-fold">
-<summary>VIF: Mediators ~ GIS * HM_NOISE (+interaction)</summary>
+<summary>VIF: Mediators ~ GIS * HM_NOISE (with interaction)</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit_MED_GIS <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  Mediator_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"HM_NOISE_nrm *("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")"</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"HM_NOISE_nrm * ("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")"</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)), D_trn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
@@ -417,9 +414,10 @@ HM_NOISE_nrm:STRIMP999_sqrt
                       34.07 </code></pre>
 </div>
 </div></div>
-<p>since we model later with interaction, those are also the p-values we want to chose,</p>
-<section id="mediators-gis" class="level4">
-<h4 class="anchored" data-anchor-id="mediators-gis">Mediators ~ GIS</h4>
+<p>Since we model with interactions later, these are also the p-values we want to use.</p>
+</section>
+<section id="mediators-gis" class="level3">
+<h3 class="anchored" data-anchor-id="mediators-gis">Mediators ~ GIS</h3>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -427,9 +425,9 @@ HM_NOISE_nrm:STRIMP999_sqrt
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mediator <span class="cf">in</span> Mediator_vars) {</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  full_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    mediator, <span class="st">" ~ "</span>, </span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HM_NOISE_nrm *("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")"</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    )), D_trn)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  small_model <span class="ot">&lt;-</span> <span class="fu">step</span>(full_model, <span class="at">trace=</span><span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HM_NOISE_nrm * ("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")"</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  )), D_trn)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  small_model <span class="ot">&lt;-</span> <span class="fu">step</span>(full_model, <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  Res1[[mediator]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(small_model), D_tst)</span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res1, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -628,8 +626,8 @@ F-statistic: 9.55 on 4 and 699 DF,  p-value: 1.61e-07</code></pre>
 </div>
 </div></div>
 </section>
-<section id="prs-mediators" class="level4">
-<h4 class="anchored" data-anchor-id="prs-mediators">PRS ~ Mediators</h4>
+<section id="prs-mediators" class="level3">
+<h3 class="anchored" data-anchor-id="prs-mediators">PRS ~ Mediators</h3>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -637,9 +635,9 @@ F-statistic: 9.55 on 4 and 699 DF,  p-value: 1.61e-07</code></pre>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mediator <span class="cf">in</span> Mediator_vars) {</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  full_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    mediator, <span class="st">" ~ "</span>, </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HM_NOISE_nrm *("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")"</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    )), D_trn)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  small_model <span class="ot">&lt;-</span> <span class="fu">step</span>(full_model, <span class="at">trace=</span><span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HM_NOISE_nrm * ("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")"</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  )), D_trn)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  small_model <span class="ot">&lt;-</span> <span class="fu">step</span>(full_model, <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  Res2[[mediator]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(small_model), D_tst)</span>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res2, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -838,11 +836,8 @@ F-statistic: 9.55 on 4 and 699 DF,  p-value: 1.61e-07</code></pre>
 </div>
 </div></div>
 </section>
-</section>
-<section id="all-interactions" class="level3">
-<h3 class="anchored" data-anchor-id="all-interactions">All interactions</h3>
-<section id="mediators-gis-1" class="level4">
-<h4 class="anchored" data-anchor-id="mediators-gis-1">Mediators ~ GIS</h4>
+<section id="all-interactions-mediators-gis-hm_noise2" class="level3">
+<h3 class="anchored" data-anchor-id="all-interactions-mediators-gis-hm_noise2">All Interactions: Mediators ~ (GIS + HM_NOISE)^2</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Res3 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mediator <span class="cf">in</span> Mediator_vars) {</span>
@@ -851,13 +846,13 @@ F-statistic: 9.55 on 4 and 699 DF,  p-value: 1.61e-07</code></pre>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>      mediator, <span class="st">" ~ "</span>, </span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(HM_NOISE_nrm +"</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")^2"</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>      )),</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace=</span><span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(HM_NOISE_nrm + "</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")^2"</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  Res3[[mediator]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
 <span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res3, summary, <span class="at">signif.legend=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res3, summary, <span class="at">signif.legend =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$FEELNAT
 
@@ -1043,8 +1038,8 @@ F-statistic: 33.5 on 1 and 702 DF,  p-value: 1.05e-08</code></pre>
 </div>
 </div></div>
 </section>
-<section id="prs-mediators-1" class="level4">
-<h4 class="anchored" data-anchor-id="prs-mediators-1">PRS ~ Mediators</h4>
+<section id="all-interactions-prs-mediators-gis-hm_noise2" class="level3">
+<h3 class="anchored" data-anchor-id="all-interactions-prs-mediators-gis-hm_noise2">All Interactions: PRS ~ (Mediators + GIS + HM_NOISE)^2</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Res4 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (prs <span class="cf">in</span> PRS_vars) {</span>
@@ -1053,13 +1048,14 @@ F-statistic: 33.5 on 1 and 702 DF,  p-value: 1.05e-08</code></pre>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>      prs, <span class="st">" ~ "</span>, </span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(HM_NOISE_nrm +"</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>),<span class="st">"+"</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")^2"</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>      )),</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace=</span><span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  Res4[[prs]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res4, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(HM_NOISE_nrm + "</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">" + "</span>, </span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")^2"</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  Res4[[prs]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res4, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$LA
 
@@ -1261,52 +1257,41 @@ F-statistic:  6.5 on 2 and 701 DF,  p-value: 0.0016</code></pre>
 </div>
 </div></div>
 </section>
-</section>
 <section id="legacy-code" class="level3">
-<h3 class="anchored" data-anchor-id="legacy-code">legacy code</h3>
+<h3 class="anchored" data-anchor-id="legacy-code">Legacy Code</h3>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
 <details class="code-fold">
-<summary>Select X vars over multiple y simultanously (this is not what we want afaik)</summary>
+<summary>Variable selection over multiple y (not desired)</summary>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(grpreg)</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit &lt;- cv.grpreg(X = model.matrix(fit_MED_GIS)[,-1], y = D_trn[Mediator_vars[1:2]])</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># grpreg()</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># coef(fit) |&gt; t()</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># fit$beta</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(fit)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># coef(fit) |&gt; t()</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># fit$beta</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(fit)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
 <details class="code-fold">
-<summary>use lm with mice</summary>
+<summary>Linear models with mice</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> D[]</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get na pattern of Y</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>na_pattern <span class="ot">&lt;-</span> <span class="fu">md.pattern</span>(Y)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miceadds, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(nhanes2, <span class="at">package=</span><span class="st">"mice"</span>)</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">9090</span>)</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co"># nhanes data in one chain and 8 imputed datasets</span></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>mi.res <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mice.1chain</span>( nhanes2, <span class="at">burnin=</span><span class="dv">4</span>, <span class="at">iter=</span><span class="dv">20</span>, <span class="at">Nimp=</span><span class="dv">8</span> )</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-way analysis of variance (type 2)</span></span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>an2a <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mi.anova</span>(<span class="at">mi.res=</span>mi.res, <span class="at">formula=</span><span class="st">"bmi ~ age * chl"</span> )</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="co"># test of interaction effects using mitml::testModels()</span></span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">with</span>( mi.res, stats<span class="sc">::</span><span class="fu">lm</span>( bmi <span class="sc">~</span> age<span class="sc">*</span>chl ) )</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>mod0 <span class="ot">&lt;-</span> <span class="fu">with</span>( mi.res, stats<span class="sc">::</span><span class="fu">lm</span>( bmi <span class="sc">~</span> age<span class="sc">+</span>chl ) )</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>mitml<span class="sc">::</span><span class="fu">testModels</span>(<span class="at">model=</span>mod1<span class="sc">$</span>analyses, <span class="at">null.model=</span>mod0<span class="sc">$</span>analyses, <span class="at">method=</span><span class="st">"D1"</span>)</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>mitml<span class="sc">::</span><span class="fu">testModels</span>(<span class="at">model=</span>mod1<span class="sc">$</span>analyses, <span class="at">null.model=</span>mod0<span class="sc">$</span>analyses, <span class="at">method=</span><span class="st">"D2"</span>)</span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-way analysis of variance (type 3)</span></span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>an2b <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mi.anova</span>(<span class="at">mi.res=</span>mi.res, <span class="at">formula=</span><span class="st">"bmi ~ age * chl"</span>, <span class="at">type=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miceadds, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(nhanes2, <span class="at">package =</span> <span class="st">"mice"</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">9090</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>mi.res <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mice.1chain</span>(nhanes2, <span class="at">burnin =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">20</span>, <span class="at">Nimp =</span> <span class="dv">8</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>an2a <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mi.anova</span>(<span class="at">mi.res =</span> mi.res, <span class="at">formula =</span> <span class="st">"bmi ~ age * chl"</span>)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">with</span>(mi.res, stats<span class="sc">::</span><span class="fu">lm</span>(bmi <span class="sc">~</span> age <span class="sc">*</span> chl))</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>mod0 <span class="ot">&lt;-</span> <span class="fu">with</span>(mi.res, stats<span class="sc">::</span><span class="fu">lm</span>(bmi <span class="sc">~</span> age <span class="sc">+</span> chl))</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>mitml<span class="sc">::</span><span class="fu">testModels</span>(<span class="at">model =</span> mod1<span class="sc">$</span>analyses, <span class="at">null.model =</span> mod0<span class="sc">$</span>analyses, <span class="at">method =</span> <span class="st">"D1"</span>)</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>mitml<span class="sc">::</span><span class="fu">testModels</span>(<span class="at">model =</span> mod1<span class="sc">$</span>analyses, <span class="at">null.model =</span> mod0<span class="sc">$</span>analyses, <span class="at">method =</span> <span class="st">"D2"</span>)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>an2b <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mi.anova</span>(<span class="at">mi.res =</span> mi.res, <span class="at">formula =</span> <span class="st">"bmi ~ age * chl"</span>, <span class="at">type =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div></div>
 </section>

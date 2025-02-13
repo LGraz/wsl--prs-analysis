@@ -1,7 +1,6 @@
 ---
-# For Scolar Frontmatter doc: https://quarto.org/docs/authoring/front-matter.html
 title: PRS Analysis for WSL
-# date: 2024-10-16
+date: 2025-02-14
 authors:
   - name: Lukas Graz
     affiliation: 
@@ -27,74 +26,87 @@ format:
 #   Bla ...
 ---
 
-
 # Release Notes
 ## V0.2
-- Transformations of GIS vars (mostly sqrt)
-- ML in mlr3 framework: 
-  - testing prediction quality of GIS_vars -> Mediators -> PRS_vars 
-  - lm, randomForests, xgboost (+parameter tuning)
-- improved code structure by seperating data-preperation, Machine Learning, and Hypothethis testin
+- Transformations of GIS variables (mostly sqrt)
+- Machine Learning in mlr3 framework: 
+  - Testing prediction quality of GIS_vars → Mediators → PRS_vars
+    - comparing performances + inference
+  - Linear models, Random Forests, XGBoost (with parameter tuning)
+- Improved code structure by separating data preparation, machine learning, and hypothesis testing
+- Hypothethis testing:
+  1. Train data X imputation using MissForest (simplified approach as uncertainties not needed for feature selection)
+  2. Feature selection based on correlation/VIF analysis
+  3. Feature selection implemented due to high VIF
+  4. Additionally inspecting all interactions
+
 
 ## V0.1
 - Initial release (Technical Setup)
 - Data Preparation
-  - Conducted sanity checks on data (duplications, type consistency, and comparison with `df_varlookup_for_lukas.xlsx`)
+  - Conducted sanity checks on data (duplications, type consistency, comparison with `df_varlookup_for_lukas.xlsx`)
   - Performed type encoding
-  - Created 14 dictionaries for translating ordinal categorical variables to numeric (e.g., mapping: Very:5, Quite:4, Fair:3, Little:2, Not:1)
-- Filtered observations according to criteria described in `_INFO_for_Lukas.docx`
+  - Created 14 dictionaries for translating ordinal categorical variables to numeric (e.g., Very:5, Quite:4, Fair:3, Little:2, Not:1)
+- Filtered observations according to criteria in `_INFO_for_Lukas.docx`
 - Missing Values
   - Checked patterns of missingness for PRS-Variables, Mediators, and GIS-Variables
-  - For PRS-Variables: Compared imputation methods: MissForest, Column-wise Mean, Observation-wise Mean
-  - Imputed missing values for all relevant variables using MissForest (each chunk separately) - later to be done separately for Train/Test data
-- Initial Modeling Completed - results to be updated with imputed data and PC1-4
-
+  - For PRS-Variables: Compared imputation methods (MissForest, column-wise mean, observation-wise mean)
+  - Imputed missing values using MissForest (each chunk separately) - to be done separately for train/test data
+- Initial modeling completed - results to be updated with imputed data and PC1-4
 
 # Data Preparation
 
-
 # Main Analysis
 
-### Which Response to Use?
-Initial Idea was to use:
+### Response Variable Selection
+Initial approach:
 - Aggregated MEAN
 - LA (Fascination)
 - BA (Being Away)
 - EC (Extent Coherence)
 - ES (Compatibility)
 
-**Verify** if this is a good approach with **PCA**. Findings so far:
+**PCA Verification** of this approach. Key findings:
 
-- PCA suggests that the data can be well approximated with 3-4 dimensions. 
-- Unsurprisingly, the first dimension is close to a weighted average of all variables. Projecting on PC1 yields a correlation >0.99. 
-- EC (Extent Coherence) differs the most from the others (see PC2)
-- LA (Fascination) and BA (Being Away) are rather similar (see PC1-PC3)
-- The aggregated PRS variables are also justified given the PCA results (similar values in rotation). Therefore, it is justified to use the mean.
+- Data can be well approximated with 3-4 dimensions
+- First dimension is close to weighted average of all variables (correlation >0.99)
+- EC (Extent Coherence) shows most divergence (see PC2)
+- LA (Fascination) and BA (Being Away) show similarity (see PC1-PC3)
+- Aggregated PRS variables justified by PCA results (similar rotation values), supporting use of mean
 
-We will continue to investigate the PCA projections as alternative response variables (along with LA-4).
-
+PCA projections will be further investigated as alternative response variables (alongside LA-4).
 
 ## Prediction Analysis
-see [the notebook](notebooks/mlr3.qmd) the details.
+Details in [the notebook](notebooks/mlr3.qmd).
 
-as with the RESTORE project, we will see if there is a link between PRS, Mediators, and GIS variables. We use LM, xgboost (with trees + parameter tuning), and random forests and evaluate the percentage of explained variance on hold-out-data. NA's imputed with MissForest (since no p-valuse => no assumptions)
+Following RESTORE project approach, investigating links between PRS, Mediators, and GIS variables using:
+- Linear Models
+- XGBoost (with trees + parameter tuning)
+- Random Forests
 
-### Results
-- GIS has only little predictive power for PRS on ES (5% variance explained)
-- GIS + Mediators explain 25% of the variance in PRS
-- Mediators alone explain almost all the variance in PRS -> GIS only helps a bit for ES and mostly for tree-base methods -> This hints that the effect of GIS is less a direct effect on ES here but rather an interaction effect with mediators. Similar reduction of treebased mehtods observed in BA.
-
-
-## Hypothethis Testing
-see [the notebook](notebooks/hypothethis-tests.qmd) for details
-
-1. Impute X for train with missForest (simple method since uncertanties not needed for feature selectoin)
-2. Depending on the correlation of data (or better VIF) we will go either with all variables or do a feature selection
-3. Feature Selection performed due to hight VIF
+Evaluation: Percentage of explained variance on hold-out data. Missing values imputed with MissForest (no p-values → no assumptions needed).
 
 ### Results
-- Categorical mediator is worse than continuous, we scale it to mean 0 and sd 1
-- HM_NOISELVL is not significant, even before p-adjustment
-- Not worth to do _proper_ analysis with `mice`-NA-handeling? Models have few Variables only LNOISE has many NA's - and it still failes to detect information
-- There are still significant edges in ours sem -> c.f all interactions
+- GIS shows limited predictive power for PRS on ES (5% variance explained)
+- GIS + Mediators explain 25% of PRS variance
+- Mediators alone explain majority of PRS variance
+  - GIS primarily helps with ES through tree-based methods
+  - Suggests GIS effect is more interaction-based than direct
+  - Similar reduction in tree-based methods observed in BA
 
+## Hypothesis Testing
+Details in [the notebook](notebooks/hypothethis-tests.qmd).
+
+Process:
+1. Train data X imputation using MissForest (simplified approach as uncertainties not needed for feature selection)
+2. Feature selection based on correlation/VIF analysis
+3. Feature selection implemented due to high VIF
+
+### Results
+- Continuous mediator outperforms categorical (scaled to mean 0, sd 1)
+- HM_NOISELVL not significant (pre-p-adjustment)
+- Full `mice` NA-handling likely unnecessary
+  - Models use few variables
+  - Only LNOISE shows high NA count
+  - Information detection still fails
+- Significant edges remain in SEM (see all interactions)

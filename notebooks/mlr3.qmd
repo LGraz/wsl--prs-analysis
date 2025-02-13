@@ -15,58 +15,66 @@ source("R/data_prep.R")
 ## Setup
 ```{r}
 #| code-fold: true
-#| code-summary: benchmark help-function
+#| code-summary: "Benchmark helper function"
 library(mlr3verse, quietly = TRUE)
 library(GGally, quietly = TRUE, warn.conflicts = FALSE)
 
 mse <- msrs(c("regr.mse"))
 
-if(!interactive())
+if (!interactive())
   lgr::get_logger("mlr3")$set_threshold("warn")
 
-get_benchi_table <- function(tasks, nfolds = 3){
+get_benchi_table <- function(tasks, nfolds = 3) {
   set.seed(123)
-  learners  <- lrns(c("regr.featureless", "regr.lm", "regr.xgboost", "regr.ranger"))
-  learners$regr.xgboost$param_set$set_values(eta = 0.03, nrounds = 300, max_depth = 2)
+  learners <- lrns(c("regr.featureless", "regr.lm", "regr.xgboost", "regr.ranger"))
+  learners$regr.xgboost$param_set$set_values(
+    eta = 0.03, 
+    nrounds = 300, 
+    max_depth = 2
+  )
 
   benchi <- xfun::cache_rds({
     benchmark(benchmark_grid(
       tasks, 
       learners, 
       rsmp("cv", folds = nfolds)
-      ))
-    }, file="benchmark.rds", dir = "cache/",
-    hash = list(tasks, nfolds)
-    )
+    ))
+  }, 
+  file = "benchmark.rds", 
+  dir = "cache/",
+  hash = list(tasks, nfolds)
+  )
+  
   res <- tidyr::pivot_wider(benchi$aggregate(mse), 
-                      id_cols = task_id,
-                      names_from = learner_id,
-                      values_from = regr.mse) |> as.data.frame()
+    id_cols = task_id,
+    names_from = learner_id,
+    values_from = regr.mse
+  ) |> as.data.frame()
+  
   rownames(res) <- res$task_id
-  res <- res[,-1]
+  res <- res[, -1]
   colnames(res) <- gsub("regr.", "", colnames(res))
-  stopifnot(any(colnames(res)=="featureless"))
-  res = 1 - res / res$featureless
-  res[,-1, drop=FALSE] |> round(2)
+  stopifnot(any(colnames(res) == "featureless"))
+  res <- 1 - res / res$featureless
+  res[, -1, drop = FALSE] |> round(2)
 }
 ```
 
-
 Testing prediction quality of GIS_vars -> Mediators -> PRS_vars using 
 
-- linear models, 
-- random forests (default parameters),
-- xgboost (+parameter tuning)
-- lasso (not shown since inferior)
+- Linear models 
+- Random forests (default parameters)
+- XGBoost (with parameter tuning)
+- LASSO (not shown since inferior)
 
-**GIS-Variables:**  
+**GIS Variables:**
 
 ```{r}
 #| echo: false
 GIS_vars
 ```
 
-**Mediators:**  
+**Mediators:**
 
 ```{r}
 #| echo: false
@@ -78,13 +86,13 @@ Mediator_vars
 #| code-fold: true
 tasks_GIS <- lapply(PRS_vars, \(y) 
   as_task_regr(
-    subset(Dmlr, select = c(y,                GIS_vars)),
+    subset(Dmlr, select = c(y, GIS_vars)),
     target = y,
     id = y
   ))
 get_benchi_table(tasks_GIS) 
-```  
-GIS variables alone bad
+```
+GIS variables alone show poor predictive performance.
 
 ### PRS ~ GIS + Mediators
 ```{r}
@@ -108,9 +116,9 @@ tasks_MED <- lapply(PRS_vars, \(y)
     id = y
   ))
 get_benchi_table(tasks_MED) 
-```  
+```
 
-### MED ~ GIS
+### Mediators ~ GIS
 ```{r}
 #| code-fold: true
 tasks_MED_by_GIS <- lapply(Mediator_vars, \(y) 
@@ -122,43 +130,47 @@ tasks_MED_by_GIS <- lapply(Mediator_vars, \(y)
 get_benchi_table(tasks_MED_by_GIS)
 ```
 
-
-### Legacy code
+### Legacy Code
 ```{r}
-#| code-summary: "xgboost - parameter tuning"
+#| code-summary: "XGBoost - Parameter Tuning"
 #| code-fold: true
 #| eval: false
 
-## get some idea about good parameters for xgboost
-t <- as_task_regr(subset(Dmlr, select = c("FEELNAT", GIS_vars)),
-    target = "FEELNAT")
-l <- lrn_xgb <- lrn("regr.xgboost",
-  nrounds = 500         # more iterations due to lower eta
+# Get parameter estimates for XGBoost
+t <- as_task_regr(
+  subset(Dmlr, select = c("FEELNAT", GIS_vars)),
+  target = "FEELNAT"
 )
+
+l <- lrn("regr.xgboost",
+  nrounds = 500  # More iterations due to lower learning rate
+)
+
 # Create search space
 ps <- ps(
- max_depth = p_int(2,3),
- eta = p_dbl(0.001, 0.3, tags = "logscale")
+  max_depth = p_int(2, 3),
+  eta = p_dbl(0.001, 0.3, tags = "logscale")
 )
+
 # Setup tuning
 instance <- ti(
- task = t,
- learner = l,
- resampling = rsmp("cv", folds = 3),
- measure = msr("regr.mse"),
- terminator = trm("none"),
- search_space = ps
+  task = t,
+  learner = l,
+  resampling = rsmp("cv", folds = 3),
+  measure = msr("regr.mse"),
+  terminator = trm("none"),
+  search_space = ps
 )
+
 # Grid search
 tuner <- mlr3tuning::tnr("grid_search")
 tuner$optimize(instance)
 instance$result
 ```
 
-
 ```{r}
 #| code-fold: true
-#| code-summary: superceded setup with mlr3
+#| code-summary: "Superseded setup with mlr3"
 #| echo: false
 #| eval: false
 #| message: false
@@ -167,19 +179,19 @@ instance$result
 library(randomForest)
 
 fit <- lm(as.formula(paste0(
-    "cbind(",paste(PRS_vars, collapse=", "),")",
+    "cbind(", paste(PRS_vars, collapse = ", "), ")",
     " ~ ",
-    paste(Mediator_vars, collapse=" + ")
-    )), 
+    paste(Mediator_vars, collapse = " + ")
+  )), 
   D)
 coef(fit) |> round(2)
 
 rsq.lm <- sapply(summary(fit), \(x) x$r.sq)
 rsq.rf <- sapply(PRS_vars, \(x) {
   rf <- randomForest(as.formula(paste0(
-    x, " ~ ", paste(Mediator_vars, collapse=" + ")
+    x, " ~ ", paste(Mediator_vars, collapse = " + ")
   )), 
-  D, na.action=na.omit
+  D, na.action = na.omit
   ) 
   rf$rsq[500]
 })
@@ -187,31 +199,31 @@ rsq.rf <- sapply(PRS_vars, \(x) {
 cbind(lm = rsq.lm, rf = rsq.rf) |> round(2)
 ```
 
-
 ```{r}
 #| code-fold: true
-#| code-summary: first absic setup with mlr3
+#| code-summary: "First basic setup with mlr3"
 #| echo: false
 #| message: false
 #| warning: false
 #| eval: false
 
-autoplot(mytsk1, type="pairs")
+autoplot(mytsk1, type = "pairs")
 mytsk1 <- as_task_regr(
-    subset(Dmlr, select = c("LA", Mediator_vars, GIS_vars)),
-    feature = c(Mediator_vars, GIS_vars),
-    target = "LA",
-    id = "bla"
-  )
+  subset(Dmlr, select = c("LA", Mediator_vars, GIS_vars)),
+  feature = c(Mediator_vars, GIS_vars),
+  target = "LA",
+  id = "bla"
+)
+
 lrn_xgb <- lrn("regr.xgboost")
 lrn_avg <- lrn("regr.featureless")
-splits = partition(mytsk1)
+splits <- partition(mytsk1)
 lrn_xgb$train(mytsk1, splits$train)$predict(mytsk1, splits$test)$score(mse)
 lrn_avg$train(mytsk1, splits$train)$predict(mytsk1, splits$test)$score(mse)
-rr = resample(mytsk1, lrn_xgb, cv3)
+rr <- resample(mytsk1, lrn_xgb, cv3)
 rr$aggregate(mse)
 
-learners  <- lrns(c("regr.featureless", "regr.lm", "regr.xgboost", "regr.ranger"))
+learners <- lrns(c("regr.featureless", "regr.lm", "regr.xgboost", "regr.ranger"))
 learners$regr.xgboost$param_set$set_values(eta = 0.03, nrounds = 300, max_depth = 2)
-learners  <- c("regr.featureless", "regr.lm")
+learners <- c("regr.featureless", "regr.lm")
 ```
