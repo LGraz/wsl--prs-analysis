@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="generator" content="quarto-1.7.13">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+    <meta name="author" content="Lukas Graz">
+    <meta name="dcterms.date" content="2025-02-13">
+
+    <title>Hypothethis Testing</title>
+    <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.columns{display: flex; gap: min(4vw, 1.5em);}
+      div.column{flex: auto; overflow-x: auto;}
+      div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+      ul.task-list{list-style: none;}
+      ul.task-list li input[type="checkbox"] {
+        width: 0.8em;
+        margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+        vertical-align: middle;
+      }
+      /* CSS for syntax highlighting */
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+        }
+      pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+      div.sourceCode
+        {   }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+    </style>
+
+    <style>
+      body.hypothesis-enabled #quarto-embed-header {
+        padding-right: 36px;
+      }
+
+      #quarto-embed-header {
+        height: 3em;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: solid 1px;
+      }
+
+      #quarto-embed-header h6 {
+        font-size: 1.1em;
+        padding-top: 0.6em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-weight: 400;
+      }
+
+      #quarto-embed-header a.quarto-back-link,
+      #quarto-embed-header a.quarto-download-embed {
+        font-size: 0.8em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      .quarto-back-container {
+        padding-left: 0.5em;
+        display: flex;
+      }
+
+      .headroom {
+          will-change: transform;
+          transition: transform 200ms linear;
+      }
+
+      .headroom--pinned {
+          transform: translateY(0%);
+      }
+
+      .headroom--unpinned {
+          transform: translateY(-100%);
+      }      
+    </style>
+
+    <script>
+    window.document.addEventListener("DOMContentLoaded", function () {
+
+      var header = window.document.querySelector("#quarto-embed-header");
+      const titleBannerEl = window.document.querySelector("body > #title-block-header");
+      if (titleBannerEl) {
+        titleBannerEl.style.paddingTop = header.clientHeight + "px";
+      }
+      const contentEl = window.document.getElementById('quarto-content');
+      for (const child of contentEl.children) {
+        child.style.paddingTop = header.clientHeight + "px";
+        child.style.marginTop = "1em";
+      }
+
+      // Use the article root if the `back` call doesn't work. This isn't perfect
+      // but should typically work
+      window.quartoBackToArticle = () => {
+        var currentUrl = window.location.href;
+        window.history.back();
+        setTimeout(() => {
+            // if location was not changed in 100 ms, then there is no history back
+            if(currentUrl === window.location.href){              
+                // redirect to site root
+                window.location.href = "../index.html";
+            }
+        }, 100);
+      }
+
+      const headroom = new window.Headroom(header, {
+        tolerance: 5,
+        onPin: function () {
+        },
+        onUnpin: function () {
+        },
+      });
+      headroom.init();
+    });
+    </script>
+
+    
+<script src="../site_libs/manuscript-notebook/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-66ab7fd5e73b7f0a764e0d49b3e29ab1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4bbb43758a5d7ea4ad8bbc01cab314b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+     <script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>  <style>
+.quarto-notebook .cell-container .cell-decorator {
+  display: none;
+}
+</style>  
+      </head>
+
+  <body class="quarto-notebook">
+    <div id="quarto-embed-header" class="headroom fixed-top bg-primary">
+      
+      <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link" href=""><i class="bi bi-caret-left"></i> Back to Article</a>
+      <h6><i class="bi bi-journal-code"></i> Hypothesis Testing</h6>
+
+            <a href="../notebooks/hypothethis-tests.qmd" class="btn btn-primary quarto-download-embed" download="hypothethis-tests.qmd">Download Source</a>
+          </div>
+
+     <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Hypothethis Testing</h1>
+          </div>
+
+    
+    <div class="quarto-title-meta-container">
+      <div class="quarto-title-meta-column-start">
+        
+        <div class="quarto-title-meta">
+
+                <div>
+            <div class="quarto-title-meta-heading">Author</div>
+            <div class="quarto-title-meta-contents">
+                        <p>Lukas Graz </p>
+                      </div>
+          </div>
+                
+                <div>
+            <div class="quarto-title-meta-heading">Published</div>
+            <div class="quarto-title-meta-contents">
+              <p class="date">February 13, 2025</p>
+            </div>
+          </div>
+          
+                
+              </div>
+      </div>
+      <div class="quarto-title-meta-column-end quarto-other-formats-target">
+      </div>
+    </div>
+
+
+
+    <div class="quarto-other-links-text-target">
+    </div>  </div>
+</header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#linear-modelling---testing-hm_noise-normalized" id="toc-linear-modelling---testing-hm_noise-normalized" class="nav-link active" data-scroll-target="#linear-modelling---testing-hm_noise-normalized">Linear Modelling - testing HM_NOISE (normalized)</a>
+  <ul>
+  <li><a href="#imputation-with-missforest-on-train-data" id="toc-imputation-with-missforest-on-train-data" class="nav-link" data-scroll-target="#imputation-with-missforest-on-train-data">Imputation with MissForest on Train Data</a></li>
+  <li><a href="#testing-vif" id="toc-testing-vif" class="nav-link" data-scroll-target="#testing-vif">Testing VIF</a>
+  <ul class="collapse">
+  <li><a href="#mediators-gis" id="toc-mediators-gis" class="nav-link" data-scroll-target="#mediators-gis">Mediators ~ GIS</a></li>
+  <li><a href="#prs-mediators" id="toc-prs-mediators" class="nav-link" data-scroll-target="#prs-mediators">PRS ~ Mediators</a></li>
+  </ul></li>
+  <li><a href="#all-interactions" id="toc-all-interactions" class="nav-link" data-scroll-target="#all-interactions">All interactions</a>
+  <ul class="collapse">
+  <li><a href="#mediators-gis-1" id="toc-mediators-gis-1" class="nav-link" data-scroll-target="#mediators-gis-1">Mediators ~ GIS</a></li>
+  <li><a href="#prs-mediators-1" id="toc-prs-mediators-1" class="nav-link" data-scroll-target="#prs-mediators-1">PRS ~ Mediators</a></li>
+  </ul></li>
+  <li><a href="#legacy-code" id="toc-legacy-code" class="nav-link" data-scroll-target="#legacy-code">legacy code</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">      
+
+       <div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interactive &lt;- function() FALSE</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/data_prep.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Nr of matches per filtercriteria (not disjoint)
+  Headphone  PRS_all_NA    Distance Activity_NA    Duration  HMNoise_NA 
+        303         226         221         102          96          96 
+JourneyTime 
+         20 
+Keep  1494 of 2206 observations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Impute PRS_orig_vars</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>TODO: remove pca ?</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>impute mediators &amp; GIS_vars for mlr</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>HM_NOISE_nrm <span class="ot">&lt;-</span> <span class="fu">scale</span>(D_trn<span class="sc">$</span>HM_NOISE)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>HM_NOISE_nrm <span class="ot">&lt;-</span> <span class="fu">scale</span>(D_tst<span class="sc">$</span>HM_NOISE)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[c(Mediator_vars, GIS_vars)[nNAs&gt;0]], plot=FALSE)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[PRS_orig_vars])</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">##-&gt; no suspicous patterns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<section id="linear-modelling---testing-hm_noise-normalized" class="level2">
+<h2 class="anchored" data-anchor-id="linear-modelling---testing-hm_noise-normalized">Linear Modelling - testing HM_NOISE (normalized)</h2>
+<section id="imputation-with-missforest-on-train-data" class="level3">
+<h3 class="anchored" data-anchor-id="imputation-with-missforest-on-train-data">Imputation with MissForest on Train Data</h3>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Nr. of NA’s in Mediators and GIS vars</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(D[Mediator_vars], \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> FEELNAT   LNOISE LOC_SENS LOC_SOUN LOC_SCEN LOC_VISE LOC_VEGE LOC_FAUN 
+      16      291       28       30       36       62       69       88 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Nr. of NA’s in Mediators and GIS vars</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(D[GIS_vars], \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  LCARTIF_sqrt  LCFOREST_sqrt          HETER    OVDIST_sqrt     VIS5K_sqrt 
+             0              0              0              0              0 
+       RL_NDVI       RL_NOISE    DISTKM_sqrt   JNYTIME_sqrt STRIMP123_sqrt 
+             0              0              0             86              0 
+STRIMP999_sqrt 
+             0 </code></pre>
+</div>
+</div></div>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Impute missing values with MissForest</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mediator imputation (missForest)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>D_trn[Mediator_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  }, </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"Mediator_imputation.rds"</span>, <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># GIS imputation (missForest)</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>D_trn[GIS_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  }, </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"GIS_imputation.rds"</span>, <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div></div>
+</section>
+<section id="testing-vif" class="level3">
+<h3 class="anchored" data-anchor-id="testing-vif">Testing VIF</h3>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>VIF: PRS ~ Mediators + HM_NOISE (without interaction)</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(<span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse=</span><span class="st">" + "</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)), D_trn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> FEELNAT   LNOISE LOC_SENS LOC_SOUN LOC_SCEN LOC_VISE LOC_VEGE LOC_FAUN 
+    1.55     1.43     1.48     1.96     2.16     1.68     1.85     1.40 </code></pre>
+</div>
+</div></div>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>VIF: Mediators ~ GIS + HM_NOISE (without interaction)</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(<span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  Mediator_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>)), D_trn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  LCARTIF_sqrt  LCFOREST_sqrt          HETER    OVDIST_sqrt     VIS5K_sqrt 
+          4.88           2.20           1.14           2.00           1.24 
+       RL_NDVI       RL_NOISE    DISTKM_sqrt   JNYTIME_sqrt STRIMP123_sqrt 
+          2.79           2.29           1.35           1.37           1.93 
+STRIMP999_sqrt 
+          2.65 </code></pre>
+</div>
+</div></div>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>VIF: PRS ~ Mediators * HM_NOISE (+interaction)</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit_PRS_MED <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"HM_NOISE_nrm *("</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>)), D_trn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>there are higher-order terms (interactions) in this model
+consider setting type = 'predictor'; see ?vif</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         HM_NOISE_nrm               FEELNAT                LNOISE 
+                60.63                  1.59                  1.53 
+             LOC_SENS              LOC_SOUN              LOC_SCEN 
+                 1.54                  1.98                  2.17 
+             LOC_VISE              LOC_VEGE              LOC_FAUN 
+                 1.71                  1.88                  1.42 
+ HM_NOISE_nrm:FEELNAT   HM_NOISE_nrm:LNOISE HM_NOISE_nrm:LOC_SENS 
+                51.26                 51.52                 22.91 
+HM_NOISE_nrm:LOC_SOUN HM_NOISE_nrm:LOC_SCEN HM_NOISE_nrm:LOC_VISE 
+                45.89                 33.97                 38.10 
+HM_NOISE_nrm:LOC_VEGE HM_NOISE_nrm:LOC_FAUN 
+                47.68                 10.68 </code></pre>
+</div>
+</div></div>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>VIF: Mediators ~ GIS * HM_NOISE (+interaction)</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit_MED_GIS <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  Mediator_vars[<span class="dv">1</span>], <span class="st">" ~ "</span>, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"HM_NOISE_nrm *("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")"</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)), D_trn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>there are higher-order terms (interactions) in this model
+consider setting type = 'predictor'; see ?vif</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               HM_NOISE_nrm                LCARTIF_sqrt 
+                     108.08                        5.01 
+              LCFOREST_sqrt                       HETER 
+                       2.22                        1.17 
+                OVDIST_sqrt                  VIS5K_sqrt 
+                       2.06                        1.25 
+                    RL_NDVI                    RL_NOISE 
+                       2.82                        2.44 
+                DISTKM_sqrt                JNYTIME_sqrt 
+                       1.40                        1.40 
+             STRIMP123_sqrt              STRIMP999_sqrt 
+                       2.00                        2.71 
+  HM_NOISE_nrm:LCARTIF_sqrt  HM_NOISE_nrm:LCFOREST_sqrt 
+                       8.60                        6.29 
+         HM_NOISE_nrm:HETER    HM_NOISE_nrm:OVDIST_sqrt 
+                      11.55                       11.52 
+    HM_NOISE_nrm:VIS5K_sqrt        HM_NOISE_nrm:RL_NDVI 
+                       7.87                       29.26 
+      HM_NOISE_nrm:RL_NOISE    HM_NOISE_nrm:DISTKM_sqrt 
+                      49.14                        3.66 
+  HM_NOISE_nrm:JNYTIME_sqrt HM_NOISE_nrm:STRIMP123_sqrt 
+                       6.58                        2.80 
+HM_NOISE_nrm:STRIMP999_sqrt 
+                      34.07 </code></pre>
+</div>
+</div></div>
+<p>since we model later with interaction, those are also the p-values we want to chose,</p>
+<section id="mediators-gis" class="level4">
+<h4 class="anchored" data-anchor-id="mediators-gis">Mediators ~ GIS</h4>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Res1 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mediator <span class="cf">in</span> Mediator_vars) {</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  full_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    mediator, <span class="st">" ~ "</span>, </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HM_NOISE_nrm *("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")"</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    )), D_trn)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  small_model <span class="ot">&lt;-</span> <span class="fu">step</span>(full_model, <span class="at">trace=</span><span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  Res1[[mediator]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(small_model), D_tst)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res1, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$FEELNAT
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.159 -0.439  0.271  0.653  2.015 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                5.84700    0.25292   23.12  &lt; 2e-16 ***
+HM_NOISE_nrm              -0.05734    0.05243   -1.09    0.274    
+LCARTIF_sqrt              -0.87932    0.19991   -4.40  1.3e-05 ***
+HETER                      0.13549    0.09619    1.41    0.159    
+OVDIST_sqrt                0.00216    0.00477    0.45    0.650    
+RL_NDVI                    0.49972    0.21719    2.30    0.022 *  
+HM_NOISE_nrm:LCARTIF_sqrt -0.25672    0.13600   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.995 on 731 degrees of freedom
+  (9 observations deleted due to missingness)
+Multiple R-squared:  0.118, Adjusted R-squared:  0.111 
+F-statistic: 16.3 on 6 and 731 DF,  p-value: &lt;2e-16
+
+
+$LNOISE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9861 -0.3934  0.0089  0.5050  1.2110 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5.11477    0.14748   34.68  &lt; 2e-16 ***
+LCARTIF_sqrt -0.34259    0.13422   -2.55    0.011 *  
+RL_NOISE     -0.01952    0.00394   -4.95  9.7e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.706 on 596 degrees of freedom
+  (148 observations deleted due to missingness)
+Multiple R-squared:  0.11,  Adjusted R-squared:  0.107 
+F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16
+
+
+$LOC_SENS
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.289 -0.215 -0.021  0.845  1.293 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     3.8595     0.1534   25.17   &lt;2e-16 ***
+LCARTIF_sqrt   -0.2124     0.1726   -1.23   0.2189    
+LCFOREST_sqrt  -0.1945     0.1454   -1.34   0.1813    
+HETER           0.2946     0.0953    3.09   0.0021 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.01 on 729 degrees of freedom
+  (14 observations deleted due to missingness)
+Multiple R-squared:  0.0148,    Adjusted R-squared:  0.0107 
+F-statistic: 3.65 on 3 and 729 DF,  p-value: 0.0124
+
+
+$LOC_SOUN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.430 -0.380  0.456  0.661  1.432 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1276     0.1175   35.12  &lt; 2e-16 ***
+LCARTIF_sqrt  -0.6158     0.1307   -4.71  2.9e-06 ***
+HETER          0.2570     0.0877    2.93   0.0035 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.931 on 731 degrees of freedom
+  (13 observations deleted due to missingness)
+Multiple R-squared:  0.0344,    Adjusted R-squared:  0.0317 
+F-statistic:   13 on 2 and 731 DF,  p-value: 2.82e-06
+
+
+$LOC_SCEN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.207 -0.225  0.071  0.855  1.903 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.245      0.127   25.64  &lt; 2e-16 ***
+RL_NDVI        1.134      0.190    5.98  3.5e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 727 degrees of freedom
+  (18 observations deleted due to missingness)
+Multiple R-squared:  0.0469,    Adjusted R-squared:  0.0456 
+F-statistic: 35.8 on 1 and 727 DF,  p-value: 3.48e-09
+
+
+$LOC_VISE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.1528 -0.1528 -0.0242  0.8743  1.1157 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1528     0.0545   76.27   &lt;2e-16 ***
+LCARTIF_sqrt  -0.2712     0.1433   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 714 degrees of freedom
+  (31 observations deleted due to missingness)
+Multiple R-squared:  0.00499,   Adjusted R-squared:  0.0036 
+F-statistic: 3.58 on 1 and 714 DF,  p-value: 0.0589
+
+
+$LOC_VEGE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.513 -0.422  0.303  0.604  1.311 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  4.01519    0.13243   30.32  &lt; 2e-16 ***
+HM_NOISE_nrm                -0.06008    0.03919   -1.53   0.1258    
+RL_NDVI                      0.82777    0.17042    4.86  1.5e-06 ***
+JNYTIME_sqrt                -0.04678    0.01459   -3.21   0.0014 ** 
+STRIMP123_sqrt              -0.00649    0.00339   -1.91   0.0561 .  
+HM_NOISE_nrm:STRIMP123_sqrt  0.00316    0.00295    1.07   0.2847    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.84 on 668 degrees of freedom
+  (73 observations deleted due to missingness)
+Multiple R-squared:  0.0635,    Adjusted R-squared:  0.0565 
+F-statistic: 9.05 on 5 and 668 DF,  p-value: 2.43e-08
+
+
+$LOC_FAUN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.782 -1.225  0.365  1.134  2.410 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  3.58687    0.07175   49.99  &lt; 2e-16 ***
+HM_NOISE_nrm                -0.10758    0.06164   -1.75    0.081 .  
+LCARTIF_sqrt                -0.95553    0.21664   -4.41  1.2e-05 ***
+STRIMP123_sqrt              -0.00545    0.00558   -0.98    0.329    
+HM_NOISE_nrm:STRIMP123_sqrt  0.00268    0.00454    0.59    0.555    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.33 on 699 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.0518,    Adjusted R-squared:  0.0464 
+F-statistic: 9.55 on 4 and 699 DF,  p-value: 1.61e-07</code></pre>
+</div>
+</div></div>
+</section>
+<section id="prs-mediators" class="level4">
+<h4 class="anchored" data-anchor-id="prs-mediators">PRS ~ Mediators</h4>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Res2 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mediator <span class="cf">in</span> Mediator_vars) {</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  full_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    mediator, <span class="st">" ~ "</span>, </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HM_NOISE_nrm *("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")"</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    )), D_trn)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  small_model <span class="ot">&lt;-</span> <span class="fu">step</span>(full_model, <span class="at">trace=</span><span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  Res2[[mediator]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(small_model), D_tst)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res2, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$FEELNAT
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.159 -0.439  0.271  0.653  2.015 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                5.84700    0.25292   23.12  &lt; 2e-16 ***
+HM_NOISE_nrm              -0.05734    0.05243   -1.09    0.274    
+LCARTIF_sqrt              -0.87932    0.19991   -4.40  1.3e-05 ***
+HETER                      0.13549    0.09619    1.41    0.159    
+OVDIST_sqrt                0.00216    0.00477    0.45    0.650    
+RL_NDVI                    0.49972    0.21719    2.30    0.022 *  
+HM_NOISE_nrm:LCARTIF_sqrt -0.25672    0.13600   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.995 on 731 degrees of freedom
+  (9 observations deleted due to missingness)
+Multiple R-squared:  0.118, Adjusted R-squared:  0.111 
+F-statistic: 16.3 on 6 and 731 DF,  p-value: &lt;2e-16
+
+
+$LNOISE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9861 -0.3934  0.0089  0.5050  1.2110 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5.11477    0.14748   34.68  &lt; 2e-16 ***
+LCARTIF_sqrt -0.34259    0.13422   -2.55    0.011 *  
+RL_NOISE     -0.01952    0.00394   -4.95  9.7e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.706 on 596 degrees of freedom
+  (148 observations deleted due to missingness)
+Multiple R-squared:  0.11,  Adjusted R-squared:  0.107 
+F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16
+
+
+$LOC_SENS
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.289 -0.215 -0.021  0.845  1.293 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     3.8595     0.1534   25.17   &lt;2e-16 ***
+LCARTIF_sqrt   -0.2124     0.1726   -1.23   0.2189    
+LCFOREST_sqrt  -0.1945     0.1454   -1.34   0.1813    
+HETER           0.2946     0.0953    3.09   0.0021 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.01 on 729 degrees of freedom
+  (14 observations deleted due to missingness)
+Multiple R-squared:  0.0148,    Adjusted R-squared:  0.0107 
+F-statistic: 3.65 on 3 and 729 DF,  p-value: 0.0124
+
+
+$LOC_SOUN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.430 -0.380  0.456  0.661  1.432 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1276     0.1175   35.12  &lt; 2e-16 ***
+LCARTIF_sqrt  -0.6158     0.1307   -4.71  2.9e-06 ***
+HETER          0.2570     0.0877    2.93   0.0035 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.931 on 731 degrees of freedom
+  (13 observations deleted due to missingness)
+Multiple R-squared:  0.0344,    Adjusted R-squared:  0.0317 
+F-statistic:   13 on 2 and 731 DF,  p-value: 2.82e-06
+
+
+$LOC_SCEN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.207 -0.225  0.071  0.855  1.903 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.245      0.127   25.64  &lt; 2e-16 ***
+RL_NDVI        1.134      0.190    5.98  3.5e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 727 degrees of freedom
+  (18 observations deleted due to missingness)
+Multiple R-squared:  0.0469,    Adjusted R-squared:  0.0456 
+F-statistic: 35.8 on 1 and 727 DF,  p-value: 3.48e-09
+
+
+$LOC_VISE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.1528 -0.1528 -0.0242  0.8743  1.1157 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1528     0.0545   76.27   &lt;2e-16 ***
+LCARTIF_sqrt  -0.2712     0.1433   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 714 degrees of freedom
+  (31 observations deleted due to missingness)
+Multiple R-squared:  0.00499,   Adjusted R-squared:  0.0036 
+F-statistic: 3.58 on 1 and 714 DF,  p-value: 0.0589
+
+
+$LOC_VEGE
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.513 -0.422  0.303  0.604  1.311 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  4.01519    0.13243   30.32  &lt; 2e-16 ***
+HM_NOISE_nrm                -0.06008    0.03919   -1.53   0.1258    
+RL_NDVI                      0.82777    0.17042    4.86  1.5e-06 ***
+JNYTIME_sqrt                -0.04678    0.01459   -3.21   0.0014 ** 
+STRIMP123_sqrt              -0.00649    0.00339   -1.91   0.0561 .  
+HM_NOISE_nrm:STRIMP123_sqrt  0.00316    0.00295    1.07   0.2847    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.84 on 668 degrees of freedom
+  (73 observations deleted due to missingness)
+Multiple R-squared:  0.0635,    Adjusted R-squared:  0.0565 
+F-statistic: 9.05 on 5 and 668 DF,  p-value: 2.43e-08
+
+
+$LOC_FAUN
+
+Call:
+lm(formula = formula(small_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.782 -1.225  0.365  1.134  2.410 
+
+Coefficients:
+                            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  3.58687    0.07175   49.99  &lt; 2e-16 ***
+HM_NOISE_nrm                -0.10758    0.06164   -1.75    0.081 .  
+LCARTIF_sqrt                -0.95553    0.21664   -4.41  1.2e-05 ***
+STRIMP123_sqrt              -0.00545    0.00558   -0.98    0.329    
+HM_NOISE_nrm:STRIMP123_sqrt  0.00268    0.00454    0.59    0.555    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.33 on 699 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.0518,    Adjusted R-squared:  0.0464 
+F-statistic: 9.55 on 4 and 699 DF,  p-value: 1.61e-07</code></pre>
+</div>
+</div></div>
+</section>
+</section>
+<section id="all-interactions" class="level3">
+<h3 class="anchored" data-anchor-id="all-interactions">All interactions</h3>
+<section id="mediators-gis-1" class="level4">
+<h4 class="anchored" data-anchor-id="mediators-gis-1">Mediators ~ GIS</h4>
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Res3 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mediator <span class="cf">in</span> Mediator_vars) {</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  intercept_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    mediator, <span class="st">" ~ 1"</span>)), D_trn)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>      mediator, <span class="st">" ~ "</span>, </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(HM_NOISE_nrm +"</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")^2"</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>      )),</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace=</span><span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  Res3[[mediator]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res3, summary, <span class="at">signif.legend=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$FEELNAT
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.231 -0.412  0.278  0.641  1.777 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           6.19417    0.23315   26.57  &lt; 2e-16 ***
+LCARTIF_sqrt         -2.00802    0.44187   -4.54  6.4e-06 ***
+RL_NDVI               0.17949    0.25803    0.70   0.4869    
+OVDIST_sqrt           0.00281    0.00470    0.60   0.5511    
+LCARTIF_sqrt:RL_NDVI  2.22177    0.77894    2.85   0.0045 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1 on 733 degrees of freedom
+  (9 observations deleted due to missingness)
+Multiple R-squared:  0.106, Adjusted R-squared:  0.101 
+F-statistic: 21.8 on 4 and 733 DF,  p-value: &lt;2e-16
+
+
+$LNOISE
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9861 -0.3934  0.0089  0.5050  1.2110 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   5.11477    0.14748   34.68  &lt; 2e-16 ***
+LCARTIF_sqrt -0.34259    0.13422   -2.55    0.011 *  
+RL_NOISE     -0.01952    0.00394   -4.95  9.7e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.706 on 596 degrees of freedom
+  (148 observations deleted due to missingness)
+Multiple R-squared:  0.11,  Adjusted R-squared:  0.107 
+F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16
+
+
+$LOC_SENS
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.370 -0.220 -0.007  0.844  1.411 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     3.93628    0.16398   24.00  &lt; 2e-16 ***
+HETER           0.32821    0.09670    3.39  0.00073 ***
+STRIMP999_sqrt -0.00561    0.00296   -1.90  0.05837 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.01 on 730 degrees of freedom
+  (14 observations deleted due to missingness)
+Multiple R-squared:  0.0168,    Adjusted R-squared:  0.0141 
+F-statistic: 6.22 on 2 and 730 DF,  p-value: 0.00209
+
+
+$LOC_SOUN
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.430 -0.380  0.456  0.661  1.432 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1276     0.1175   35.12  &lt; 2e-16 ***
+LCARTIF_sqrt  -0.6158     0.1307   -4.71  2.9e-06 ***
+HETER          0.2570     0.0877    2.93   0.0035 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.931 on 731 degrees of freedom
+  (13 observations deleted due to missingness)
+Multiple R-squared:  0.0344,    Adjusted R-squared:  0.0317 
+F-statistic:   13 on 2 and 731 DF,  p-value: 2.82e-06
+
+
+$LOC_SCEN
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.207 -0.225  0.071  0.855  1.903 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.245      0.127   25.64  &lt; 2e-16 ***
+RL_NDVI        1.134      0.190    5.98  3.5e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 727 degrees of freedom
+  (18 observations deleted due to missingness)
+Multiple R-squared:  0.0469,    Adjusted R-squared:  0.0456 
+F-statistic: 35.8 on 1 and 727 DF,  p-value: 3.48e-09
+
+
+$LOC_VISE
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.1528 -0.1528 -0.0242  0.8743  1.1157 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    4.1528     0.0545   76.27   &lt;2e-16 ***
+LCARTIF_sqrt  -0.2712     0.1433   -1.89    0.059 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.03 on 714 degrees of freedom
+  (31 observations deleted due to missingness)
+Multiple R-squared:  0.00499,   Adjusted R-squared:  0.0036 
+F-statistic: 3.58 on 1 and 714 DF,  p-value: 0.0589
+
+
+$LOC_VEGE
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.412 -0.423  0.381  0.607  1.374 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.8999     0.1176   33.18  &lt; 2e-16 ***
+RL_NDVI        0.9336     0.1624    5.75  1.4e-08 ***
+JNYTIME_sqrt  -0.0436     0.0145   -3.01   0.0027 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.842 on 671 degrees of freedom
+  (73 observations deleted due to missingness)
+Multiple R-squared:  0.0549,    Adjusted R-squared:  0.052 
+F-statistic: 19.5 on 2 and 671 DF,  p-value: 6.03e-09
+
+
+$LOC_FAUN
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.591 -1.248  0.409  1.087  2.379 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.5908     0.0713   50.38  &lt; 2e-16 ***
+LCARTIF_sqrt  -1.0847     0.1873   -5.79  1.1e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.33 on 702 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.0456,    Adjusted R-squared:  0.0442 
+F-statistic: 33.5 on 1 and 702 DF,  p-value: 1.05e-08</code></pre>
+</div>
+</div></div>
+</section>
+<section id="prs-mediators-1" class="level4">
+<h4 class="anchored" data-anchor-id="prs-mediators-1">PRS ~ Mediators</h4>
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Res4 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (prs <span class="cf">in</span> PRS_vars) {</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  intercept_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    prs, <span class="st">" ~ 1"</span>)), D_trn)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>      prs, <span class="st">" ~ "</span>, </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(HM_NOISE_nrm +"</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse=</span><span class="st">" + "</span>),<span class="st">"+"</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse=</span><span class="st">" + "</span>), <span class="st">")^2"</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>      )),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace=</span><span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  Res4[[prs]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res4, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$LA
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.766 -0.576  0.103  0.657  2.851 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       2.35411    0.70674    3.33  0.00092 ***
+LOC_SCEN          0.10364    0.19350    0.54  0.59246    
+LOC_VISE          0.13862    0.04460    3.11  0.00198 ** 
+FEELNAT           0.18417    0.11824    1.56  0.11991    
+RL_NDVI          -1.22692    0.69103   -1.78  0.07636 .  
+LOC_FAUN          0.14348    0.03391    4.23  2.7e-05 ***
+LNOISE            0.19811    0.05974    3.32  0.00097 ***
+LOC_SCEN:FEELNAT -0.00175    0.03140   -0.06  0.95556    
+LOC_SCEN:RL_NDVI  0.12534    0.17737    0.71  0.48007    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.96 on 556 degrees of freedom
+  (182 observations deleted due to missingness)
+Multiple R-squared:  0.256, Adjusted R-squared:  0.245 
+F-statistic: 23.9 on 8 and 556 DF,  p-value: &lt;2e-16
+
+
+$BA
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.584 -0.587  0.082  0.750  2.783 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   2.6261     0.2731    9.62  &lt; 2e-16 ***
+LOC_VISE      0.1345     0.0456    2.95  0.00326 ** 
+FEELNAT       0.2054     0.0404    5.08  4.7e-07 ***
+LOC_SENS      0.1696     0.0462    3.67  0.00026 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.1 on 700 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.114, Adjusted R-squared:  0.11 
+F-statistic:   30 on 3 and 700 DF,  p-value: &lt;2e-16
+
+
+$EC
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.767 -0.702 -0.058  0.878  3.052 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3.93448    0.23119   17.02  &lt; 2e-16 ***
+LOC_SENS       0.18239    0.05176    3.52  0.00045 ***
+LCFOREST_sqrt -0.36748    0.15510   -2.37  0.01808 *  
+LOC_SCEN       0.00353    0.05024    0.07  0.94407    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.27 on 719 degrees of freedom
+  (24 observations deleted due to missingness)
+Multiple R-squared:  0.03,  Adjusted R-squared:  0.0259 
+F-statistic:  7.4 on 3 and 719 DF,  p-value: 6.88e-05
+
+
+$ES
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.005 -0.769  0.205  0.977  3.280 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)      0.8466     1.4628    0.58    0.563  
+LNOISE           0.3171     0.3831    0.83    0.408  
+LOC_SENS         0.1400     0.0575    2.44    0.015 *
+DISTKM_sqrt      0.1015     0.0499    2.03    0.042 *
+FEELNAT          0.3920     0.2464    1.59    0.112  
+LNOISE:FEELNAT  -0.0101     0.0621   -0.16    0.871  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.36 on 576 degrees of freedom
+  (165 observations deleted due to missingness)
+Multiple R-squared:  0.142, Adjusted R-squared:  0.134 
+F-statistic:   19 on 5 and 576 DF,  p-value: &lt;2e-16
+
+
+$PC1
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-8.493 -1.651 -0.105  1.726  8.114 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5.5273     1.8192   -3.04   0.0025 ** 
+LOC_VISE           0.4828     0.1202    4.02  6.7e-05 ***
+FEELNAT           -0.0720     0.3016   -0.24   0.8114    
+LOC_SENS          -0.6160     0.4751   -1.30   0.1953    
+LNOISE             0.6880     0.1594    4.32  1.9e-05 ***
+FEELNAT:LOC_SENS   0.1505     0.0766    1.96   0.0500 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.62 on 567 degrees of freedom
+  (174 observations deleted due to missingness)
+Multiple R-squared:  0.186, Adjusted R-squared:  0.179 
+F-statistic: 25.9 on 5 and 567 DF,  p-value: &lt;2e-16
+
+
+$PC2
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-6.617 -1.140  0.119  1.204  6.573 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      1.7570     0.5807    3.03  0.00259 ** 
+LCARTIF_sqrt     1.4985     0.4056    3.69  0.00024 ***
+LNOISE          -0.3576     0.1079   -3.31  0.00098 ***
+STRIMP999_sqrt  -0.0143     0.0082   -1.75  0.08124 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.9 on 595 degrees of freedom
+  (148 observations deleted due to missingness)
+Multiple R-squared:  0.0544,    Adjusted R-squared:  0.0496 
+F-statistic: 11.4 on 3 and 595 DF,  p-value: 2.81e-07
+
+
+$PC3
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.372 -1.053 -0.113  0.843  6.802 
+
+Coefficients:
+                         Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)               -0.1826     0.1548   -1.18   0.2386    
+DISTKM_sqrt                0.0478     0.0780    0.61   0.5401    
+LCARTIF_sqrt               1.4707     0.3623    4.06  5.4e-05 ***
+DISTKM_sqrt:LCARTIF_sqrt  -0.5682     0.2044   -2.78   0.0056 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.65 on 743 degrees of freedom
+Multiple R-squared:  0.0316,    Adjusted R-squared:  0.0277 
+F-statistic: 8.08 on 3 and 743 DF,  p-value: 2.65e-05
+
+
+$PC4
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-7.101 -0.682  0.033  0.785  5.375 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   0.1200     0.2023    0.59  0.55307    
+LOC_FAUN     -0.1319     0.0395   -3.34  0.00089 ***
+RL_NDVI       0.5255     0.2689    1.95  0.05101 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.41 on 701 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.0182,    Adjusted R-squared:  0.0154 
+F-statistic:  6.5 on 2 and 701 DF,  p-value: 0.0016</code></pre>
+</div>
+</div></div>
+</section>
+</section>
+<section id="legacy-code" class="level3">
+<h3 class="anchored" data-anchor-id="legacy-code">legacy code</h3>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>Select X vars over multiple y simultanously (this is not what we want afaik)</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(grpreg)</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit &lt;- cv.grpreg(X = model.matrix(fit_MED_GIS)[,-1], y = D_trn[Mediator_vars[1:2]])</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># grpreg()</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># coef(fit) |&gt; t()</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># fit$beta</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(fit)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div></div>
+<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
+<details class="code-fold">
+<summary>use lm with mice</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> D[]</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get na pattern of Y</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>na_pattern <span class="ot">&lt;-</span> <span class="fu">md.pattern</span>(Y)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miceadds, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(nhanes2, <span class="at">package=</span><span class="st">"mice"</span>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">9090</span>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co"># nhanes data in one chain and 8 imputed datasets</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>mi.res <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mice.1chain</span>( nhanes2, <span class="at">burnin=</span><span class="dv">4</span>, <span class="at">iter=</span><span class="dv">20</span>, <span class="at">Nimp=</span><span class="dv">8</span> )</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-way analysis of variance (type 2)</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>an2a <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mi.anova</span>(<span class="at">mi.res=</span>mi.res, <span class="at">formula=</span><span class="st">"bmi ~ age * chl"</span> )</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="co"># test of interaction effects using mitml::testModels()</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">with</span>( mi.res, stats<span class="sc">::</span><span class="fu">lm</span>( bmi <span class="sc">~</span> age<span class="sc">*</span>chl ) )</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>mod0 <span class="ot">&lt;-</span> <span class="fu">with</span>( mi.res, stats<span class="sc">::</span><span class="fu">lm</span>( bmi <span class="sc">~</span> age<span class="sc">+</span>chl ) )</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>mitml<span class="sc">::</span><span class="fu">testModels</span>(<span class="at">model=</span>mod1<span class="sc">$</span>analyses, <span class="at">null.model=</span>mod0<span class="sc">$</span>analyses, <span class="at">method=</span><span class="st">"D1"</span>)</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>mitml<span class="sc">::</span><span class="fu">testModels</span>(<span class="at">model=</span>mod1<span class="sc">$</span>analyses, <span class="at">null.model=</span>mod0<span class="sc">$</span>analyses, <span class="at">method=</span><span class="st">"D2"</span>)</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 2-way analysis of variance (type 3)</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>an2b <span class="ot">&lt;-</span> miceadds<span class="sc">::</span><span class="fu">mi.anova</span>(<span class="at">mi.res=</span>mi.res, <span class="at">formula=</span><span class="st">"bmi ~ age * chl"</span>, <span class="at">type=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div></div>
+</section>
+</section>
+     </main>
+<!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>  </div> <!-- /content --> 
+  
+</body></html>

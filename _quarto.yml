@@ -5,13 +5,15 @@ project:
 
 manuscript:
   article: index.qmd
-  # notebooks:
-  #   - notebook: notebooks/cars-plot.qmd
-  #     title: CarsPlot
+  notebooks:
+    - notebook: notebooks/mlr3.qmd
+      title: "Prediction Analysis"
+    - notebook: notebooks/hypothethis-tests.qmd
+      title: "Hypothesis Testing"
   code-links:
-    - text: Code of prelimary analysis
+    - text: Code of data preparation
       icon: file-code
-      href: R/analysis.R
+      href: R/data_prep.R
   # resources:
   #   - data/cars.csv
 
@@ -26,8 +28,7 @@ format:
   jats: default
   pdf: default
 
-# execute:
-#   freeze: true
-
+execute:
+  freeze: auto
 
 

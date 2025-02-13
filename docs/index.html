@@ -83,13 +83,13 @@ ul.task-list li input[type="checkbox"] {
               </div>
       </div>
       <div class="quarto-title-meta-column-end quarto-other-formats-target">
-      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></p></div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></p></div><div class="quarto-title-meta-contents"><p><a href="index-meca.zip" data-meca-link="true"><i class="bi bi-archive"></i>MECA Bundle</a></p></div></div></div>
+      </div>
     </div>
 
 
 
     <div class="quarto-other-links-text-target">
-    <div class="quarto-code-links"><div class="quarto-title-meta-heading">Code Links</div><div class="quarto-title-meta-contents"><span><a href="R/analysis.R"><i class="bi bi-file-code"></i>Code of prelimary analysis</a></span></div></div></div>  </div>
+    <div class="quarto-code-links"><div class="quarto-title-meta-heading">Code Links</div><div class="quarto-title-meta-contents"><span><a href="R/data_prep.R"><i class="bi bi-file-code"></i>Code of data preparation</a></span></div></div></div>  </div>
 </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
 <div id="quarto-sidebar-toc-left" class="sidebar toc-left">
   <nav id="TOC" role="doc-toc" class="toc-active">
@@ -98,14 +98,24 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#release-notes" id="toc-release-notes" class="nav-link active" data-scroll-target="#release-notes">Release Notes</a>
   <ul class="collapse">
+  <li><a href="#v0.2" id="toc-v0.2" class="nav-link" data-scroll-target="#v0.2">V0.2</a></li>
   <li><a href="#v0.1" id="toc-v0.1" class="nav-link" data-scroll-target="#v0.1">V0.1</a></li>
   </ul></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
   <li><a href="#main-analysis" id="toc-main-analysis" class="nav-link" data-scroll-target="#main-analysis">Main Analysis</a>
   <ul class="collapse">
   <li><a href="#which-response-to-use" id="toc-which-response-to-use" class="nav-link" data-scroll-target="#which-response-to-use">Which Response to Use?</a></li>
+  <li><a href="#prediction-analysis" id="toc-prediction-analysis" class="nav-link" data-scroll-target="#prediction-analysis">Prediction Analysis</a>
+  <ul class="collapse">
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  </ul></li>
+  <li><a href="#hypothethis-testing" id="toc-hypothethis-testing" class="nav-link" data-scroll-target="#hypothethis-testing">Hypothethis Testing</a>
+  <ul class="collapse">
+  <li><a href="#results-1" id="toc-results-1" class="nav-link" data-scroll-target="#results-1">Results</a></li>
+  </ul></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="notebooks/hypothethis-tests-preview.html"><i class="bi bi-journal-code"></i>Hypothesis Testing</a></li><li><a href="notebooks/mlr3-preview.html"><i class="bi bi-journal-code"></i>Prediction Analysis</a></li></ul></div></nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -118,6 +128,18 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="release-notes" class="level1">
 <h1>Release Notes</h1>
+<section id="v0.2" class="level2">
+<h2 class="anchored" data-anchor-id="v0.2">V0.2</h2>
+<ul>
+<li>Transformations of GIS vars (mostly sqrt)</li>
+<li>ML in mlr3 framework:
+<ul>
+<li>testing prediction quality of GIS_vars -&gt; Mediators -&gt; PRS_vars</li>
+<li>lm, randomForests, xgboost (+parameter tuning)</li>
+</ul></li>
+<li>improved code structure by seperating data-preperation, Machine Learning, and Hypothethis testin</li>
+</ul>
+</section>
 <section id="v0.1" class="level2">
 <h2 class="anchored" data-anchor-id="v0.1">V0.1</h2>
 <ul>
@@ -139,20 +161,54 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 </section>
+<section id="data-preparation" class="level1">
+<h1>Data Preparation</h1>
+</section>
 <section id="main-analysis" class="level1">
 <h1>Main Analysis</h1>
 <section id="which-response-to-use" class="level3">
 <h3 class="anchored" data-anchor-id="which-response-to-use">Which Response to Use?</h3>
-<p>Initial Idea was to use: - Aggregated MEAN - PRS1 (Fascination) - PRS2 (Being Away) - PRS3 (Extent Coherence) - PRS4 (Compatibility)</p>
+<p>Initial Idea was to use: - Aggregated MEAN - LA (Fascination) - BA (Being Away) - EC (Extent Coherence) - ES (Compatibility)</p>
 <p><strong>Verify</strong> if this is a good approach with <strong>PCA</strong>. Findings so far:</p>
 <ul>
 <li>PCA suggests that the data can be well approximated with 3-4 dimensions.</li>
 <li>Unsurprisingly, the first dimension is close to a weighted average of all variables. Projecting on PC1 yields a correlation &gt;0.99.</li>
-<li>PRS3 (Extent Coherence) differs the most from the others (see PC2)</li>
-<li>PRS1 (Fascination) and PRS2 (Being Away) are rather similar (see PC1-PC3)</li>
+<li>EC (Extent Coherence) differs the most from the others (see PC2)</li>
+<li>LA (Fascination) and BA (Being Away) are rather similar (see PC1-PC3)</li>
 <li>The aggregated PRS variables are also justified given the PCA results (similar values in rotation). Therefore, it is justified to use the mean.</li>
 </ul>
-<p>We will continue to investigate the PCA projections as alternative response variables (along with PRS1-4).</p>
+<p>We will continue to investigate the PCA projections as alternative response variables (along with LA-4).</p>
+</section>
+<section id="prediction-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="prediction-analysis">Prediction Analysis</h2>
+<p>see <a href="./notebooks/mlr3-preview.html">the notebook</a> the details.</p>
+<p>as with the RESTORE project, we will see if there is a link between PRS, Mediators, and GIS variables. We use LM, xgboost (with trees + parameter tuning), and random forests and evaluate the percentage of explained variance on hold-out-data. NA’s imputed with MissForest (since no p-valuse =&gt; no assumptions)</p>
+<section id="results" class="level3">
+<h3 class="anchored" data-anchor-id="results">Results</h3>
+<ul>
+<li>GIS has only little predictive power for PRS on ES (5% variance explained)</li>
+<li>GIS + Mediators explain 25% of the variance in PRS</li>
+<li>Mediators alone explain almost all the variance in PRS -&gt; GIS only helps a bit for ES and mostly for tree-base methods -&gt; This hints that the effect of GIS is less a direct effect on ES here but rather an interaction effect with mediators. Similar reduction of treebased mehtods observed in BA.</li>
+</ul>
+</section>
+</section>
+<section id="hypothethis-testing" class="level2">
+<h2 class="anchored" data-anchor-id="hypothethis-testing">Hypothethis Testing</h2>
+<p>see <a href="./notebooks/hypothethis-tests-preview.html">the notebook</a> for details</p>
+<ol type="1">
+<li>Impute X for train with missForest (simple method since uncertanties not needed for feature selectoin)</li>
+<li>Depending on the correlation of data (or better VIF) we will go either with all variables or do a feature selection</li>
+<li>Feature Selection performed due to hight VIF</li>
+</ol>
+<section id="results-1" class="level3">
+<h3 class="anchored" data-anchor-id="results-1">Results</h3>
+<ul>
+<li>Categorical mediator is worse than continuous, we scale it to mean 0 and sd 1</li>
+<li>HM_NOISELVL is not significant, even before p-adjustment</li>
+<li>Not worth to do <em>proper</em> analysis with <code>mice</code>-NA-handeling? Models have few Variables only LNOISE has many NA’s - and it still failes to detect information</li>
+<li>There are still significant edges in ours sem -&gt; c.f all interactions</li>
+</ul>
+</section>
 </section>
 </section>
 

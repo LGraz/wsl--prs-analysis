@@ -20,3 +20,8 @@ Improve imputation by providing more variables connected to
 - Mediators
 - GIS-vars
 each variable would be only allowed to be used for one of the three above
+
+
+---
+
+prediction quality: what about HM_NOISE?
