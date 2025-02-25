@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-02-14">
+<meta name="dcterms.date" content="2025-02-25">
 
 <title>PRS Analysis for WSL</title>
 <style>
@@ -45,10 +45,10 @@ ul.task-list li input[type="checkbox"] {
 
 <meta name="citation_title" content="PRS Analysis for WSL">
 <meta name="citation_author" content="Lukas Graz">
-<meta name="citation_publication_date" content="2025-02-14">
-<meta name="citation_cover_date" content="2025-02-14">
+<meta name="citation_publication_date" content="2025-02-25">
+<meta name="citation_cover_date" content="2025-02-25">
 <meta name="citation_year" content="2025">
-<meta name="citation_online_date" content="2025-02-14">
+<meta name="citation_online_date" content="2025-02-25">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Literate programming;,citation_author=Donald E. Knuth;,citation_publication_date=1984-05;,citation_cover_date=1984-05;,citation_year=1984;,citation_fulltext_html_url=https://doi.org/10.1093/comjnl/27.2.97;,citation_issue=2;,citation_doi=10.1093/comjnl/27.2.97;,citation_issn=0010-4620;,citation_volume=27;,citation_journal_title=Comput. J.;,citation_publisher=Oxford University Press, Inc.;">
 </head>
@@ -86,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">February 14, 2025</p>
+              <p class="date">February 25, 2025</p>
             </div>
           </div>
           
@@ -107,21 +107,23 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#release-notes" id="toc-release-notes" class="nav-link active" data-scroll-target="#release-notes">Release Notes</a>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link active" data-scroll-target="#data-preparation">Data Preparation</a>
   <ul>
-  <li><a href="#v0.2" id="toc-v0.2" class="nav-link" data-scroll-target="#v0.2">V0.2</a></li>
-  <li><a href="#v0.1" id="toc-v0.1" class="nav-link" data-scroll-target="#v0.1">V0.1</a></li>
+  <li><a href="#train-test-split-for-inference" id="toc-train-test-split-for-inference" class="nav-link" data-scroll-target="#train-test-split-for-inference">Train Test Split for Inference</a></li>
+  <li><a href="#missing-values" id="toc-missing-values" class="nav-link" data-scroll-target="#missing-values">Missing Values</a></li>
   </ul></li>
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
   <li><a href="#main-analysis" id="toc-main-analysis" class="nav-link" data-scroll-target="#main-analysis">Main Analysis</a>
   <ul>
   <li><a href="#response-variable-selection" id="toc-response-variable-selection" class="nav-link" data-scroll-target="#response-variable-selection">Response Variable Selection</a></li>
-  <li><a href="#prediction-analysis" id="toc-prediction-analysis" class="nav-link" data-scroll-target="#prediction-analysis">Prediction Analysis</a>
+  <li><a href="#prediction-analysis-with-machine-learning-methods" id="toc-prediction-analysis-with-machine-learning-methods" class="nav-link" data-scroll-target="#prediction-analysis-with-machine-learning-methods">Prediction Analysis with Machine Learning Methods</a>
   <ul class="collapse">
+  <li><a href="#methodological-approach" id="toc-methodological-approach" class="nav-link" data-scroll-target="#methodological-approach">Methodological Approach</a></li>
+  <li><a href="#model-combinations" id="toc-model-combinations" class="nav-link" data-scroll-target="#model-combinations">Model Combinations</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   </ul></li>
-  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing">Hypothesis Testing</a>
+  <li><a href="#hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale" id="toc-hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale" class="nav-link" data-scroll-target="#hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale">Hypothesis Testing: Investigation of Variable Effects on Perceived Restorativeness Scale</a>
   <ul class="collapse">
+  <li><a href="#model-specification-and-analysis" id="toc-model-specification-and-analysis" class="nav-link" data-scroll-target="#model-specification-and-analysis">Model Specification and Analysis</a></li>
   <li><a href="#results-1" id="toc-results-1" class="nav-link" data-scroll-target="#results-1">Results</a></li>
   </ul></li>
   </ul></li>
@@ -137,59 +139,42 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-<section id="release-notes" class="level1">
-<h1>Release Notes</h1>
-<section id="v0.2" class="level2">
-<h2 class="anchored" data-anchor-id="v0.2">V0.2</h2>
-<ul>
-<li>Transformations of GIS variables (mostly sqrt)</li>
-<li>Machine Learning in mlr3 framework:
-<ul>
-<li>Testing prediction quality of GIS_vars → Mediators → PRS_vars
-<ul>
-<li>comparing performances + inference</li>
-</ul></li>
-<li>Linear models, Random Forests, XGBoost (with parameter tuning)</li>
-</ul></li>
-<li>Improved code structure by separating data preparation, machine learning, and hypothesis testing</li>
-<li>Hypothethis testing:
-<ol type="1">
-<li>Train data X imputation using MissForest (simplified approach as uncertainties not needed for feature selection)</li>
-<li>Feature selection based on correlation/VIF analysis</li>
-<li>Feature selection implemented due to high VIF</li>
-<li>Additionally inspecting all interactions</li>
-</ol></li>
-</ul>
-</section>
-<section id="v0.1" class="level2">
-<h2 class="anchored" data-anchor-id="v0.1">V0.1</h2>
-<ul>
-<li>Initial release (Technical Setup)</li>
-<li>Data Preparation
-<ul>
-<li>Conducted sanity checks on data (duplications, type consistency, comparison with <code>df_varlookup_for_lukas.xlsx</code>)</li>
-<li>Performed type encoding</li>
-<li>Created 14 dictionaries for translating ordinal categorical variables to numeric (e.g., Very:5, Quite:4, Fair:3, Little:2, Not:1)</li>
-</ul></li>
-<li>Filtered observations according to criteria in <code>_INFO_for_Lukas.docx</code></li>
-<li>Missing Values
-<ul>
-<li>Checked patterns of missingness for PRS-Variables, Mediators, and GIS-Variables</li>
-<li>For PRS-Variables: Compared imputation methods (MissForest, column-wise mean, observation-wise mean)</li>
-<li>Imputed missing values using MissForest (each chunk separately) - to be done separately for train/test data</li>
-</ul></li>
-<li>Initial modeling completed - results to be updated with imputed data and PC1-4</li>
-</ul>
-</section>
-</section>
+<p>For the <strong>release notes</strong> see the corresponding <a href="https://github.com/LGraz/wsl--prs-analysis/releases">GitHub</a> page</p>
 <section id="data-preparation" class="level1">
 <h1>Data Preparation</h1>
+<section id="train-test-split-for-inference" class="level2">
+<h2 class="anchored" data-anchor-id="train-test-split-for-inference">Train Test Split for Inference</h2>
+<p>Data was split into training and test sets (50/50) for hypothesis testing to ensure valid inference after feature selection.</p>
+</section>
+<section id="missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="missing-values">Missing Values</h2>
+<p>Missing value imputation was performed using MissForest doi:10.1093/bioinformatics/btr597. This method leverages conditional dependencies between variables to predict missing values through an iterative random forest approach.</p>
+<p>To avoid introducing spurious correlations between different variable sets, we imputed the following data groups separately:</p>
+<ul>
+<li>PRS variables on the complete dataset</li>
+<li>Mediators on training data only</li>
+<li>GIS variables on training data only</li>
+<li>Mediators for prediction analysis</li>
+<li>GIS variables for prediction analysis</li>
+<li>PRS variables for prediction analysis</li>
+</ul>
+<p>Mediators and GIS variables were intentionally not imputed on the test set to maintain valid inference, as MissForest does not provide a mechanism to propagate imputation uncertainty. An alternative would be the <code>mice</code>-routine, which could be implemented in future analyses. Missing values in the test set predictors remained untreated, which is justified under the missing completely at random (MCAR) assumption—where missing values occur independently of all other variables.</p>
+<p>For the prediction analysis, fewer statistical assumptions are required, so using the MissForest approach does not violate any assumptions.</p>
+<p>PRS variables could have been imputed separately for training/test sets and prediction analysis, but we prioritized simplicity as these variables serve only as response variables.</p>
+<p>Additionally, we compared MissForest with simpler imputation methods (variable-wise and observation-wise mean imputation) for the PRS variables. Results confirmed that MissForest consistently outperformed these alternatives.</p>
+</section>
 </section>
 <section id="main-analysis" class="level1">
 <h1>Main Analysis</h1>
-<section id="response-variable-selection" class="level3">
-<h3 class="anchored" data-anchor-id="response-variable-selection">Response Variable Selection</h3>
-<p>Initial approach: - Aggregated MEAN - LA (Fascination) - BA (Being Away) - EC (Extent Coherence) - ES (Compatibility)</p>
+<section id="response-variable-selection" class="level2">
+<h2 class="anchored" data-anchor-id="response-variable-selection">Response Variable Selection</h2>
+<ul>
+<li>Aggregated mean</li>
+<li>LA (Fascination)</li>
+<li>BA (Being Away)</li>
+<li>EC (Extent Coherence)</li>
+<li>ES (Compatibility)</li>
+</ul>
 <p><strong>PCA Verification</strong> of this approach. Key findings:</p>
 <ul>
 <li>Data can be well approximated with 3-4 dimensions</li>
@@ -198,13 +183,31 @@ ul.task-list li input[type="checkbox"] {
 <li>LA (Fascination) and BA (Being Away) show similarity (see PC1-PC3)</li>
 <li>Aggregated PRS variables justified by PCA results (similar rotation values), supporting use of mean</li>
 </ul>
-<p>PCA projections will be further investigated as alternative response variables (alongside LA-4).</p>
 </section>
-<section id="prediction-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="prediction-analysis">Prediction Analysis</h2>
-<p>Details in <a href="./notebooks/mlr3-preview.html">the notebook</a>.</p>
-<p>Following RESTORE project approach, investigating links between PRS, Mediators, and GIS variables using: - Linear Models - XGBoost (with trees + parameter tuning) - Random Forests</p>
-<p>Evaluation: Percentage of explained variance on hold-out data. Missing values imputed with MissForest (no p-values → no assumptions needed).</p>
+<section id="prediction-analysis-with-machine-learning-methods" class="level2">
+<h2 class="anchored" data-anchor-id="prediction-analysis-with-machine-learning-methods">Prediction Analysis with Machine Learning Methods</h2>
+<p>Details and results in <a href="./notebooks/mlr3-preview.html">the notebook</a>.</p>
+<p>This section investigates predictive relationships between Perceived Restorativeness Scale (PRS) variables, mediator variables, and Geographical Information System (GIS) variables using various machine learning approaches. We employed a systematic methodology to quantify the predictive power of different variable combinations.</p>
+<section id="methodological-approach" class="level3">
+<h3 class="anchored" data-anchor-id="methodological-approach">Methodological Approach</h3>
+<p>We evaluated multiple machine learning models using the mlr3 framework (cite doi:10.21105/joss.01903) :</p>
+<ul>
+<li>Linear models (baseline)</li>
+<li>XGBoost (gradient boosting with tree-based models and hyperparameter tuning for learning rate and tree depth) (cite arxiv:1603.02754)</li>
+<li>Random Forests (with default parameters) (cite doi:10.1023/A:1010933404324)</li>
+</ul>
+<p>Performance was measured as percentage of explained variance on hold-out data, calculated as (1 - MSE/Variance(y)), where MSE represents mean squared error.</p>
+</section>
+<section id="model-combinations" class="level3">
+<h3 class="anchored" data-anchor-id="model-combinations">Model Combinations</h3>
+<p>To systematically explore predictive relationships, we tested four model configurations:</p>
+<ol type="1">
+<li>PRS ~ GIS: Predicting PRS variables using only GIS variables</li>
+<li>PRS ~ GIS + Mediators: Predicting PRS variables using both GIS and mediator variables</li>
+<li>PRS ~ Mediators: Predicting PRS variables using only mediator variables</li>
+<li>Mediators ~ GIS: Predicting mediator variables using GIS variables</li>
+</ol>
+</section>
 <section id="results" class="level3">
 <h3 class="anchored" data-anchor-id="results">Results</h3>
 <ul>
@@ -219,15 +222,23 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 </section>
-<section id="hypothesis-testing" class="level2">
-<h2 class="anchored" data-anchor-id="hypothesis-testing">Hypothesis Testing</h2>
-<p>Details in <a href="./notebooks/hypothethis-tests-preview.html">the notebook</a>.</p>
-<p>Process: 1. Train data X imputation using MissForest (simplified approach as uncertainties not needed for feature selection) 2. Feature selection based on correlation/VIF analysis 3. Feature selection implemented due to high VIF</p>
+<section id="hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale" class="level2">
+<h2 class="anchored" data-anchor-id="hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale">Hypothesis Testing: Investigation of Variable Effects on Perceived Restorativeness Scale</h2>
+<p>Details and results in <a href="./notebooks/hypothethis-tests-preview.html">the notebook</a>.</p>
+<p>Here we investigated which variables (including their interactions) influence PRS variables using multiple linear regression. With 190 variables (counting interactions), the variance inflation factor (VIF) was high and the multiple testing problem severe. We therefore implemented a stepwise feature selection using Bayesian Information Criterion (BIC) on the training data, starting with an empty model to help computational complexity. Selected features were subsequently used to fit models on the test set to obtain valid p-values. To keep the coefficients interpretable in the presence of interactions, each variable is scaled to mean 0 and standard deviation 1.</p>
+<section id="model-specification-and-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="model-specification-and-analysis">Model Specification and Analysis</h3>
+<p>The analysis systematically explored two key relationship pathways:</p>
+<ol type="1">
+<li>Mediators ~ (GIS)² - examining how environmental features predict psychological mediators</li>
+<li>PRS ~ (Mediators + GIS)² - investigating how both environmental features and psychological mediators contribute to perceived restorativeness</li>
+</ol>
+<p>For each target variable, we constructed a separate model using stepwise selection and evaluated it on the test dataset.</p>
+</section>
 <section id="results-1" class="level3">
 <h3 class="anchored" data-anchor-id="results-1">Results</h3>
 <ul>
-<li>Continuous mediator outperforms categorical (scaled to mean 0, sd 1)</li>
-<li>HM_NOISELVL not significant (pre-p-adjustment)</li>
+<li>For HM_Noise (now removed): Continuous mediator outperforms categorical (scaled to mean 0, sd 1)</li>
 <li>Full <code>mice</code> NA-handling likely unnecessary
 <ul>
 <li>Models use few variables</li>

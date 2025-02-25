@@ -12,19 +12,19 @@ include-in-header:
 ---
 
 ```{r}
-# interactive <- function() FALSE
+#| code-fold: true
 source("R/data_prep.R")
-D_trn$HM_NOISE_nrm <- scale(D_trn$HM_NOISE)
-D_tst$HM_NOISE_nrm <- scale(D_tst$HM_NOISE)
-
 options(digits = 3)
 
-# No suspicious patterns in missing data
+# interactive <- function() FALSE
+# D_trn$HM_NOISE_nrm <- scale(D_trn$HM_NOISE)
+# D_tst$HM_NOISE_nrm <- scale(D_tst$HM_NOISE)
+## No suspicious patterns in missing data
 # mice::md.pattern(D[c(Mediator_vars, GIS_vars)[nNAs>0]], plot = FALSE)
 # mice::md.pattern(D[PRS_orig_vars])
 ```
 
-## Linear Modeling - Testing HM_NOISE (Normalized)
+## Linear Modeling
 ### Imputation with MissForest on Training Data
 ```{r}
 #| code-fold: true
@@ -55,75 +55,50 @@ D_trn[GIS_vars] <- xfun::cache_rds({
 )$ximp |> as.data.frame()
 ```
 
+
+### Scaling Test Data
+```{r}
+#| code-fold: true
+#| code-summary: "Scaling variables and show old scale"
+all_vars <- c(Mediator_vars, GIS_vars, PRS_vars)
+old_scale <- t(sapply(D_tst[c(all_vars)], \(x) 
+  c(mean = mean(x, na.rm = TRUE), sd = sd(x, na.rm = TRUE))))
+
+D_tst[c(all_vars)] <- lapply(D_tst[c(all_vars)], scale)
+
+old_scale
+```
+
+
 ### Testing VIF
-
 ```{r}
 #| code-fold: true
-#| code-summary: "VIF: PRS ~ Mediators + HM_NOISE (without interaction)"
-car::vif(lm(as.formula(paste0(
-  PRS_vars[1], " ~ ", paste(Mediator_vars, collapse = " + ")
-)), D_trn))
-```
-
-```{r}
-#| code-fold: true
-#| code-summary: "VIF: Mediators ~ GIS + HM_NOISE (without interaction)"
-car::vif(lm(as.formula(paste0(
-  Mediator_vars[1], " ~ ", paste(GIS_vars, collapse = " + ")
-)), D_trn))
-```
-
-```{r}
-#| code-fold: true
-#| code-summary: "VIF: PRS ~ Mediators * HM_NOISE (with interaction)"
+#| code-summary: "VIF: PRS ~ (Mediators + GIS_vars)^2 (with interaction)"
 car::vif(fit_PRS_MED <- lm(as.formula(paste0(
-  PRS_vars[1], " ~ ", 
-  "HM_NOISE_nrm * (", paste(Mediator_vars, collapse = " + "), ")"
-)), D_trn))
+  PRS_vars[1], 
+  " ~ ", 
+  paste(Mediator_vars, collapse = " + "), " + ",
+  paste(GIS_vars,      collapse = " + ")
+)), D_trn)) |> summary()
 ```
 
 ```{r}
 #| code-fold: true
-#| code-summary: "VIF: Mediators ~ GIS * HM_NOISE (with interaction)"
-car::vif(fit_MED_GIS <- lm(as.formula(paste0(
-  Mediator_vars[1], " ~ ", 
-  "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
-)), D_trn))
+#| code-summary: "VIF: PRS ~ (Mediators + GIS_vars)^2 (with interaction)"
+suppressMessages(
+car::vif(fit_PRS_MED <- lm(as.formula(paste0(
+  PRS_vars[1], 
+  " ~ ", 
+  "(", paste(Mediator_vars, collapse = " + "), 
+     " + ", paste(GIS_vars, collapse = " + "), 
+  ")^2"
+)), D_trn))) |> summary()
 ```
 
 Since we model with interactions later, these are also the p-values we want to use.
 
-### Mediators ~ GIS
-```{r}
-#| code-fold: true
-Res1 <- list()
-for (mediator in Mediator_vars) {
-  full_model <- lm(as.formula(paste0(
-    mediator, " ~ ", 
-    "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
-  )), D_trn)
-  small_model <- step(full_model, trace = FALSE, k = log(nrow(D_trn)))
-  Res1[[mediator]] <- lm(formula(small_model), D_tst)
-}
-lapply(Res1, summary)
-```
 
-### PRS ~ Mediators
-```{r}
-#| code-fold: true
-Res2 <- list()
-for (mediator in Mediator_vars) {
-  full_model <- lm(as.formula(paste0(
-    mediator, " ~ ", 
-    "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
-  )), D_trn)
-  small_model <- step(full_model, trace = FALSE, k = log(nrow(D_trn)))
-  Res2[[mediator]] <- lm(formula(small_model), D_tst)
-}
-lapply(Res2, summary)
-```
-
-### All Interactions: Mediators ~ (GIS + HM_NOISE)^2
+### All Interactions: Mediators ~ (GIS)^2
 ```{r}
 Res3 <- list()
 for (mediator in Mediator_vars) {
@@ -132,16 +107,16 @@ for (mediator in Mediator_vars) {
   step_model <- step(intercept_model, 
     scope = as.formula(paste0(
       mediator, " ~ ", 
-      "(HM_NOISE_nrm + ", paste(GIS_vars, collapse = " + "), ")^2"
+      "(", paste(GIS_vars, collapse = " + "), ")^2"
     )),
     trace = FALSE, k = log(nrow(D_trn))
   )
   Res3[[mediator]] <- lm(formula(step_model), D_tst)
 }
-lapply(Res3, summary, signif.legend = FALSE)
+lapply(Res3, summary)
 ```
 
-### All Interactions: PRS ~ (Mediators + GIS + HM_NOISE)^2
+### All Interactions: PRS ~ (Mediators + GIS)^2
 ```{r}
 Res4 <- list()
 for (prs in PRS_vars) {
@@ -150,7 +125,7 @@ for (prs in PRS_vars) {
   step_model <- step(intercept_model, 
     scope = as.formula(paste0(
       prs, " ~ ", 
-      "(HM_NOISE_nrm + ", paste(GIS_vars, collapse = " + "), " + ", 
+      "(", paste(GIS_vars, collapse = " + "), " + ", 
       paste(Mediator_vars, collapse = " + "), ")^2"
     )),
     trace = FALSE, k = log(nrow(D_trn))
@@ -199,3 +174,40 @@ mitml::testModels(model = mod1$analyses, null.model = mod0$analyses, method = "D
 
 an2b <- miceadds::mi.anova(mi.res = mi.res, formula = "bmi ~ age * chl", type = 3)
 ```
+
+
+```{r}
+#| code-fold: true
+#| code-summary: "Mediators ~ GIS"
+#| echo: false
+#| eval: false
+stop("this should not run")
+Res1 <- list()
+for (mediator in Mediator_vars) {
+  full_model <- lm(as.formula(paste0(
+    mediator, " ~ ", 
+    "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
+  )), D_trn)
+  small_model <- step(full_model, trace = FALSE, k = log(nrow(D_trn)))
+  Res1[[mediator]] <- lm(formula(small_model), D_tst)
+}
+lapply(Res1, summary)
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "PRS ~ Mediators"
+#| echo: false
+#| eval: false
+Res2 <- list()
+for (mediator in Mediator_vars) {
+  full_model <- lm(as.formula(paste0(
+    mediator, " ~ ", 
+    "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
+  )), D_trn)
+  small_model <- step(full_model, trace = FALSE, k = log(nrow(D_trn)))
+  Res2[[mediator]] <- lm(formula(small_model), D_tst)
+}
+lapply(Res2, summary)
+```
+

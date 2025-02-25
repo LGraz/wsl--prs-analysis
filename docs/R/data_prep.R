@@ -265,6 +265,11 @@ for (i in seq_along(GIS_vars)) {
 }
 GIS_vars <- unname(GIS_vars)
 
+# Check if all responses have roughly the same mean and sd
+if(interactive())
+  with(D, cbind(LQUAL1,LQUAL2,LQUAL3,LQUAL4,LQUAL5,LQUAL6,LQUAL7,LQUAL8,LQUAL9,LQUAL10,LQUAL11)) |> as.data.frame() |>
+    sapply( \(x) c(mean=mean(x, na.rm=TRUE), sd=sd(x, na.rm=TRUE))) |> round(2)
+# ->> yes
 
 library(missForest)
 # PRS imputation using missForest
@@ -278,35 +283,25 @@ D[PRS_orig_vars] <- xfun::cache_rds({
 )$ximp |> as.data.frame()
 
 
-# Principal Component Analysis
-pca. <- prcomp(scale(D[PRS_orig_vars], scale = FALSE))
-# See comments in index.qmd
+# # Principal Component Analysis
+# pca. <- prcomp(scale(D[PRS_orig_vars], scale = FALSE))
+# # See comments in index.qmd
+# X_centered <- D[PRS_orig_vars] |> scale(center = TRUE, scale = FALSE) |> as.matrix()
+# X_reduced <- X_centered %*% pca.$rotation[,1:4]
+# # First PC is really just a weighted average of all variables
+# # cor(rowMeans(X_centered), X_centered %*% pca.$rotation[,1])  # = 0.9996
+# D[c("PC1", "PC2", "PC3", "PC4")] <- as.data.frame(X_centered %*% pca.$rotation[,1:4])
 
-X_centered <- D[PRS_orig_vars] |> scale(center = TRUE, scale = FALSE) |> as.matrix()
-X_reduced <- X_centered %*% pca.$rotation[,1:4]
-
-# First PC is really just a weighted average of all variables
-# cor(rowMeans(X_centered), X_centered %*% pca.$rotation[,1])  # = 0.9996
-
-# Check if all responses have roughly the same mean and sd
-if(interactive())
-  with(D, cbind(LQUAL1,LQUAL2,LQUAL3,LQUAL4,LQUAL5,LQUAL6,LQUAL7,LQUAL8,LQUAL9,LQUAL10,LQUAL11)) |> as.data.frame() |>
-    sapply( \(x) c(mean=mean(x, na.rm=TRUE), sd=sd(x, na.rm=TRUE))) |> round(2)
-# ->> yes
 
 D$LA <- rowMeans(D[, c("LQUAL1", "LQUAL2", "LQUAL3")], na.rm=TRUE)
 D$BA <- rowMeans(D[, c("LQUAL4", "LQUAL5", "LQUAL6")], na.rm=TRUE)
 D$EC <- rowMeans(D[, c("LQUAL7", "LQUAL8", "LQUAL9")], na.rm=TRUE)
 D$ES <- rowMeans(D[, c("LQUAL10","LQUAL11")], na.rm=TRUE)
-
-D[c("PC1", "PC2", "PC3", "PC4")] <- as.data.frame(X_centered %*% pca.$rotation[,1:4])
-PRS_vars <- c("LA", "BA", "EC", "ES", "PC1", "PC2", "PC3", "PC4")
-
-message("TODO: Remove PCA?")
+D$MEAN<- rowMeans(D[PRS_orig_vars], na.rm=TRUE)
+PRS_vars <- c("MEAN", "LA", "BA", "EC", "ES")
 
 
 # Prepare data for machine learning
-message("Imputing mediators & GIS_vars for MLR")
 Dmlr <- D
 
 # Mediator imputation using missForest

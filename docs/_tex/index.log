@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2025.1.21)  14 FEB 2025 00:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2025.2.24)  25 FEB 2025 17:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -642,35 +642,40 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 169.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 186.
  (/usr/share/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 220.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 202.
  (/usr/share/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [1
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [2] [3] (./index.aux)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+Underfull \hbox (badness 3482) in paragraph at lines 270--272
+\T1/lmr/m/n/10.95 (+20) We eval-u-ated mul-ti-ple ma-chine learn-ing mod-els us-ing the mlr3 frame-work (cite
+ []
+
+[2] [3] [4] (./index.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 18195 strings out of 476076
- 316071 string characters out of 5793775
- 1937187 words of memory out of 5000000
- 39963 multiletter control sequences out of 15000+600000
- 597755 words of font info for 96 fonts, out of 8000000 for 9000
+ 18219 strings out of 476076
+ 316493 string characters out of 5793775
+ 1935187 words of memory out of 5000000
+ 39966 multiletter control sequences out of 15000+600000
+ 598318 words of font info for 103 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 108i,7n,107p,10958b,542s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,8n,107p,10958b,509s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/share/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on index.pdf (3 pages, 139125 bytes).
+Output written on index.pdf (4 pages, 140595 bytes).
 PDF statistics:
- 113 PDF objects out of 1000 (max. 8388607)
- 96 compressed objects within 1 object stream
- 28 named destinations out of 1000 (max. 500000)
- 24657 words of extra memory for PDF output out of 24883 (max. 10000000)
+ 132 PDF objects out of 1000 (max. 8388607)
+ 113 compressed objects within 2 object streams
+ 35 named destinations out of 1000 (max. 500000)
+ 24673 words of extra memory for PDF output out of 24883 (max. 10000000)
 

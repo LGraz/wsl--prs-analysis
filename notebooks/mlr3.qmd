@@ -14,14 +14,13 @@ source("R/data_prep.R")
 #| code-fold: true
 #| code-summary: "Benchmark helper function"
 library(mlr3verse, quietly = TRUE)
-library(GGally, quietly = TRUE, warn.conflicts = FALSE)
 
 mse <- msrs(c("regr.mse"))
 
 if (!interactive())
   lgr::get_logger("mlr3")$set_threshold("warn")
 
-get_benchi_table <- function(tasks, nfolds = 3) {
+get_benchi_table <- function(tasks, nfolds = 5) {
   set.seed(123)
   learners <- lrns(c("regr.featureless", "regr.lm", "regr.xgboost", "regr.ranger"))
   learners$regr.xgboost$param_set$set_values(
@@ -53,7 +52,7 @@ get_benchi_table <- function(tasks, nfolds = 3) {
   colnames(res) <- gsub("regr.", "", colnames(res))
   stopifnot(any(colnames(res) == "featureless"))
   res <- 1 - res / res$featureless
-  res[, -1, drop = FALSE] |> round(2)
+  res[, -1, drop = FALSE] |> round(3)
 }
 ```
 

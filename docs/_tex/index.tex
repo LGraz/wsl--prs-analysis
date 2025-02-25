@@ -153,110 +153,88 @@
 
 \title{PRS Analysis for WSL}
 \author{Lukas Graz}
-\date{2025-02-14}
+\date{2025-02-25}
 
 \begin{document}
 \maketitle
 
 
-\section{Release Notes}\label{release-notes}
-
-\subsection{V0.2}\label{v0.2}
-
-\begin{itemize}
-\tightlist
-\item
-  Transformations of GIS variables (mostly sqrt)
-\item
-  Machine Learning in mlr3 framework:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Testing prediction quality of GIS\_vars → Mediators → PRS\_vars
-
-    \begin{itemize}
-    \tightlist
-    \item
-      comparing performances + inference
-    \end{itemize}
-  \item
-    Linear models, Random Forests, XGBoost (with parameter tuning)
-  \end{itemize}
-\item
-  Improved code structure by separating data preparation, machine
-  learning, and hypothesis testing
-\item
-  Hypothethis testing:
-
-  \begin{enumerate}
-  \def\labelenumi{\arabic{enumi}.}
-  \tightlist
-  \item
-    Train data X imputation using MissForest (simplified approach as
-    uncertainties not needed for feature selection)
-  \item
-    Feature selection based on correlation/VIF analysis
-  \item
-    Feature selection implemented due to high VIF
-  \item
-    Additionally inspecting all interactions
-  \end{enumerate}
-\end{itemize}
-
-\subsection{V0.1}\label{v0.1}
-
-\begin{itemize}
-\tightlist
-\item
-  Initial release (Technical Setup)
-\item
-  Data Preparation
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Conducted sanity checks on data (duplications, type consistency,
-    comparison with \texttt{df\_varlookup\_for\_lukas.xlsx})
-  \item
-    Performed type encoding
-  \item
-    Created 14 dictionaries for translating ordinal categorical
-    variables to numeric (e.g., Very:5, Quite:4, Fair:3, Little:2,
-    Not:1)
-  \end{itemize}
-\item
-  Filtered observations according to criteria in
-  \texttt{\_INFO\_for\_Lukas.docx}
-\item
-  Missing Values
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Checked patterns of missingness for PRS-Variables, Mediators, and
-    GIS-Variables
-  \item
-    For PRS-Variables: Compared imputation methods (MissForest,
-    column-wise mean, observation-wise mean)
-  \item
-    Imputed missing values using MissForest (each chunk separately) - to
-    be done separately for train/test data
-  \end{itemize}
-\item
-  Initial modeling completed - results to be updated with imputed data
-  and PC1-4
-\end{itemize}
+For the \textbf{release notes} see the corresponding
+\href{https://github.com/LGraz/wsl--prs-analysis/releases}{GitHub} page
 
 \section{Data Preparation}\label{data-preparation}
 
+\subsection{Train Test Split for
+Inference}\label{train-test-split-for-inference}
+
+Data was split into training and test sets (50/50) for hypothesis
+testing to ensure valid inference after feature selection.
+
+\subsection{Missing Values}\label{missing-values}
+
+Missing value imputation was performed using MissForest
+doi:10.1093/bioinformatics/btr597. This method leverages conditional
+dependencies between variables to predict missing values through an
+iterative random forest approach.
+
+To avoid introducing spurious correlations between different variable
+sets, we imputed the following data groups separately:
+
+\begin{itemize}
+\tightlist
+\item
+  PRS variables on the complete dataset
+\item
+  Mediators on training data only
+\item
+  GIS variables on training data only
+\item
+  Mediators for prediction analysis
+\item
+  GIS variables for prediction analysis
+\item
+  PRS variables for prediction analysis
+\end{itemize}
+
+Mediators and GIS variables were intentionally not imputed on the test
+set to maintain valid inference, as MissForest does not provide a
+mechanism to propagate imputation uncertainty. An alternative would be
+the \texttt{mice}-routine, which could be implemented in future
+analyses. Missing values in the test set predictors remained untreated,
+which is justified under the missing completely at random (MCAR)
+assumption---where missing values occur independently of all other
+variables.
+
+For the prediction analysis, fewer statistical assumptions are required,
+so using the MissForest approach does not violate any assumptions.
+
+PRS variables could have been imputed separately for training/test sets
+and prediction analysis, but we prioritized simplicity as these
+variables serve only as response variables.
+
+Additionally, we compared MissForest with simpler imputation methods
+(variable-wise and observation-wise mean imputation) for the PRS
+variables. Results confirmed that MissForest consistently outperformed
+these alternatives.
+
 \section{Main Analysis}\label{main-analysis}
 
-\subsubsection{Response Variable
+\subsection{Response Variable
 Selection}\label{response-variable-selection}
 
-Initial approach: - Aggregated MEAN - LA (Fascination) - BA (Being Away)
-- EC (Extent Coherence) - ES (Compatibility)
+\begin{itemize}
+\tightlist
+\item
+  Aggregated mean
+\item
+  LA (Fascination)
+\item
+  BA (Being Away)
+\item
+  EC (Extent Coherence)
+\item
+  ES (Compatibility)
+\end{itemize}
 
 \textbf{PCA Verification} of this approach. Key findings:
 
@@ -276,19 +254,59 @@ Initial approach: - Aggregated MEAN - LA (Fascination) - BA (Being Away)
   values), supporting use of mean
 \end{itemize}
 
-PCA projections will be further investigated as alternative response
-variables (alongside LA-4).
+\subsection{Prediction Analysis with Machine Learning
+Methods}\label{prediction-analysis-with-machine-learning-methods}
 
-\subsection{Prediction Analysis}\label{prediction-analysis}
+Details and results in \href{notebooks/mlr3.qmd}{the notebook}.
 
-Details in \href{notebooks/mlr3.qmd}{the notebook}.
+This section investigates predictive relationships between Perceived
+Restorativeness Scale (PRS) variables, mediator variables, and
+Geographical Information System (GIS) variables using various machine
+learning approaches. We employed a systematic methodology to quantify
+the predictive power of different variable combinations.
 
-Following RESTORE project approach, investigating links between PRS,
-Mediators, and GIS variables using: - Linear Models - XGBoost (with
-trees + parameter tuning) - Random Forests
+\subsubsection{Methodological Approach}\label{methodological-approach}
 
-Evaluation: Percentage of explained variance on hold-out data. Missing
-values imputed with MissForest (no p-values → no assumptions needed).
+We evaluated multiple machine learning models using the mlr3 framework
+(cite doi:10.21105/joss.01903) :
+
+\begin{itemize}
+\tightlist
+\item
+  Linear models (baseline)
+\item
+  XGBoost (gradient boosting with tree-based models and hyperparameter
+  tuning for learning rate and tree depth) (cite arxiv:1603.02754)
+\item
+  Random Forests (with default parameters) (cite
+  doi:10.1023/A:1010933404324)
+\end{itemize}
+
+Performance was measured as percentage of explained variance on hold-out
+data, calculated as (1 - MSE/Variance(y)), where MSE represents mean
+squared error.
+
+\subsubsection{Model Combinations}\label{model-combinations}
+
+To systematically explore predictive relationships, we tested four model
+configurations:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  PRS \textasciitilde{} GIS: Predicting PRS variables using only GIS
+  variables
+\item
+  PRS \textasciitilde{} GIS + Mediators: Predicting PRS variables using
+  both GIS and mediator variables
+\item
+  PRS \textasciitilde{} Mediators: Predicting PRS variables using only
+  mediator variables
+\item
+  Mediators \textasciitilde{} GIS: Predicting mediator variables using
+  GIS variables
+\end{enumerate}
 
 \subsubsection{Results}\label{results}
 
@@ -313,23 +331,51 @@ values imputed with MissForest (no p-values → no assumptions needed).
   \end{itemize}
 \end{itemize}
 
-\subsection{Hypothesis Testing}\label{hypothesis-testing}
+\subsection{Hypothesis Testing: Investigation of Variable Effects on
+Perceived Restorativeness
+Scale}\label{hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale}
 
-Details in \href{notebooks/hypothethis-tests.qmd}{the notebook}.
+Details and results in \href{notebooks/hypothethis-tests.qmd}{the
+notebook}.
 
-Process: 1. Train data X imputation using MissForest (simplified
-approach as uncertainties not needed for feature selection) 2. Feature
-selection based on correlation/VIF analysis 3. Feature selection
-implemented due to high VIF
+Here we investigated which variables (including their interactions)
+influence PRS variables using multiple linear regression. With 190
+variables (counting interactions), the variance inflation factor (VIF)
+was high and the multiple testing problem severe. We therefore
+implemented a stepwise feature selection using Bayesian Information
+Criterion (BIC) on the training data, starting with an empty model to
+help computational complexity. Selected features were subsequently used
+to fit models on the test set to obtain valid p-values. To keep the
+coefficients interpretable in the presence of interactions, each
+variable is scaled to mean 0 and standard deviation 1.
+
+\subsubsection{Model Specification and
+Analysis}\label{model-specification-and-analysis}
+
+The analysis systematically explored two key relationship pathways:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Mediators \textasciitilde{} (GIS)² - examining how environmental
+  features predict psychological mediators
+\item
+  PRS \textasciitilde{} (Mediators + GIS)² - investigating how both
+  environmental features and psychological mediators contribute to
+  perceived restorativeness
+\end{enumerate}
+
+For each target variable, we constructed a separate model using stepwise
+selection and evaluated it on the test dataset.
 
 \subsubsection{Results}\label{results-1}
 
 \begin{itemize}
 \tightlist
 \item
-  Continuous mediator outperforms categorical (scaled to mean 0, sd 1)
-\item
-  HM\_NOISELVL not significant (pre-p-adjustment)
+  For HM\_Noise (now removed): Continuous mediator outperforms
+  categorical (scaled to mean 0, sd 1)
 \item
   Full \texttt{mice} NA-handling likely unnecessary
 
