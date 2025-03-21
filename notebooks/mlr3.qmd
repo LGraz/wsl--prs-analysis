@@ -61,7 +61,7 @@ Testing prediction quality of GIS_vars -> Mediators -> PRS_vars using
 - Linear models 
 - Random forests (default parameters)
 - XGBoost (with parameter tuning)
-- LASSO (not shown since inferior)
+- FASSO (not shown since inferior)
 
 **GIS Variables:**
 
@@ -205,9 +205,9 @@ cbind(lm = rsq.lm, rf = rsq.rf) |> round(2)
 
 autoplot(mytsk1, type = "pairs")
 mytsk1 <- as_task_regr(
-  subset(Dmlr, select = c("LA", Mediator_vars, GIS_vars)),
+  subset(Dmlr, select = c("FA", Mediator_vars, GIS_vars)),
   feature = c(Mediator_vars, GIS_vars),
-  target = "LA",
+  target = "FA",
   id = "bla"
 )
 

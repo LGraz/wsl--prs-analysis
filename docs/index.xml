@@ -102,7 +102,7 @@ page</p>
             <p>Aggregated mean</p>
           </list-item>
           <list-item>
-            <p>LA (Fascination)</p>
+            <p>FA (Fascination)</p>
           </list-item>
           <list-item>
             <p>BA (Being Away)</p>
@@ -127,7 +127,7 @@ page</p>
             <p>EC (Extent Coherence) shows most divergence (see PC2)</p>
           </list-item>
           <list-item>
-            <p>LA (Fascination) and BA (Being Away) show similarity (see
+            <p>FA (Fascination) and BA (Being Away) show similarity (see
         PC1-PC3)</p>
           </list-item>
           <list-item>
@@ -319,113 +319,6 @@ Keep  1494 of 2206 observations</preformat>
         <boxed-text>
           <preformat>Imputing PRS_orig_vars</preformat>
         </boxed-text>
-        <boxed-text>
-          <preformat>Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?
-Warning in randomForest.default(x = obsX, y = obsY, ntree = ntree, mtry = mtry,
-: The response has five or fewer unique values.  Are you sure you want to do
-regression?</preformat>
-        </boxed-text>
       </sec>
       <sec id="setup-nb-1">
         <title>Setup</title>
@@ -486,7 +379,7 @@ get_benchi_table &lt;- function(tasks, nfolds = 5) {
             <p>XGBoost (with parameter tuning)</p>
           </list-item>
           <list-item>
-            <p>LASSO (not shown since inferior)</p>
+            <p>FASSO (not shown since inferior)</p>
           </list-item>
         </list>
         <p>
@@ -525,11 +418,11 @@ get_benchi_table(tasks_GIS)
     </code>
             <boxed-text>
               <preformat>         lm xgboost ranger
-MEAN -0.002  -0.005 -0.036
-LA   -0.002   0.013  0.002
-BA   -0.006  -0.009 -0.021
-EC    0.001  -0.027 -0.042
-ES    0.048   0.041  0.026</preformat>
+MEAN -0.001  -0.006 -0.035
+FA   -0.002   0.012  0.002
+BA   -0.006  -0.010 -0.022
+EC    0.003  -0.027 -0.037
+ES    0.047   0.041  0.025</preformat>
             </boxed-text>
           </sec>
           <p>GIS variables alone show poor predictive performance.</p>
@@ -547,11 +440,11 @@ get_benchi_table(tasks_GIS_MED)
     </code>
             <boxed-text>
               <preformat>        lm xgboost ranger
-MEAN 0.225   0.234  0.223
-LA   0.236   0.260  0.248
-BA   0.120   0.130  0.131
-EC   0.042   0.012  0.021
-ES   0.150   0.168  0.158</preformat>
+MEAN 0.227   0.243  0.229
+FA   0.235   0.259  0.251
+BA   0.123   0.136  0.134
+EC   0.045   0.017  0.023
+ES   0.153   0.169  0.158</preformat>
             </boxed-text>
           </sec>
         </sec>
@@ -568,11 +461,11 @@ get_benchi_table(tasks_MED)
     </code>
             <boxed-text>
               <preformat>        lm xgboost ranger
-MEAN 0.224   0.235  0.191
-LA   0.227   0.254  0.225
-BA   0.132   0.145  0.112
-EC   0.036   0.025 -0.020
-ES   0.130   0.137  0.085</preformat>
+MEAN 0.226   0.240  0.197
+FA   0.226   0.253  0.228
+BA   0.135   0.150  0.109
+EC   0.036   0.023 -0.018
+ES   0.133   0.138  0.080</preformat>
             </boxed-text>
           </sec>
         </sec>
@@ -589,14 +482,14 @@ get_benchi_table(tasks_MED_by_GIS)
     </code>
             <boxed-text>
               <preformat>            lm xgboost ranger
-FEELNAT  0.126   0.136  0.111
+FEELNAT  0.127   0.138  0.114
 LNOISE   0.096   0.070  0.080
-LOC_SENS 0.020  -0.008 -0.025
-LOC_SOUN 0.041   0.010 -0.001
-LOC_SCEN 0.039   0.052  0.021
-LOC_VISE 0.008  -0.029 -0.047
-LOC_VEGE 0.052   0.025  0.032
-LOC_FAUN 0.057   0.062  0.047</preformat>
+LOC_SENS 0.020  -0.004 -0.026
+LOC_SOUN 0.041   0.007 -0.002
+LOC_SCEN 0.039   0.051  0.022
+LOC_VISE 0.008  -0.029 -0.043
+LOC_VEGE 0.052   0.031  0.035
+LOC_FAUN 0.057   0.063  0.047</preformat>
             </boxed-text>
           </sec>
         </sec>
@@ -665,9 +558,9 @@ cbind(lm = rsq.lm, rf = rsq.rf) |&gt; round(2)
             <code language="r script">
 autoplot(mytsk1, type = "pairs")
 mytsk1 &lt;- as_task_regr(
-  subset(Dmlr, select = c("LA", Mediator_vars, GIS_vars)),
+  subset(Dmlr, select = c("FA", Mediator_vars, GIS_vars)),
   feature = c(Mediator_vars, GIS_vars),
-  target = "LA",
+  target = "FA",
   id = "bla"
 )
 
@@ -690,7 +583,7 @@ learners &lt;- c("regr.featureless", "regr.lm")
     <back>
 </back>
   </sub-article>
-  <sub-article article-type="notebook" id="nb-4-nb-2">
+  <sub-article article-type="notebook" id="nb-5-nb-2">
     <front-stub>
       <title-group>
         <article-title>Hypothesis Testing</article-title>
@@ -805,11 +698,11 @@ DISTKM_sqrt     1.473  1.156
 JNYTIME_sqrt    3.830  2.247
 STRIMP123_sqrt  6.555 10.739
 STRIMP999_sqrt 47.557 13.162
-PRS             4.987  0.879
-LA              5.266  1.111
-BA              5.140  1.156
-EC              4.540  1.287
-ES              5.006  1.426</preformat>
+MEAN            4.989  0.882
+FA              5.266  1.111
+BA              5.141  1.156
+EC              4.545  1.285
+ES              5.009  1.432</preformat>
             </boxed-text>
           </sec>
         </sec>
@@ -840,11 +733,15 @@ car::vif(fit_PRS_MED &lt;- lm(as.formula(paste0(
     </code>
             <boxed-text>
               <preformat>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-     12      81     147     205     269    1398 </preformat>
+     12      81     148     205     271    1392 </preformat>
             </boxed-text>
           </sec>
-          <p>Since we model with interactions later, these are also the
-    p-values we want to use.</p>
+          <p>Since we model <italic>with</italic> interactions later, the
+    latter VIF are relevant for us. Given that they are very high (c.f.
+    median and max), we would have no hope of finding any significant
+    results in the full interaction model. Therefore, we will first
+    perfom a variable selection, to reduce the VIF and enable us to find
+    significant effects.</p>
         </sec>
         <sec id="all-interactions-mediators-gis2-nb-2">
           <title>All Interactions: Mediators ~ (GIS)^2</title>
@@ -1069,59 +966,62 @@ for (prs in PRS_vars) {
 lapply(Res4, summary)
     </code>
             <boxed-text>
-              <preformat>$PRS
+              <preformat>$MEAN
 
 Call:
 lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
-   Min     1Q Median     3Q    Max 
--2.869 -0.564 -0.040  0.601  2.773 
+    Min      1Q  Median      3Q     Max 
+-2.7969 -0.5836 -0.0034  0.5952  2.8496 
 
 Coefficients:
                  Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)      -0.00667    0.03797   -0.18    0.861    
-LOC_VISE          0.17340    0.04211    4.12  4.4e-05 ***
-FEELNAT           0.20269    0.04304    4.71  3.1e-06 ***
-LOC_SENS          0.10545    0.04245    2.48    0.013 *  
-LNOISE            0.17705    0.04059    4.36  1.5e-05 ***
-FEELNAT:LOC_SENS  0.05447    0.02800    1.95    0.052 .  
+(Intercept)      -0.00405    0.03819   -0.11  0.91547    
+LOC_VISE          0.15995    0.04455    3.59  0.00036 ***
+FEELNAT           0.20119    0.04557    4.41  1.2e-05 ***
+LOC_SENS          0.09361    0.04437    2.11  0.03531 *  
+LNOISE            0.16980    0.04201    4.04  6.1e-05 ***
+DISTKM_sqrt      -0.00204    0.03977   -0.05  0.95908    
+LCARTIF_sqrt      0.02009    0.04143    0.49  0.62784    
+LOC_SCEN          0.04419    0.04611    0.96  0.33836    
+FEELNAT:LOC_SENS  0.05374    0.02953    1.82  0.06935 .  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.895 on 567 degrees of freedom
-  (174 observations deleted due to missingness)
-Multiple R-squared:  0.192, Adjusted R-squared:  0.185 
-F-statistic: 26.9 on 5 and 567 DF,  p-value: &lt;2e-16
+Residual standard error: 0.897 on 560 degrees of freedom
+  (178 observations deleted due to missingness)
+Multiple R-squared:  0.19,  Adjusted R-squared:  0.178 
+F-statistic: 16.4 on 8 and 560 DF,  p-value: &lt;2e-16
 
 
-$LA
+$FA
 
 Call:
 lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.391 -0.518  0.093  0.592  2.567 
+-3.392 -0.518  0.092  0.592  2.566 
 
 Coefficients:
-                 Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)      -0.00247    0.03796   -0.06  0.94823    
-LOC_SCEN          0.16395    0.04567    3.59  0.00036 ***
-LOC_VISE          0.12820    0.04125    3.11  0.00198 ** 
-FEELNAT           0.16832    0.04528    3.72  0.00022 ***
-RL_NDVI          -0.13269    0.03906   -3.40  0.00073 ***
-LOC_FAUN          0.17630    0.04167    4.23  2.7e-05 ***
-LNOISE            0.13320    0.04017    3.32  0.00097 ***
-LOC_SCEN:FEELNAT -0.00175    0.03148   -0.06  0.95556    
-LOC_SCEN:RL_NDVI  0.02406    0.03405    0.71  0.48007    
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      -0.002857   0.037976   -0.08  0.94006    
+LOC_VISE          0.127624   0.041264    3.09  0.00208 ** 
+LOC_FAUN          0.176321   0.041690    4.23  2.7e-05 ***
+LNOISE            0.133255   0.040187    3.32  0.00097 ***
+RL_NDVI          -0.132538   0.039072   -3.39  0.00074 ***
+FEELNAT           0.168093   0.045299    3.71  0.00023 ***
+LOC_SCEN          0.163809   0.045689    3.59  0.00037 ***
+FEELNAT:LOC_SCEN -0.000854   0.031493   -0.03  0.97837    
+RL_NDVI:LOC_SCEN  0.024030   0.034060    0.71  0.48079    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.865 on 556 degrees of freedom
   (182 observations deleted due to missingness)
-Multiple R-squared:  0.256, Adjusted R-squared:  0.245 
-F-statistic: 23.9 on 8 and 556 DF,  p-value: &lt;2e-16
+Multiple R-squared:  0.255, Adjusted R-squared:  0.245 
+F-statistic: 23.8 on 8 and 556 DF,  p-value: &lt;2e-16
 
 
 $BA
@@ -1131,21 +1031,21 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.965 -0.508  0.071  0.649  2.406 
+-3.966 -0.512  0.070  0.647  2.405 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -0.00762    0.03574   -0.21  0.83115    
-LOC_VISE     0.11948    0.04048    2.95  0.00326 ** 
-FEELNAT      0.18740    0.03686    5.08  4.7e-07 ***
-LOC_SENS     0.14894    0.04057    3.67  0.00026 ***
+(Intercept) -0.00836    0.03572   -0.23  0.81498    
+LOC_VISE     0.12118    0.04046    3.00  0.00284 ** 
+FEELNAT      0.18712    0.03684    5.08  4.9e-07 ***
+LOC_SENS     0.14908    0.04055    3.68  0.00025 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.948 on 700 degrees of freedom
   (43 observations deleted due to missingness)
-Multiple R-squared:  0.114, Adjusted R-squared:  0.11 
-F-statistic:   30 on 3 and 700 DF,  p-value: &lt;2e-16
+Multiple R-squared:  0.115, Adjusted R-squared:  0.111 
+F-statistic: 30.2 on 3 and 700 DF,  p-value: &lt;2e-16
 
 
 $EC
@@ -1155,21 +1055,21 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--2.9263 -0.5456 -0.0452  0.6817  2.3709 
+-2.9353 -0.5355 -0.0494  0.6754  2.3735 
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   -0.00850    0.03665   -0.23  0.81665    
-LOC_SENS       0.14389    0.04084    3.52  0.00045 ***
-LCFOREST_sqrt -0.08886    0.03750   -2.37  0.01808 *  
-LOC_SCEN       0.00289    0.04120    0.07  0.94407    
+(Intercept)   -0.00940    0.03666   -0.26  0.79767    
+LOC_SENS       0.14370    0.04085    3.52  0.00046 ***
+LCFOREST_sqrt -0.09087    0.03751   -2.42  0.01566 *  
+LOC_SCEN       0.00375    0.04121    0.09  0.92746    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.985 on 719 degrees of freedom
+Residual standard error: 0.986 on 719 degrees of freedom
   (24 observations deleted due to missingness)
-Multiple R-squared:  0.03,  Adjusted R-squared:  0.0259 
-F-statistic:  7.4 on 3 and 719 DF,  p-value: 6.88e-05
+Multiple R-squared:  0.0304,    Adjusted R-squared:  0.0263 
+F-statistic:  7.5 on 3 and 719 DF,  p-value: 5.99e-05
 
 
 $ES
@@ -1179,23 +1079,23 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.511 -0.539  0.144  0.685  2.301 
+-3.492 -0.539  0.140  0.688  2.288 
 
 Coefficients:
                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)     0.03175    0.04168    0.76   0.4464    
-LNOISE          0.13367    0.04325    3.09   0.0021 ** 
-LOC_SENS        0.09971    0.04094    2.44   0.0152 *  
-DISTKM_sqrt     0.08231    0.04048    2.03   0.0425 *  
-FEELNAT         0.25862    0.04649    5.56  4.1e-08 ***
-LNOISE:FEELNAT -0.00557    0.03433   -0.16   0.8711    
+(Intercept)     0.03143    0.04159    0.76   0.4500    
+LNOISE          0.13206    0.04315    3.06   0.0023 ** 
+LOC_SENS        0.09993    0.04085    2.45   0.0147 *  
+DISTKM_sqrt     0.08078    0.04039    2.00   0.0460 *  
+FEELNAT         0.25739    0.04639    5.55  4.4e-08 ***
+LNOISE:FEELNAT -0.00638    0.03426   -0.19   0.8522    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.952 on 576 degrees of freedom
+Residual standard error: 0.95 on 576 degrees of freedom
   (165 observations deleted due to missingness)
-Multiple R-squared:  0.142, Adjusted R-squared:  0.134 
-F-statistic:   19 on 5 and 576 DF,  p-value: &lt;2e-16</preformat>
+Multiple R-squared:  0.141, Adjusted R-squared:  0.133 
+F-statistic: 18.9 on 5 and 576 DF,  p-value: &lt;2e-16</preformat>
             </boxed-text>
           </sec>
         </sec>

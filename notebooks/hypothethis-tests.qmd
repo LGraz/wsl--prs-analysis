@@ -73,7 +73,7 @@ old_scale
 ### Testing VIF
 ```{r}
 #| code-fold: true
-#| code-summary: "VIF: PRS ~ (Mediators + GIS_vars)^2 (with interaction)"
+#| code-summary: "VIF: PRS ~ Mediators + GIS_vars  (NO interaction)"
 car::vif(fit_PRS_MED <- lm(as.formula(paste0(
   PRS_vars[1], 
   " ~ ", 
@@ -84,7 +84,7 @@ car::vif(fit_PRS_MED <- lm(as.formula(paste0(
 
 ```{r}
 #| code-fold: true
-#| code-summary: "VIF: PRS ~ (Mediators + GIS_vars)^2 (with interaction)"
+#| code-summary: "VIF: PRS ~ (Mediators + GIS_vars)^2 (WITH interaction)"
 suppressMessages(
 car::vif(fit_PRS_MED <- lm(as.formula(paste0(
   PRS_vars[1], 
@@ -95,7 +95,7 @@ car::vif(fit_PRS_MED <- lm(as.formula(paste0(
 )), D_trn))) |> summary()
 ```
 
-Since we model with interactions later, these are also the p-values we want to use.
+Since we model _with_ interactions later, the latter VIF are relevant for us. Given that they are very high (c.f. median and max), we would have no hope of finding any significant results in the full interaction model. Therefore, we will first perfom a variable selection, to reduce the VIF and enable us to find significant effects.
 
 
 ### All Interactions: Mediators ~ (GIS)^2

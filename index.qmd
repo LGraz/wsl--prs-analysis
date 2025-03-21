@@ -56,7 +56,7 @@ Additionally, we compared MissForest with simpler imputation methods (variable-w
 ## Response Variable Selection
 
 - Aggregated mean
-- LA (Fascination)
+- FA (Fascination)
 - BA (Being Away)
 - EC (Extent Coherence)
 - ES (Compatibility)
@@ -66,7 +66,7 @@ Additionally, we compared MissForest with simpler imputation methods (variable-w
 - Data can be well approximated with 3-4 dimensions
 - First dimension is close to weighted average of all variables (correlation >0.99)
 - EC (Extent Coherence) shows most divergence (see PC2)
-- LA (Fascination) and BA (Being Away) show similarity (see PC1-PC3)
+- FA (Fascination) and BA (Being Away) show similarity (see PC1-PC3)
 - Aggregated PRS variables justified by PCA results (similar rotation values), supporting use of mean
 
 ## Prediction Analysis with Machine Learning Methods

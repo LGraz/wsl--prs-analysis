@@ -301,7 +301,7 @@ Keep  1494 of 2206 observations</code></pre>
 <li>Linear models</li>
 <li>Random forests (default parameters)</li>
 <li>XGBoost (with parameter tuning)</li>
-<li>LASSO (not shown since inferior)</li>
+<li>FASSO (not shown since inferior)</li>
 </ul>
 <p><strong>GIS Variables:</strong></p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
@@ -335,11 +335,11 @@ Keep  1494 of 2206 observations</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>         lm xgboost ranger
-MEAN -0.002  -0.005 -0.036
-LA   -0.002   0.013  0.002
-BA   -0.006  -0.009 -0.021
-EC    0.001  -0.027 -0.042
-ES    0.048   0.041  0.026</code></pre>
+MEAN -0.001  -0.006 -0.035
+FA   -0.002   0.012  0.002
+BA   -0.006  -0.010 -0.022
+EC    0.003  -0.027 -0.037
+ES    0.047   0.041  0.025</code></pre>
 </div>
 </div></div>
 <p>GIS variables alone show poor predictive performance.</p>
@@ -359,11 +359,11 @@ ES    0.048   0.041  0.026</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        lm xgboost ranger
-MEAN 0.225   0.234  0.223
-LA   0.236   0.260  0.248
-BA   0.120   0.130  0.131
-EC   0.042   0.012  0.021
-ES   0.150   0.168  0.158</code></pre>
+MEAN 0.227   0.243  0.229
+FA   0.235   0.259  0.251
+BA   0.123   0.136  0.134
+EC   0.045   0.017  0.023
+ES   0.153   0.169  0.158</code></pre>
 </div>
 </div></div>
 </section>
@@ -382,11 +382,11 @@ ES   0.150   0.168  0.158</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        lm xgboost ranger
-MEAN 0.224   0.235  0.191
-LA   0.227   0.254  0.225
-BA   0.132   0.145  0.112
-EC   0.036   0.025 -0.020
-ES   0.130   0.137  0.085</code></pre>
+MEAN 0.226   0.240  0.197
+FA   0.226   0.253  0.228
+BA   0.135   0.150  0.109
+EC   0.036   0.023 -0.018
+ES   0.133   0.138  0.080</code></pre>
 </div>
 </div></div>
 </section>
@@ -405,14 +405,14 @@ ES   0.130   0.137  0.085</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>            lm xgboost ranger
-FEELNAT  0.126   0.136  0.111
+FEELNAT  0.127   0.138  0.114
 LNOISE   0.096   0.070  0.080
-LOC_SENS 0.020  -0.008 -0.025
-LOC_SOUN 0.041   0.010 -0.001
-LOC_SCEN 0.039   0.052  0.021
-LOC_VISE 0.008  -0.029 -0.047
-LOC_VEGE 0.052   0.025  0.032
-LOC_FAUN 0.057   0.062  0.047</code></pre>
+LOC_SENS 0.020  -0.004 -0.026
+LOC_SOUN 0.041   0.007 -0.002
+LOC_SCEN 0.039   0.051  0.022
+LOC_VISE 0.008  -0.029 -0.043
+LOC_VEGE 0.052   0.031  0.035
+LOC_FAUN 0.057   0.063  0.047</code></pre>
 </div>
 </div></div>
 </section>
@@ -487,9 +487,9 @@ LOC_FAUN 0.057   0.062  0.047</code></pre>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(mytsk1, <span class="at">type =</span> <span class="st">"pairs"</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>mytsk1 <span class="ot">&lt;-</span> <span class="fu">as_task_regr</span>(</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(<span class="st">"LA"</span>, Mediator_vars, GIS_vars)),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(<span class="st">"FA"</span>, Mediator_vars, GIS_vars)),</span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">feature =</span> <span class="fu">c</span>(Mediator_vars, GIS_vars),</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">"LA"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">"FA"</span>,</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="st">"bla"</span></span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>

@@ -293,12 +293,12 @@ D[PRS_orig_vars] <- xfun::cache_rds({
 # D[c("PC1", "PC2", "PC3", "PC4")] <- as.data.frame(X_centered %*% pca.$rotation[,1:4])
 
 
-D$LA <- rowMeans(D[, c("LQUAL1", "LQUAL2", "LQUAL3")], na.rm=TRUE)
+D$FA <- rowMeans(D[, c("LQUAL1", "LQUAL2", "LQUAL3")], na.rm=TRUE)
 D$BA <- rowMeans(D[, c("LQUAL4", "LQUAL5", "LQUAL6")], na.rm=TRUE)
 D$EC <- rowMeans(D[, c("LQUAL7", "LQUAL8", "LQUAL9")], na.rm=TRUE)
 D$ES <- rowMeans(D[, c("LQUAL10","LQUAL11")], na.rm=TRUE)
 D$MEAN<- rowMeans(D[PRS_orig_vars], na.rm=TRUE)
-PRS_vars <- c("MEAN", "LA", "BA", "EC", "ES")
+PRS_vars <- c("MEAN", "FA", "BA", "EC", "ES")
 
 
 # Prepare data for machine learning
