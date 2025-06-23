@@ -583,7 +583,7 @@ learners &lt;- c("regr.featureless", "regr.lm")
     <back>
 </back>
   </sub-article>
-  <sub-article article-type="notebook" id="nb-5-nb-2">
+  <sub-article article-type="notebook" id="nb-4-nb-2">
     <front-stub>
       <title-group>
         <article-title>Hypothesis Testing</article-title>
@@ -698,11 +698,11 @@ DISTKM_sqrt     1.473  1.156
 JNYTIME_sqrt    3.830  2.247
 STRIMP123_sqrt  6.555 10.739
 STRIMP999_sqrt 47.557 13.162
-MEAN            4.989  0.882
+MEAN            4.987  0.882
 FA              5.266  1.111
-BA              5.141  1.156
-EC              4.545  1.285
-ES              5.009  1.432</preformat>
+BA              5.141  1.157
+EC              4.542  1.290
+ES              5.006  1.430</preformat>
             </boxed-text>
           </sec>
         </sec>
@@ -733,7 +733,7 @@ car::vif(fit_PRS_MED &lt;- lm(as.formula(paste0(
     </code>
             <boxed-text>
               <preformat>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-     12      81     148     205     271    1392 </preformat>
+   11.9    81.4   147.6   204.9   270.7  1391.7 </preformat>
             </boxed-text>
           </sec>
           <p>Since we model <italic>with</italic> interactions later, the
@@ -745,6 +745,87 @@ car::vif(fit_PRS_MED &lt;- lm(as.formula(paste0(
         </sec>
         <sec id="all-interactions-mediators-gis2-nb-2">
           <title>All Interactions: Mediators ~ (GIS)^2</title>
+          <sec specific-use="notebook-content">
+            <code language="r script">
+# Elegant function to create coefficient tables from model summaries
+library(dplyr)
+    </code>
+            <boxed-text>
+              <preformat>
+Attaching package: 'dplyr'</preformat>
+            </boxed-text>
+            <boxed-text>
+              <preformat>The following objects are masked from 'package:stats':
+
+    filter, lag</preformat>
+            </boxed-text>
+            <boxed-text>
+              <preformat>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</preformat>
+            </boxed-text>
+            <code language="r script">
+library(tidyr)
+library(knitr)
+library(purrr)
+
+#' Create a formatted coefficient table from model summary list
+#' 
+#' @param model_summaries List of model summaries (e.g., output from lapply(models, summary))
+#' @param sig_threshold Significance threshold for bold formatting (default: 0.001)
+#' @param covariate_order Optional vector specifying order of covariates
+#' @return Formatted table with models as columns and covariates as rows
+create_coef_table &lt;- function(model_summaries, sig_threshold = 0.001, covariate_order = NULL) {
+  
+  # Extract and format coefficients for all models
+  format_model_coef &lt;- function(coef_matrix, model_name) {
+    estimates &lt;- coef_matrix[, "Estimate"]
+    p_values &lt;- coef_matrix[, "Pr(&gt;|t|)"]
+    
+    # Format with significance stars (common notation)
+    formatted_coef &lt;- sapply(seq_along(estimates), function(i) {
+      est_str &lt;- sprintf("%.3f", estimates[i])
+      stars &lt;- case_when(
+        p_values[i] &lt; 0.001 ~ "***",
+        p_values[i] &lt; 0.01 ~ "**",
+        p_values[i] &lt; 0.05 ~ "*",
+        p_values[i] &lt; 0.1 ~ ".",
+        TRUE ~ ""
+      )
+      paste0(est_str, stars)
+    })
+    
+    tibble(
+      Model = model_name,
+      Covariate = rownames(coef_matrix),
+      Coefficient = formatted_coef
+    )
+  }
+  
+  # Process all models and create wide table
+  coef_list &lt;- map(model_summaries, coef)
+  
+  results_table &lt;- map2_dfr(coef_list, names(coef_list), format_model_coef) %&gt;%
+    pivot_wider(names_from = Model, values_from = Coefficient, values_fill = "")
+  
+  # Apply covariate ordering
+  if (is.null(covariate_order)) {
+    # Default: Intercept first, then alphabetical
+    all_covariates &lt;- unique(results_table$Covariate)
+    covariate_order &lt;- c("(Intercept)", sort(all_covariates[all_covariates != "(Intercept)"]))
+  }
+  
+  # Filter and reorder covariates
+  results_table &lt;- results_table %&gt;%
+    filter(Covariate %in% covariate_order) %&gt;%
+    slice(match(covariate_order, Covariate))
+  
+  kable(results_table, 
+        format = "pipe",
+        align = c("l", rep("c", ncol(results_table) - 1)))
+}
+    </code>
+          </sec>
           <sec specific-use="notebook-content">
             <code language="r script">Res3 &lt;- list()
 for (mediator in Mediator_vars) {
@@ -759,7 +840,7 @@ for (mediator in Mediator_vars) {
   )
   Res3[[mediator]] &lt;- lm(formula(step_model), D_tst)
 }
-lapply(Res3, summary)
+(ResSum3 &lt;- lapply(Res3, summary))
     </code>
             <boxed-text>
               <preformat>$FEELNAT
@@ -945,6 +1026,142 @@ Multiple R-squared:  0.0456,    Adjusted R-squared:  0.0442
 F-statistic: 33.5 on 1 and 702 DF,  p-value: 1.05e-08</preformat>
             </boxed-text>
           </sec>
+          <sec id="table-nb-2">
+            <title>Table</title>
+            <sec specific-use="notebook-content">
+              <code language="r script">create_coef_table(ResSum3)
+      </code>
+              <table-wrap>
+                <table>
+                  <colgroup>
+                    <col width="20%"/>
+                    <col width="10%"/>
+                    <col width="11%"/>
+                    <col width="10%"/>
+                    <col width="11%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
+                    <col width="11%"/>
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th align="left">Covariate</th>
+                      <th align="center">FEELNAT</th>
+                      <th align="center">LNOISE</th>
+                      <th align="center">LOC_SENS</th>
+                      <th align="center">LOC_SOUN</th>
+                      <th align="center">LOC_SCEN</th>
+                      <th align="center">LOC_VISE</th>
+                      <th align="center">LOC_VEGE</th>
+                      <th align="center">LOC_FAUN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td align="left">(Intercept)</td>
+                      <td align="center">0.062</td>
+                      <td align="center">-0.001</td>
+                      <td align="center">-0.000</td>
+                      <td align="center">0.000</td>
+                      <td align="center">-0.001</td>
+                      <td align="center">-0.000</td>
+                      <td align="center">-0.019</td>
+                      <td align="center">-0.001</td>
+                    </tr>
+                    <tr>
+                      <td align="left">HETER</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">0.130***</td>
+                      <td align="center">0.109**</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">JNYTIME_sqrt</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">-0.114**</td>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">LCARTIF_sqrt</td>
+                      <td align="center">-0.152**</td>
+                      <td align="center">-0.124*</td>
+                      <td align="center"/>
+                      <td align="center">-0.175***</td>
+                      <td align="center"/>
+                      <td align="center">-0.071.</td>
+                      <td align="center"/>
+                      <td align="center">-0.214***</td>
+                    </tr>
+                    <tr>
+                      <td align="left">LCARTIF_sqrt:RL_NDVI</td>
+                      <td align="center">0.115**</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">OVDIST_sqrt</td>
+                      <td align="center">0.027</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">RL_NDVI</td>
+                      <td align="center">0.150***</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">0.217***</td>
+                      <td align="center"/>
+                      <td align="center">0.219***</td>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">RL_NOISE</td>
+                      <td align="center"/>
+                      <td align="center">-0.242***</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">STRIMP999_sqrt</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">-0.073.</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                  </tbody>
+                </table>
+              </table-wrap>
+            </sec>
+          </sec>
         </sec>
         <sec id="all-interactions-prs-mediators-gis2-nb-2">
           <title>All Interactions: PRS ~ (Mediators + GIS)^2</title>
@@ -963,7 +1180,7 @@ for (prs in PRS_vars) {
   )
   Res4[[prs]] &lt;- lm(formula(step_model), D_tst)
 }
-lapply(Res4, summary)
+(ResSum4 &lt;- lapply(Res4, summary))
     </code>
             <boxed-text>
               <preformat>$MEAN
@@ -973,26 +1190,23 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--2.7969 -0.5836 -0.0034  0.5952  2.8496 
+-2.8609 -0.5631 -0.0386  0.5998  2.7647 
 
 Coefficients:
                  Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)      -0.00405    0.03819   -0.11  0.91547    
-LOC_VISE          0.15995    0.04455    3.59  0.00036 ***
-FEELNAT           0.20119    0.04557    4.41  1.2e-05 ***
-LOC_SENS          0.09361    0.04437    2.11  0.03531 *  
-LNOISE            0.16980    0.04201    4.04  6.1e-05 ***
-DISTKM_sqrt      -0.00204    0.03977   -0.05  0.95908    
-LCARTIF_sqrt      0.02009    0.04143    0.49  0.62784    
-LOC_SCEN          0.04419    0.04611    0.96  0.33836    
-FEELNAT:LOC_SENS  0.05374    0.02953    1.82  0.06935 .  
+(Intercept)      -0.00762    0.03787   -0.20    0.841    
+LOC_VISE          0.17314    0.04201    4.12  4.3e-05 ***
+FEELNAT           0.20198    0.04293    4.70  3.2e-06 ***
+LOC_SENS          0.10408    0.04234    2.46    0.014 *  
+LNOISE            0.17667    0.04049    4.36  1.5e-05 ***
+FEELNAT:LOC_SENS  0.05398    0.02793    1.93    0.054 .  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.897 on 560 degrees of freedom
-  (178 observations deleted due to missingness)
-Multiple R-squared:  0.19,  Adjusted R-squared:  0.178 
-F-statistic: 16.4 on 8 and 560 DF,  p-value: &lt;2e-16
+Residual standard error: 0.893 on 567 degrees of freedom
+  (174 observations deleted due to missingness)
+Multiple R-squared:  0.192, Adjusted R-squared:  0.184 
+F-statistic: 26.9 on 5 and 567 DF,  p-value: &lt;2e-16
 
 
 $FA
@@ -1002,26 +1216,26 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.392 -0.518  0.092  0.592  2.566 
+-3.391 -0.518  0.093  0.592  2.567 
 
 Coefficients:
-                  Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)      -0.002857   0.037976   -0.08  0.94006    
-LOC_VISE          0.127624   0.041264    3.09  0.00208 ** 
-LOC_FAUN          0.176321   0.041690    4.23  2.7e-05 ***
-LNOISE            0.133255   0.040187    3.32  0.00097 ***
-RL_NDVI          -0.132538   0.039072   -3.39  0.00074 ***
-FEELNAT           0.168093   0.045299    3.71  0.00023 ***
-LOC_SCEN          0.163809   0.045689    3.59  0.00037 ***
-FEELNAT:LOC_SCEN -0.000854   0.031493   -0.03  0.97837    
-RL_NDVI:LOC_SCEN  0.024030   0.034060    0.71  0.48079    
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      -0.00324    0.03796   -0.09  0.93195    
+LOC_VISE          0.12823    0.04125    3.11  0.00197 ** 
+LOC_FAUN          0.17631    0.04167    4.23  2.7e-05 ***
+LNOISE            0.13307    0.04017    3.31  0.00098 ***
+RL_NDVI          -0.13265    0.03906   -3.40  0.00073 ***
+FEELNAT           0.16853    0.04528    3.72  0.00022 ***
+LOC_SCEN          0.16380    0.04567    3.59  0.00036 ***
+FEELNAT:LOC_SCEN -0.00170    0.03148   -0.05  0.95699    
+RL_NDVI:LOC_SCEN  0.02416    0.03405    0.71  0.47821    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.865 on 556 degrees of freedom
   (182 observations deleted due to missingness)
-Multiple R-squared:  0.255, Adjusted R-squared:  0.245 
-F-statistic: 23.8 on 8 and 556 DF,  p-value: &lt;2e-16
+Multiple R-squared:  0.256, Adjusted R-squared:  0.245 
+F-statistic: 23.9 on 8 and 556 DF,  p-value: &lt;2e-16
 
 
 $BA
@@ -1031,14 +1245,14 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.966 -0.512  0.070  0.647  2.405 
+-3.965 -0.507  0.070  0.647  2.410 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -0.00836    0.03572   -0.23  0.81498    
-LOC_VISE     0.12118    0.04046    3.00  0.00284 ** 
-FEELNAT      0.18712    0.03684    5.08  4.9e-07 ***
-LOC_SENS     0.14908    0.04055    3.68  0.00025 ***
+(Intercept) -0.00835    0.03572   -0.23   0.8152    
+LOC_VISE     0.12213    0.04045    3.02   0.0026 ** 
+FEELNAT      0.18778    0.03684    5.10  4.4e-07 ***
+LOC_SENS     0.14743    0.04055    3.64   0.0003 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1055,21 +1269,21 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--2.9353 -0.5355 -0.0494  0.6754  2.3735 
+-2.9221 -0.5444 -0.0364  0.6855  2.3639 
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   -0.00940    0.03666   -0.26  0.79767    
-LOC_SENS       0.14370    0.04085    3.52  0.00046 ***
-LCFOREST_sqrt -0.09087    0.03751   -2.42  0.01566 *  
-LOC_SCEN       0.00375    0.04121    0.09  0.92746    
+(Intercept)   -0.00858    0.03666   -0.23  0.81510    
+LOC_SENS       0.14234    0.04085    3.48  0.00052 ***
+LOC_SCEN       0.00370    0.04121    0.09  0.92855    
+LCFOREST_sqrt -0.08955    0.03752   -2.39  0.01724 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.986 on 719 degrees of freedom
   (24 observations deleted due to missingness)
-Multiple R-squared:  0.0304,    Adjusted R-squared:  0.0263 
-F-statistic:  7.5 on 3 and 719 DF,  p-value: 5.99e-05
+Multiple R-squared:  0.0297,    Adjusted R-squared:  0.0257 
+F-statistic: 7.34 on 3 and 719 DF,  p-value: 7.55e-05
 
 
 $ES
@@ -1079,24 +1293,167 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.492 -0.539  0.140  0.688  2.288 
+-3.492 -0.541  0.145  0.689  2.296 
 
 Coefficients:
                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)     0.03143    0.04159    0.76   0.4500    
-LNOISE          0.13206    0.04315    3.06   0.0023 ** 
-LOC_SENS        0.09993    0.04085    2.45   0.0147 *  
-DISTKM_sqrt     0.08078    0.04039    2.00   0.0460 *  
-FEELNAT         0.25739    0.04639    5.55  4.4e-08 ***
-LNOISE:FEELNAT -0.00638    0.03426   -0.19   0.8522    
+(Intercept)     0.03146    0.04159    0.76   0.4497    
+LNOISE          0.13295    0.04315    3.08   0.0022 ** 
+LOC_SENS        0.09603    0.04085    2.35   0.0191 *  
+DISTKM_sqrt     0.08081    0.04039    2.00   0.0459 *  
+FEELNAT         0.25812    0.04639    5.56    4e-08 ***
+LNOISE:FEELNAT -0.00623    0.03425   -0.18   0.8558    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.95 on 576 degrees of freedom
   (165 observations deleted due to missingness)
 Multiple R-squared:  0.141, Adjusted R-squared:  0.133 
-F-statistic: 18.9 on 5 and 576 DF,  p-value: &lt;2e-16</preformat>
+F-statistic: 18.8 on 5 and 576 DF,  p-value: &lt;2e-16</preformat>
             </boxed-text>
+          </sec>
+          <sec id="table-1-nb-2">
+            <title>Table</title>
+            <sec specific-use="notebook-content">
+              <code language="r script">create_coef_table(ResSum4)
+      </code>
+              <table-wrap>
+                <table>
+                  <colgroup>
+                    <col width="25%"/>
+                    <col width="15%"/>
+                    <col width="16%"/>
+                    <col width="15%"/>
+                    <col width="15%"/>
+                    <col width="15%"/>
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th align="left">Covariate</th>
+                      <th align="center">MEAN</th>
+                      <th align="center">FA</th>
+                      <th align="center">BA</th>
+                      <th align="center">EC</th>
+                      <th align="center">ES</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td align="left">(Intercept)</td>
+                      <td align="center">-0.008</td>
+                      <td align="center">-0.003</td>
+                      <td align="center">-0.008</td>
+                      <td align="center">-0.009</td>
+                      <td align="center">0.031</td>
+                    </tr>
+                    <tr>
+                      <td align="left">DISTKM_sqrt</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">0.081*</td>
+                    </tr>
+                    <tr>
+                      <td align="left">FEELNAT</td>
+                      <td align="center">0.202***</td>
+                      <td align="center">0.169***</td>
+                      <td align="center">0.188***</td>
+                      <td align="center"/>
+                      <td align="center">0.258***</td>
+                    </tr>
+                    <tr>
+                      <td align="left">FEELNAT:LOC_SCEN</td>
+                      <td align="center"/>
+                      <td align="center">-0.002</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">FEELNAT:LOC_SENS</td>
+                      <td align="center">0.054.</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">LCFOREST_sqrt</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">-0.090*</td>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">LNOISE</td>
+                      <td align="center">0.177***</td>
+                      <td align="center">0.133***</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">0.133**</td>
+                    </tr>
+                    <tr>
+                      <td align="left">LNOISE:FEELNAT</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">-0.006</td>
+                    </tr>
+                    <tr>
+                      <td align="left">LOC_FAUN</td>
+                      <td align="center"/>
+                      <td align="center">0.176***</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">LOC_SCEN</td>
+                      <td align="center"/>
+                      <td align="center">0.164***</td>
+                      <td align="center"/>
+                      <td align="center">0.004</td>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">LOC_SENS</td>
+                      <td align="center">0.104*</td>
+                      <td align="center"/>
+                      <td align="center">0.147***</td>
+                      <td align="center">0.142***</td>
+                      <td align="center">0.096*</td>
+                    </tr>
+                    <tr>
+                      <td align="left">LOC_VISE</td>
+                      <td align="center">0.173***</td>
+                      <td align="center">0.128**</td>
+                      <td align="center">0.122**</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">RL_NDVI</td>
+                      <td align="center"/>
+                      <td align="center">-0.133***</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">RL_NDVI:LOC_SCEN</td>
+                      <td align="center"/>
+                      <td align="center">0.024</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                  </tbody>
+                </table>
+              </table-wrap>
+            </sec>
           </sec>
         </sec>
         <sec id="legacy-code-nb-2">
@@ -1159,6 +1516,142 @@ for (mediator in Mediator_vars) {
 lapply(Res2, summary)
     </code>
           </sec>
+          <preformat>library(knitr)
+library(kableExtra)
+
+# Function to extract coefficients with significance indicators
+extract_coef_data &lt;- function(model_name, coef_data) {
+  # Extract coefficient names, estimates, and p-values
+  coef_names &lt;- rownames(coef_data)
+  estimates &lt;- coef_data[, "Estimate"]
+  p_values &lt;- coef_data[, "Pr(&gt;|t|)"]
+  
+  # Format estimates with significance stars
+  formatted_coef &lt;- sapply(1:length(estimates), function(i) {
+    est_str &lt;- sprintf("%.3f", estimates[i])
+    if (p_values[i] &lt; 0.001) {
+      paste0("**", est_str, "**")  # Bold for p &lt; 0.001
+    } else {
+      est_str
+    }
+  })
+  
+  # Create data frame
+  data.frame(
+    Model = model_name,
+    Covariate = coef_names,
+    Coefficient = formatted_coef,
+    stringsAsFactors = FALSE
+  )
+}
+
+# Manual data entry based on your results
+# You would typically extract this from your model objects, but since you have text output:
+
+model_results &lt;- list()
+
+# FEELNAT model
+feelnat_coef &lt;- data.frame(
+  row.names = c("(Intercept)", "LCARTIF_sqrt", "RL_NDVI", "OVDIST_sqrt", "LCARTIF_sqrt:RL_NDVI"),
+  Estimate = c(0.0618, -0.1524, 0.1498, 0.0270, 0.1146),
+  `Pr(&gt;|t|)` = c(0.13260, 0.00770, 0.00063, 0.55112, 0.00446),
+  check.names = FALSE
+)
+model_results[["FEELNAT"]] &lt;- extract_coef_data("FEELNAT", feelnat_coef)
+
+# LNOISE model
+lnoise_coef &lt;- data.frame(
+  row.names = c("(Intercept)", "LCARTIF_sqrt", "RL_NOISE"),
+  Estimate = c(-0.00097, -0.12357, -0.24203),
+  `Pr(&gt;|t|)` = c(0.980, 0.011, 9.7e-07),
+  check.names = FALSE
+)
+model_results[["LNOISE"]] &lt;- extract_coef_data("LNOISE", lnoise_coef)
+
+# LOC_SENS model
+loc_sens_coef &lt;- data.frame(
+  row.names = c("(Intercept)", "HETER", "STRIMP999_sqrt"),
+  Estimate = c(-0.000148, 0.129769, -0.072664),
+  `Pr(&gt;|t|)` = c(0.99678, 0.00073, 0.05837),
+  check.names = FALSE
+)
+model_results[["LOC_SENS"]] &lt;- extract_coef_data("LOC_SENS", loc_sens_coef)
+
+# LOC_SOUN model
+loc_soun_coef &lt;- data.frame(
+  row.names = c("(Intercept)", "LCARTIF_sqrt", "HETER"),
+  Estimate = c(0.000403, -0.175213, 0.109010),
+  `Pr(&gt;|t|)` = c(0.9912, 2.9e-06, 0.0035),
+  check.names = FALSE
+)
+model_results[["LOC_SOUN"]] &lt;- extract_coef_data("LOC_SOUN", loc_soun_coef)
+
+# LOC_SCEN model
+loc_scen_coef &lt;- data.frame(
+  row.names = c("(Intercept)", "RL_NDVI"),
+  Estimate = c(-0.00114, 0.21701),
+  `Pr(&gt;|t|)` = c(0.97, 3.5e-09),
+  check.names = FALSE
+)
+model_results[["LOC_SCEN"]] &lt;- extract_coef_data("LOC_SCEN", loc_scen_coef)
+
+# LOC_VISE model
+loc_vise_coef &lt;- data.frame(
+  row.names = c("(Intercept)", "LCARTIF_sqrt"),
+  Estimate = c(-0.000356, -0.071106),
+  `Pr(&gt;|t|)` = c(0.992, 0.059),
+  check.names = FALSE
+)
+model_results[["LOC_VISE"]] &lt;- extract_coef_data("LOC_VISE", loc_vise_coef)
+
+# LOC_VEGE model
+loc_vege_coef &lt;- data.frame(
+  row.names = c("(Intercept)", "RL_NDVI", "JNYTIME_sqrt"),
+  Estimate = c(-0.0192, 0.2195, -0.1139),
+  `Pr(&gt;|t|)` = c(0.6111, 1.4e-08, 0.0027),
+  check.names = FALSE
+)
+model_results[["LOC_VEGE"]] &lt;- extract_coef_data("LOC_VEGE", loc_vege_coef)
+
+# LOC_FAUN model
+loc_faun_coef &lt;- data.frame(
+  row.names = c("(Intercept)", "LCARTIF_sqrt"),
+  Estimate = c(-0.00127, -0.21409),
+  `Pr(&gt;|t|)` = c(0.97, 1.1e-08),
+  check.names = FALSE
+)
+model_results[["LOC_FAUN"]] &lt;- extract_coef_data("LOC_FAUN", loc_faun_coef)
+
+# Combine all results
+all_results &lt;- do.call(rbind, model_results)
+
+# Create wide format table
+results_wide &lt;- all_results %&gt;%
+  select(Model, Covariate, Coefficient) %&gt;%
+  tidyr::pivot_wider(names_from = Model, values_from = Coefficient, values_fill = "")
+
+# Get all unique covariates and sort them (intercept first)
+all_covariates &lt;- unique(all_results$Covariate)
+covariate_order &lt;- c("(Intercept)", sort(all_covariates[all_covariates != "(Intercept)"]))
+
+# Reorder rows
+results_wide &lt;- results_wide %&gt;%
+  slice(match(covariate_order, Covariate))
+
+# Create the final table
+print("Linear Model Results Summary")
+print("Bold coefficients indicate p &lt; 0.001")
+print("")
+
+# Display as a nice table
+kable(results_wide, 
+      format = "pipe",
+      align = c("l", rep("c", ncol(results_wide)-1))) %&gt;%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+# Alternative: Simple data frame for viewing
+print(results_wide)
+    </preformat>
         </sec>
       </sec>
     </body>
