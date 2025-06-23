@@ -185,12 +185,6 @@ for (mediator in Mediator_vars) {
 (ResSum3 <- lapply(Res3, summary))
 ```
 
-#### Table
-```{r}
-#| echo: false
-#| output: asis
-create_coef_table(ResSum3)
-```
 
 
 ### All Interactions: PRS ~ (Mediators + GIS)^2
@@ -212,7 +206,20 @@ for (prs in PRS_vars) {
 (ResSum4 <- lapply(Res4, summary))
 ```
 
-#### Table
+### Table Summarizing Coefficients
+
+Significant codes as usual: `0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1`
+
+#### All Interactions: Mediators ~ (GIS)^2
+
+```{r}
+#| echo: false
+#| output: asis
+create_coef_table(ResSum3)
+```
+
+
+#### PRS ~ (Mediators + GIS)^2
 ```{r}
 #| echo: false
 #| output: asis

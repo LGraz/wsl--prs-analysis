@@ -1026,142 +1026,6 @@ Multiple R-squared:  0.0456,    Adjusted R-squared:  0.0442
 F-statistic: 33.5 on 1 and 702 DF,  p-value: 1.05e-08</preformat>
             </boxed-text>
           </sec>
-          <sec id="table-nb-2">
-            <title>Table</title>
-            <sec specific-use="notebook-content">
-              <code language="r script">create_coef_table(ResSum3)
-      </code>
-              <table-wrap>
-                <table>
-                  <colgroup>
-                    <col width="20%"/>
-                    <col width="10%"/>
-                    <col width="11%"/>
-                    <col width="10%"/>
-                    <col width="11%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="11%"/>
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th align="left">Covariate</th>
-                      <th align="center">FEELNAT</th>
-                      <th align="center">LNOISE</th>
-                      <th align="center">LOC_SENS</th>
-                      <th align="center">LOC_SOUN</th>
-                      <th align="center">LOC_SCEN</th>
-                      <th align="center">LOC_VISE</th>
-                      <th align="center">LOC_VEGE</th>
-                      <th align="center">LOC_FAUN</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td align="left">(Intercept)</td>
-                      <td align="center">0.062</td>
-                      <td align="center">-0.001</td>
-                      <td align="center">-0.000</td>
-                      <td align="center">0.000</td>
-                      <td align="center">-0.001</td>
-                      <td align="center">-0.000</td>
-                      <td align="center">-0.019</td>
-                      <td align="center">-0.001</td>
-                    </tr>
-                    <tr>
-                      <td align="left">HETER</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center">0.130***</td>
-                      <td align="center">0.109**</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                    </tr>
-                    <tr>
-                      <td align="left">JNYTIME_sqrt</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center">-0.114**</td>
-                      <td align="center"/>
-                    </tr>
-                    <tr>
-                      <td align="left">LCARTIF_sqrt</td>
-                      <td align="center">-0.152**</td>
-                      <td align="center">-0.124*</td>
-                      <td align="center"/>
-                      <td align="center">-0.175***</td>
-                      <td align="center"/>
-                      <td align="center">-0.071.</td>
-                      <td align="center"/>
-                      <td align="center">-0.214***</td>
-                    </tr>
-                    <tr>
-                      <td align="left">LCARTIF_sqrt:RL_NDVI</td>
-                      <td align="center">0.115**</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                    </tr>
-                    <tr>
-                      <td align="left">OVDIST_sqrt</td>
-                      <td align="center">0.027</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                    </tr>
-                    <tr>
-                      <td align="left">RL_NDVI</td>
-                      <td align="center">0.150***</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center">0.217***</td>
-                      <td align="center"/>
-                      <td align="center">0.219***</td>
-                      <td align="center"/>
-                    </tr>
-                    <tr>
-                      <td align="left">RL_NOISE</td>
-                      <td align="center"/>
-                      <td align="center">-0.242***</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                    </tr>
-                    <tr>
-                      <td align="left">STRIMP999_sqrt</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center">-0.073.</td>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                      <td align="center"/>
-                    </tr>
-                  </tbody>
-                </table>
-              </table-wrap>
-            </sec>
-          </sec>
         </sec>
         <sec id="all-interactions-prs-mediators-gis2-nb-2">
           <title>All Interactions: PRS ~ (Mediators + GIS)^2</title>
@@ -1312,8 +1176,149 @@ Multiple R-squared:  0.141, Adjusted R-squared:  0.133
 F-statistic: 18.8 on 5 and 576 DF,  p-value: &lt;2e-16</preformat>
             </boxed-text>
           </sec>
-          <sec id="table-1-nb-2">
-            <title>Table</title>
+        </sec>
+        <sec id="table-summarizing-coefficients-nb-2">
+          <title>Table Summarizing Coefficients</title>
+          <p>Significant codes as usual:
+    <monospace>0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</monospace></p>
+          <sec id="all-interactions-mediators-gis2-1-nb-2">
+            <title>All Interactions: Mediators ~ (GIS)^2</title>
+            <sec specific-use="notebook-content">
+              <code language="r script">create_coef_table(ResSum3)
+      </code>
+              <table-wrap>
+                <table>
+                  <colgroup>
+                    <col width="20%"/>
+                    <col width="10%"/>
+                    <col width="11%"/>
+                    <col width="10%"/>
+                    <col width="11%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
+                    <col width="11%"/>
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th align="left">Covariate</th>
+                      <th align="center">FEELNAT</th>
+                      <th align="center">LNOISE</th>
+                      <th align="center">LOC_SENS</th>
+                      <th align="center">LOC_SOUN</th>
+                      <th align="center">LOC_SCEN</th>
+                      <th align="center">LOC_VISE</th>
+                      <th align="center">LOC_VEGE</th>
+                      <th align="center">LOC_FAUN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td align="left">(Intercept)</td>
+                      <td align="center">0.062</td>
+                      <td align="center">-0.001</td>
+                      <td align="center">-0.000</td>
+                      <td align="center">0.000</td>
+                      <td align="center">-0.001</td>
+                      <td align="center">-0.000</td>
+                      <td align="center">-0.019</td>
+                      <td align="center">-0.001</td>
+                    </tr>
+                    <tr>
+                      <td align="left">HETER</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">0.130***</td>
+                      <td align="center">0.109**</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">JNYTIME_sqrt</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">-0.114**</td>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">LCARTIF_sqrt</td>
+                      <td align="center">-0.152**</td>
+                      <td align="center">-0.124*</td>
+                      <td align="center"/>
+                      <td align="center">-0.175***</td>
+                      <td align="center"/>
+                      <td align="center">-0.071.</td>
+                      <td align="center"/>
+                      <td align="center">-0.214***</td>
+                    </tr>
+                    <tr>
+                      <td align="left">LCARTIF_sqrt:RL_NDVI</td>
+                      <td align="center">0.115**</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">OVDIST_sqrt</td>
+                      <td align="center">0.027</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">RL_NDVI</td>
+                      <td align="center">0.150***</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">0.217***</td>
+                      <td align="center"/>
+                      <td align="center">0.219***</td>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">RL_NOISE</td>
+                      <td align="center"/>
+                      <td align="center">-0.242***</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                    <tr>
+                      <td align="left">STRIMP999_sqrt</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center">-0.073.</td>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                      <td align="center"/>
+                    </tr>
+                  </tbody>
+                </table>
+              </table-wrap>
+            </sec>
+          </sec>
+          <sec id="prs-mediators-gis2-nb-2">
+            <title>PRS ~ (Mediators + GIS)^2</title>
             <sec specific-use="notebook-content">
               <code language="r script">create_coef_table(ResSum4)
       </code>

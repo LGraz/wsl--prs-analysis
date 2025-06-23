@@ -229,13 +229,12 @@
   <li><a href="#imputation-with-missforest-on-training-data" id="toc-imputation-with-missforest-on-training-data" class="nav-link" data-scroll-target="#imputation-with-missforest-on-training-data">Imputation with MissForest on Training Data</a></li>
   <li><a href="#scaling-test-data" id="toc-scaling-test-data" class="nav-link" data-scroll-target="#scaling-test-data">Scaling Test Data</a></li>
   <li><a href="#testing-vif" id="toc-testing-vif" class="nav-link" data-scroll-target="#testing-vif">Testing VIF</a></li>
-  <li><a href="#all-interactions-mediators-gis2" id="toc-all-interactions-mediators-gis2" class="nav-link" data-scroll-target="#all-interactions-mediators-gis2">All Interactions: Mediators ~ (GIS)^2</a>
+  <li><a href="#all-interactions-mediators-gis2" id="toc-all-interactions-mediators-gis2" class="nav-link" data-scroll-target="#all-interactions-mediators-gis2">All Interactions: Mediators ~ (GIS)^2</a></li>
+  <li><a href="#all-interactions-prs-mediators-gis2" id="toc-all-interactions-prs-mediators-gis2" class="nav-link" data-scroll-target="#all-interactions-prs-mediators-gis2">All Interactions: PRS ~ (Mediators + GIS)^2</a></li>
+  <li><a href="#table-summarizing-coefficients" id="toc-table-summarizing-coefficients" class="nav-link" data-scroll-target="#table-summarizing-coefficients">Table Summarizing Coefficients</a>
   <ul class="collapse">
-  <li><a href="#table" id="toc-table" class="nav-link" data-scroll-target="#table">Table</a></li>
-  </ul></li>
-  <li><a href="#all-interactions-prs-mediators-gis2" id="toc-all-interactions-prs-mediators-gis2" class="nav-link" data-scroll-target="#all-interactions-prs-mediators-gis2">All Interactions: PRS ~ (Mediators + GIS)^2</a>
-  <ul class="collapse">
-  <li><a href="#table-1" id="toc-table-1" class="nav-link" data-scroll-target="#table-1">Table</a></li>
+  <li><a href="#all-interactions-mediators-gis2-1" id="toc-all-interactions-mediators-gis2-1" class="nav-link" data-scroll-target="#all-interactions-mediators-gis2-1">All Interactions: Mediators ~ (GIS)^2</a></li>
+  <li><a href="#prs-mediators-gis2" id="toc-prs-mediators-gis2" class="nav-link" data-scroll-target="#prs-mediators-gis2">PRS ~ (Mediators + GIS)^2</a></li>
   </ul></li>
   <li><a href="#legacy-code" id="toc-legacy-code" class="nav-link" data-scroll-target="#legacy-code">Legacy Code</a></li>
   </ul></li>
@@ -687,10 +686,163 @@ Multiple R-squared:  0.0456,    Adjusted R-squared:  0.0442
 F-statistic: 33.5 on 1 and 702 DF,  p-value: 1.05e-08</code></pre>
 </div>
 </div></div>
-<section id="table" class="level4">
-<h4 class="anchored" data-anchor-id="table">Table</h4>
+</section>
+<section id="all-interactions-prs-mediators-gis2" class="level3">
+<h3 class="anchored" data-anchor-id="all-interactions-prs-mediators-gis2">All Interactions: PRS ~ (Mediators + GIS)^2</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_coef_table</span>(ResSum3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Res4 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (prs <span class="cf">in</span> PRS_vars) {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  intercept_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    prs, <span class="st">" ~ 1"</span>)), D_trn)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      prs, <span class="st">" ~ "</span>, </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">" + "</span>, </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")^2"</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  Res4[[prs]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>(ResSum4 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Res4, summary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$MEAN
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.8609 -0.5631 -0.0386  0.5998  2.7647 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      -0.00762    0.03787   -0.20    0.841    
+LOC_VISE          0.17314    0.04201    4.12  4.3e-05 ***
+FEELNAT           0.20198    0.04293    4.70  3.2e-06 ***
+LOC_SENS          0.10408    0.04234    2.46    0.014 *  
+LNOISE            0.17667    0.04049    4.36  1.5e-05 ***
+FEELNAT:LOC_SENS  0.05398    0.02793    1.93    0.054 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.893 on 567 degrees of freedom
+  (174 observations deleted due to missingness)
+Multiple R-squared:  0.192, Adjusted R-squared:  0.184 
+F-statistic: 26.9 on 5 and 567 DF,  p-value: &lt;2e-16
+
+
+$FA
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.391 -0.518  0.093  0.592  2.567 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      -0.00324    0.03796   -0.09  0.93195    
+LOC_VISE          0.12823    0.04125    3.11  0.00197 ** 
+LOC_FAUN          0.17631    0.04167    4.23  2.7e-05 ***
+LNOISE            0.13307    0.04017    3.31  0.00098 ***
+RL_NDVI          -0.13265    0.03906   -3.40  0.00073 ***
+FEELNAT           0.16853    0.04528    3.72  0.00022 ***
+LOC_SCEN          0.16380    0.04567    3.59  0.00036 ***
+FEELNAT:LOC_SCEN -0.00170    0.03148   -0.05  0.95699    
+RL_NDVI:LOC_SCEN  0.02416    0.03405    0.71  0.47821    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.865 on 556 degrees of freedom
+  (182 observations deleted due to missingness)
+Multiple R-squared:  0.256, Adjusted R-squared:  0.245 
+F-statistic: 23.9 on 8 and 556 DF,  p-value: &lt;2e-16
+
+
+$BA
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.965 -0.507  0.070  0.647  2.410 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -0.00835    0.03572   -0.23   0.8152    
+LOC_VISE     0.12213    0.04045    3.02   0.0026 ** 
+FEELNAT      0.18778    0.03684    5.10  4.4e-07 ***
+LOC_SENS     0.14743    0.04055    3.64   0.0003 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.948 on 700 degrees of freedom
+  (43 observations deleted due to missingness)
+Multiple R-squared:  0.115, Adjusted R-squared:  0.111 
+F-statistic: 30.2 on 3 and 700 DF,  p-value: &lt;2e-16
+
+
+$EC
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9221 -0.5444 -0.0364  0.6855  2.3639 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   -0.00858    0.03666   -0.23  0.81510    
+LOC_SENS       0.14234    0.04085    3.48  0.00052 ***
+LOC_SCEN       0.00370    0.04121    0.09  0.92855    
+LCFOREST_sqrt -0.08955    0.03752   -2.39  0.01724 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.986 on 719 degrees of freedom
+  (24 observations deleted due to missingness)
+Multiple R-squared:  0.0297,    Adjusted R-squared:  0.0257 
+F-statistic: 7.34 on 3 and 719 DF,  p-value: 7.55e-05
+
+
+$ES
+
+Call:
+lm(formula = formula(step_model), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.492 -0.541  0.145  0.689  2.296 
+
+Coefficients:
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     0.03146    0.04159    0.76   0.4497    
+LNOISE          0.13295    0.04315    3.08   0.0022 ** 
+LOC_SENS        0.09603    0.04085    2.35   0.0191 *  
+DISTKM_sqrt     0.08081    0.04039    2.00   0.0459 *  
+FEELNAT         0.25812    0.04639    5.56    4e-08 ***
+LNOISE:FEELNAT -0.00623    0.03425   -0.18   0.8558    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.95 on 576 degrees of freedom
+  (165 observations deleted due to missingness)
+Multiple R-squared:  0.141, Adjusted R-squared:  0.133 
+F-statistic: 18.8 on 5 and 576 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+</div></div>
+</section>
+<section id="table-summarizing-coefficients" class="level3">
+<h3 class="anchored" data-anchor-id="table-summarizing-coefficients">Table Summarizing Coefficients</h3>
+<p>Significant codes as usual: <code>0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></p>
+<section id="all-interactions-mediators-gis2-1" class="level4">
+<h4 class="anchored" data-anchor-id="all-interactions-mediators-gis2-1">All Interactions: Mediators ~ (GIS)^2</h4>
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_coef_table</span>(ResSum3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -822,157 +974,8 @@ F-statistic: 33.5 on 1 and 702 DF,  p-value: 1.05e-08</code></pre>
 </div>
 </div></div>
 </section>
-</section>
-<section id="all-interactions-prs-mediators-gis2" class="level3">
-<h3 class="anchored" data-anchor-id="all-interactions-prs-mediators-gis2">All Interactions: PRS ~ (Mediators + GIS)^2</h3>
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Res4 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (prs <span class="cf">in</span> PRS_vars) {</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  intercept_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    prs, <span class="st">" ~ 1"</span>)), D_trn)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>      prs, <span class="st">" ~ "</span>, </span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">" + "</span>, </span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")^2"</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    )),</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  Res4[[prs]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>(ResSum4 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Res4, summary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$MEAN
-
-Call:
-lm(formula = formula(step_model), data = D_tst)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--2.8609 -0.5631 -0.0386  0.5998  2.7647 
-
-Coefficients:
-                 Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)      -0.00762    0.03787   -0.20    0.841    
-LOC_VISE          0.17314    0.04201    4.12  4.3e-05 ***
-FEELNAT           0.20198    0.04293    4.70  3.2e-06 ***
-LOC_SENS          0.10408    0.04234    2.46    0.014 *  
-LNOISE            0.17667    0.04049    4.36  1.5e-05 ***
-FEELNAT:LOC_SENS  0.05398    0.02793    1.93    0.054 .  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.893 on 567 degrees of freedom
-  (174 observations deleted due to missingness)
-Multiple R-squared:  0.192, Adjusted R-squared:  0.184 
-F-statistic: 26.9 on 5 and 567 DF,  p-value: &lt;2e-16
-
-
-$FA
-
-Call:
-lm(formula = formula(step_model), data = D_tst)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--3.391 -0.518  0.093  0.592  2.567 
-
-Coefficients:
-                 Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)      -0.00324    0.03796   -0.09  0.93195    
-LOC_VISE          0.12823    0.04125    3.11  0.00197 ** 
-LOC_FAUN          0.17631    0.04167    4.23  2.7e-05 ***
-LNOISE            0.13307    0.04017    3.31  0.00098 ***
-RL_NDVI          -0.13265    0.03906   -3.40  0.00073 ***
-FEELNAT           0.16853    0.04528    3.72  0.00022 ***
-LOC_SCEN          0.16380    0.04567    3.59  0.00036 ***
-FEELNAT:LOC_SCEN -0.00170    0.03148   -0.05  0.95699    
-RL_NDVI:LOC_SCEN  0.02416    0.03405    0.71  0.47821    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.865 on 556 degrees of freedom
-  (182 observations deleted due to missingness)
-Multiple R-squared:  0.256, Adjusted R-squared:  0.245 
-F-statistic: 23.9 on 8 and 556 DF,  p-value: &lt;2e-16
-
-
-$BA
-
-Call:
-lm(formula = formula(step_model), data = D_tst)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--3.965 -0.507  0.070  0.647  2.410 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -0.00835    0.03572   -0.23   0.8152    
-LOC_VISE     0.12213    0.04045    3.02   0.0026 ** 
-FEELNAT      0.18778    0.03684    5.10  4.4e-07 ***
-LOC_SENS     0.14743    0.04055    3.64   0.0003 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.948 on 700 degrees of freedom
-  (43 observations deleted due to missingness)
-Multiple R-squared:  0.115, Adjusted R-squared:  0.111 
-F-statistic: 30.2 on 3 and 700 DF,  p-value: &lt;2e-16
-
-
-$EC
-
-Call:
-lm(formula = formula(step_model), data = D_tst)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--2.9221 -0.5444 -0.0364  0.6855  2.3639 
-
-Coefficients:
-              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   -0.00858    0.03666   -0.23  0.81510    
-LOC_SENS       0.14234    0.04085    3.48  0.00052 ***
-LOC_SCEN       0.00370    0.04121    0.09  0.92855    
-LCFOREST_sqrt -0.08955    0.03752   -2.39  0.01724 *  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.986 on 719 degrees of freedom
-  (24 observations deleted due to missingness)
-Multiple R-squared:  0.0297,    Adjusted R-squared:  0.0257 
-F-statistic: 7.34 on 3 and 719 DF,  p-value: 7.55e-05
-
-
-$ES
-
-Call:
-lm(formula = formula(step_model), data = D_tst)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--3.492 -0.541  0.145  0.689  2.296 
-
-Coefficients:
-               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)     0.03146    0.04159    0.76   0.4497    
-LNOISE          0.13295    0.04315    3.08   0.0022 ** 
-LOC_SENS        0.09603    0.04085    2.35   0.0191 *  
-DISTKM_sqrt     0.08081    0.04039    2.00   0.0459 *  
-FEELNAT         0.25812    0.04639    5.56    4e-08 ***
-LNOISE:FEELNAT -0.00623    0.03425   -0.18   0.8558    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.95 on 576 degrees of freedom
-  (165 observations deleted due to missingness)
-Multiple R-squared:  0.141, Adjusted R-squared:  0.133 
-F-statistic: 18.8 on 5 and 576 DF,  p-value: &lt;2e-16</code></pre>
-</div>
-</div></div>
-<section id="table-1" class="level4">
-<h4 class="anchored" data-anchor-id="table-1">Table</h4>
+<section id="prs-mediators-gis2" class="level4">
+<h4 class="anchored" data-anchor-id="prs-mediators-gis2">PRS ~ (Mediators + GIS)^2</h4>
 <div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">create_coef_table</span>(ResSum4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1182,7 +1185,7 @@ F-statistic: 18.8 on 5 and 576 DF,  p-value: &lt;2e-16</code></pre>
 <span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(Res2, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div></div>
-<pre class="iollibrary(dplyr)"><code>library(knitr)
+<pre class="eijlibrary(dplyr)"><code>library(knitr)
 library(kableExtra)
 
 # Function to extract coefficients with significance indicators
