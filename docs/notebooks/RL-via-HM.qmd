@@ -199,7 +199,7 @@ combined_range <- range(c(D_tst$RL_NOISE, grid$predicted_RL_NOISE))
 # Plot with matching color scales
 ggplot() +
   geom_raster(data = grid, aes(x = JNYTIME_sqrt, y = HM_NOISE, fill = predicted_RL_NOISE)) +
-  geom_jitter(data = D_tst, aes(x = JNYTIME_sqrt, y = HM_NOISE, col = RL_NOISE), 
+  geom_jitter(data = D_tst, aes(x = JNYTIME_sqrt, y = HM_NOISE, col = RL_NOISE, shape = LANG), 
               width = 0.07, height = 0.1, alpha = 0.7) +
   scale_fill_viridis_c(name = "Predicted\nRL_NOISE", limits = combined_range) +
   scale_color_viridis_c(name = "Actual\nRL_NOISE", limits = combined_range) +
