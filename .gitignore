@@ -10,7 +10,7 @@ _freeze/
 _manuscript/
 figure/
 
-*.png
+# *.png
 # *.csl
 *.numbers
 *.tmp
@@ -26,3 +26,9 @@ renv/
 
 .stignore
 .Rprofile
+
+
+!docs/notebooks/*_files/
+!docs/notebooks/*_files/*
+!docs/notebooks/*_files/*.png
+

@@ -124,3 +124,26 @@ For each target variable, we constructed a separate model using stepwise selecti
   - Only LNOISE shows high NA count
   - Information detection still fails
 - Significant edges remain in SEM (see all interactions)
+
+
+
+
+#### All Interactions: Mediators ~ (GIS)^2
+Significant codes as usual: `0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1`
+
+```{r}
+#| echo: false
+#| output: asis
+readRDS("cache/ResSum3.rds")
+```
+
+
+
+#### PRS ~ (Mediators + GIS)^2
+Significant codes as usual: `0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1`
+
+```{r}
+#| echo: false
+#| output: asis
+readRDS("cache/ResSum4.rds")
+```

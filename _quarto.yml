@@ -10,22 +10,27 @@ manuscript:
       title: "Prediction Analysis"
     - notebook: notebooks/hypothethis-tests.qmd
       title: "Hypothesis Testing"
+    - notebook: notebooks/RL-via-HM.qmd
+      title: "Predict RL via HM"
   code-links:
     - text: Code of data preparation
       icon: file-code
       href: R/data_prep.R
-  # resources:
-  #   - data/cars.csv
+  resources:
+    - R/data_prep.R
 
 format:
-  docx: default
-  jats: default
-  pdf: default
   html:
     toc-depth: 4
-    comments:
-      hypothesis: true
+    include-in-header:
+      - text: "<style>.quarto-notebook .cell-container .cell-decorator { display: none; }</style>"
+  docx: default
+  pdf: default
+  # jats: default
 execute:
   freeze: auto
+  warning: false
+  message: false
+  error: false
 
 
