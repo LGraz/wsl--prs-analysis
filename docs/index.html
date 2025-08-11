@@ -35,12 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-813c323200a87c37e262811031999de4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script async="" src="https://hypothes.is/embed.js"></script>
-<script>
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    document.body.classList.add('hypothesis-enabled');
-  });
-</script>
+<style>.quarto-notebook .cell-container .cell-decorator { display: none; }</style>
 
 
 <meta name="citation_title" content="PRS Analysis for WSL">
@@ -94,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
               </div>
       </div>
       <div class="quarto-title-meta-column-end quarto-other-formats-target">
-      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></p></div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></p></div><div class="quarto-title-meta-contents"><p><a href="index-meca.zip" data-meca-link="true"><i class="bi bi-archive"></i>MECA Bundle</a></p></div></div></div>
+      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></p></div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></p></div></div></div>
     </div>
 
 
@@ -124,11 +119,15 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale" id="toc-hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale" class="nav-link" data-scroll-target="#hypothesis-testing-investigation-of-variable-effects-on-perceived-restorativeness-scale">Hypothesis Testing: Investigation of Variable Effects on Perceived Restorativeness Scale</a>
   <ul class="collapse">
   <li><a href="#model-specification-and-analysis" id="toc-model-specification-and-analysis" class="nav-link" data-scroll-target="#model-specification-and-analysis">Model Specification and Analysis</a></li>
-  <li><a href="#results-1" id="toc-results-1" class="nav-link" data-scroll-target="#results-1">Results</a></li>
+  <li><a href="#results-1" id="toc-results-1" class="nav-link" data-scroll-target="#results-1">Results</a>
+  <ul class="collapse">
+  <li><a href="#all-interactions-mediators-gis2" id="toc-all-interactions-mediators-gis2" class="nav-link" data-scroll-target="#all-interactions-mediators-gis2">All Interactions: Mediators ~ (GIS)^2</a></li>
+  <li><a href="#prs-mediators-gis2" id="toc-prs-mediators-gis2" class="nav-link" data-scroll-target="#prs-mediators-gis2">PRS ~ (Mediators + GIS)^2</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="notebooks/hypothethis-tests-preview.html"><i class="bi bi-journal-code"></i>Hypothesis Testing</a></li><li><a href="notebooks/mlr3-preview.html"><i class="bi bi-journal-code"></i>Prediction Analysis</a></li></ul></div></nav>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks/hypothethis-tests-preview.html"><i class="bi bi-journal-code"></i>Hypothesis Testing</a></li><li><a href="notebooks/RL-via-HM-preview.html"><i class="bi bi-journal-code"></i>Predict RL via HM</a></li><li><a href="notebooks/mlr3-preview.html"><i class="bi bi-journal-code"></i>Prediction Analysis</a></li></ul></div></nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -247,6 +246,283 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 <li>Significant edges remain in SEM (see all interactions)</li>
 </ul>
+<section id="all-interactions-mediators-gis2" class="level4">
+<h4 class="anchored" data-anchor-id="all-interactions-mediators-gis2">All Interactions: Mediators ~ (GIS)^2</h4>
+<p>Significant codes as usual: <code>0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Covariate</th>
+<th style="text-align: center;">FEELNAT</th>
+<th style="text-align: center;">LNOISE</th>
+<th style="text-align: center;">LOC_SENS</th>
+<th style="text-align: center;">LOC_SOUN</th>
+<th style="text-align: center;">LOC_SCEN</th>
+<th style="text-align: center;">LOC_VISE</th>
+<th style="text-align: center;">LOC_VEGE</th>
+<th style="text-align: center;">LOC_FAUN</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">0.062</td>
+<td style="text-align: center;">-0.001</td>
+<td style="text-align: center;">-0.000</td>
+<td style="text-align: center;">0.000</td>
+<td style="text-align: center;">-0.001</td>
+<td style="text-align: center;">-0.000</td>
+<td style="text-align: center;">-0.019</td>
+<td style="text-align: center;">-0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HETER</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.130***</td>
+<td style="text-align: center;">0.109**</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">JNYTIME_sqrt</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.114**</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LCARTIF_sqrt</td>
+<td style="text-align: center;">-0.152**</td>
+<td style="text-align: center;">-0.124*</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.175***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.071.</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.214***</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LCARTIF_sqrt:RL_NDVI</td>
+<td style="text-align: center;">0.115**</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OVDIST_sqrt</td>
+<td style="text-align: center;">0.027</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RL_NDVI</td>
+<td style="text-align: center;">0.150***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.217***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.219***</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RL_NOISE</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.242***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">STRIMP999_sqrt</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.073.</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="quarto-notebook-link" id="nblink-1" href="index-preview.html">Source: Article Notebook</a></div>
+</section>
+<section id="prs-mediators-gis2" class="level4">
+<h4 class="anchored" data-anchor-id="prs-mediators-gis2">PRS ~ (Mediators + GIS)^2</h4>
+<p>Significant codes as usual: <code>0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Covariate</th>
+<th style="text-align: center;">MEAN</th>
+<th style="text-align: center;">FA</th>
+<th style="text-align: center;">BA</th>
+<th style="text-align: center;">EC</th>
+<th style="text-align: center;">ES</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-0.008</td>
+<td style="text-align: center;">-0.003</td>
+<td style="text-align: center;">-0.008</td>
+<td style="text-align: center;">-0.009</td>
+<td style="text-align: center;">0.031</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DISTKM_sqrt</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.081*</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FEELNAT</td>
+<td style="text-align: center;">0.202***</td>
+<td style="text-align: center;">0.169***</td>
+<td style="text-align: center;">0.188***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.258***</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FEELNAT:LOC_SCEN</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.002</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FEELNAT:LOC_SENS</td>
+<td style="text-align: center;">0.054.</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LCFOREST_sqrt</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.090*</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LNOISE</td>
+<td style="text-align: center;">0.177***</td>
+<td style="text-align: center;">0.133***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.133**</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LNOISE:FEELNAT</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.006</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LOC_FAUN</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.176***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LOC_SCEN</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.164***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.004</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LOC_SENS</td>
+<td style="text-align: center;">0.104*</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.147***</td>
+<td style="text-align: center;">0.142***</td>
+<td style="text-align: center;">0.096*</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LOC_VISE</td>
+<td style="text-align: center;">0.173***</td>
+<td style="text-align: center;">0.128**</td>
+<td style="text-align: center;">0.122**</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RL_NDVI</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.133***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RL_NDVI:LOC_SCEN</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.024</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
 </section>
 </section>
 </section>

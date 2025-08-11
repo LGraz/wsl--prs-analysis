@@ -401,6 +401,114 @@ selection and evaluated it on the test dataset.
   Significant edges remain in SEM (see all interactions)
 \end{itemize}
 
+\paragraph{All Interactions: Mediators \textasciitilde{}
+(GIS)\^{}2}\label{all-interactions-mediators-gis2}
+
+Significant codes as usual:
+\texttt{0\ \textquotesingle{}***\textquotesingle{}\ 0.001\ \textquotesingle{}**\textquotesingle{}\ 0.01\ \textquotesingle{}*\textquotesingle{}\ 0.05\ \textquotesingle{}.\textquotesingle{}\ 0.1\ \textquotesingle{}\ \textquotesingle{}\ 1}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.2019}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.0962}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1058}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.0962}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1058}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.0962}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.0962}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.0962}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1058}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Covariate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+FEELNAT
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LNOISE
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LOC\_SENS
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LOC\_SOUN
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LOC\_SCEN
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LOC\_VISE
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LOC\_VEGE
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+LOC\_FAUN
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & 0.062 & -0.001 & -0.000 & 0.000 & -0.001 & -0.000 & -0.019
+& -0.001 \\
+HETER & & & 0.130*** & 0.109** & & & & \\
+JNYTIME\_sqrt & & & & & & & -0.114** & \\
+LCARTIF\_sqrt & -0.152** & -0.124* & & -0.175*** & & -0.071. & &
+-0.214*** \\
+LCARTIF\_sqrt:RL\_NDVI & 0.115** & & & & & & & \\
+OVDIST\_sqrt & 0.027 & & & & & & & \\
+RL\_NDVI & 0.150*** & & & & 0.217*** & & 0.219*** & \\
+RL\_NOISE & & -0.242*** & & & & & & \\
+STRIMP999\_sqrt & & & -0.073. & & & & & \\
+\end{longtable}
+
+\textsubscript{Source:
+\href{https://LGraz.github.io/wsl--prs-analysis/index.qmd.html}{Article
+Notebook}}
+
+\paragraph{PRS \textasciitilde{} (Mediators +
+GIS)\^{}2}\label{prs-mediators-gis2}
+
+Significant codes as usual:
+\texttt{0\ \textquotesingle{}***\textquotesingle{}\ 0.001\ \textquotesingle{}**\textquotesingle{}\ 0.01\ \textquotesingle{}*\textquotesingle{}\ 0.05\ \textquotesingle{}.\textquotesingle{}\ 0.1\ \textquotesingle{}\ \textquotesingle{}\ 1}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2500}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1471}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1618}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1471}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1471}}
+  >{\centering\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1471}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Covariate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+MEAN
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+FA
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+BA
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+EC
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+ES
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & -0.008 & -0.003 & -0.008 & -0.009 & 0.031 \\
+DISTKM\_sqrt & & & & & 0.081* \\
+FEELNAT & 0.202*** & 0.169*** & 0.188*** & & 0.258*** \\
+FEELNAT:LOC\_SCEN & & -0.002 & & & \\
+FEELNAT:LOC\_SENS & 0.054. & & & & \\
+LCFOREST\_sqrt & & & & -0.090* & \\
+LNOISE & 0.177*** & 0.133*** & & & 0.133** \\
+LNOISE:FEELNAT & & & & & -0.006 \\
+LOC\_FAUN & & 0.176*** & & & \\
+LOC\_SCEN & & 0.164*** & & 0.004 & \\
+LOC\_SENS & 0.104* & & 0.147*** & 0.142*** & 0.096* \\
+LOC\_VISE & 0.173*** & 0.128** & 0.122** & & \\
+RL\_NDVI & & -0.133*** & & & \\
+RL\_NDVI:LOC\_SCEN & & 0.024 & & & \\
+\end{longtable}
+
+\textsubscript{Source:
+\href{https://LGraz.github.io/wsl--prs-analysis/index.qmd.html}{Article
+Notebook}}
+
 
 
 
