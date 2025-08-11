@@ -35,6 +35,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-813c323200a87c37e262811031999de4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <style>.quarto-notebook .cell-container .cell-decorator { display: none; }</style>
 
 
@@ -124,6 +127,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#all-interactions-mediators-gis2" id="toc-all-interactions-mediators-gis2" class="nav-link" data-scroll-target="#all-interactions-mediators-gis2">All Interactions: Mediators ~ (GIS)^2</a></li>
   <li><a href="#prs-mediators-gis2" id="toc-prs-mediators-gis2" class="nav-link" data-scroll-target="#prs-mediators-gis2">PRS ~ (Mediators + GIS)^2</a></li>
   </ul></li>
+  </ul></li>
+  <li><a href="#predict-rl-via-hm" id="toc-predict-rl-via-hm" class="nav-link" data-scroll-target="#predict-rl-via-hm">Predict RL via HM</a>
+  <ul class="collapse">
+  <li><a href="#rl_ndvi" id="toc-rl_ndvi" class="nav-link" data-scroll-target="#rl_ndvi">RL_NDVI</a></li>
+  <li><a href="#rl_noise" id="toc-rl_noise" class="nav-link" data-scroll-target="#rl_noise">RL_NOISE</a></li>
+  <li><a href="#soundscape-description-per-hm_noise" id="toc-soundscape-description-per-hm_noise" class="nav-link" data-scroll-target="#soundscape-description-per-hm_noise">Soundscape Description per HM_Noise</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -523,6 +532,124 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
+</section>
+</section>
+<section id="predict-rl-via-hm" class="level2">
+<h2 class="anchored" data-anchor-id="predict-rl-via-hm">Predict RL via HM</h2>
+<p>Details/Code and results in <a href="./notebooks/RL-via-HM-preview.html">the notebook</a>.</p>
+<p><strong>Procedure:</strong> Stepwise feature selection using BIC on training data and subsequent model fitting on test data. Performed seperately for <code>RL_NDVI</code> and <code>RL_NOISE</code>.</p>
+<p><strong>Predictors:</strong>: <code>HM_NDVI + HM_NOISE + LANG + AGE + SEX + SPEED_log + JNYTIME_sqrt</code> with all two-way interactions.</p>
+<section id="rl_ndvi" class="level3">
+<h3 class="anchored" data-anchor-id="rl_ndvi">RL_NDVI</h3>
+<div class="quarto-embed-nb-cell">
+<div id="lm-summary-rl-ndvi" class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = formula(step_ndvi), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.371 -0.430  0.182  0.698  1.989 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        -0.1690     0.0946   -1.79  0.07452 .  
+HM_NDVI             0.1581     0.0413    3.83  0.00015 ***
+LANGGerman          0.2232     0.1064    2.10  0.03633 *  
+LANGItalian         0.0028     0.1965    0.01  0.98866    
+SPEED_log          -0.0720     0.0414   -1.74  0.08277 .  
+JNYTIME_sqrt        0.1272     0.0415    3.07  0.00226 ** 
+HM_NDVI:SPEED_log  -0.1848     0.0422   -4.38  1.4e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.958 on 536 degrees of freedom
+Multiple R-squared:  0.0917,    Adjusted R-squared:  0.0815 
+F-statistic: 9.02 on 6 and 536 DF,  p-value: 2.09e-09</code></pre>
+</div>
+</div>
+</div>
+<ul>
+<li>R² = 0.08</li>
+<li>Higher HM_NDVI corresponds to slightly higher RL-NDVI</li>
+<li>higher JNYTIME_sqrt corresponds to slightly higher RL-NDVI</li>
+<li>The faster (or further) you travel to RL, the more the RL_NDVI differs from HM_NDVI (negative interaction effect)</li>
+</ul>
+</section>
+<section id="rl_noise" class="level3">
+<h3 class="anchored" data-anchor-id="rl_noise">RL_NOISE</h3>
+<div class="quarto-embed-nb-cell">
+<div id="lm-summary-rl-noise" class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = formula(step_noise), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.5097 -0.7495 -0.0467  0.6473  2.8683 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           -0.03379    0.08896   -0.38  0.70426    
+HM_NOISE               0.23846    0.03916    6.09  2.2e-09 ***
+LANGGerman            -0.00494    0.09968   -0.05  0.96047    
+LANGItalian            0.62198    0.18667    3.33  0.00092 ***
+SPEED_log             -0.06326    0.03902   -1.62  0.10552    
+JNYTIME_sqrt          -0.31956    0.03936   -8.12  3.2e-15 ***
+HM_NOISE:JNYTIME_sqrt -0.03423    0.04070   -0.84  0.40061    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.904 on 536 degrees of freedom
+Multiple R-squared:  0.193, Adjusted R-squared:  0.184 
+F-statistic: 21.3 on 6 and 536 DF,  p-value: &lt;2e-16</code></pre>
+</div>
+</div>
+</div>
+<ul>
+<li>R² = 0.184</li>
+<li>Participants can’t completely escape HM_NOISE (HM_NOISE positive predictor)</li>
+<li>LANGItalians have it louder (than LANG de/fr)</li>
+<li>Longer JNYTIME_sqrt leads to lower NOISE</li>
+</ul>
+<p>Visualizing the effect of <code>HM_NOISE</code> and <code>JNYTIME_sqrt</code> on <code>RL_NOISE</code>:</p>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-predicted-rl-noise-w-gp" class="cell" data-message="false">
+<div class="cell-output cell-output-display">
+<div id="fig-predicted-rl-noise-w-gp" class="quarto-float quarto-figure quarto-figure-center anchored" height="480" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-predicted-rl-noise-w-gp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-RL-via-HM-fig-predicted-rl-noise-w-gp-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: "><img src="index_files/figure-html/notebooks-RL-via-HM-fig-predicted-rl-noise-w-gp-output-1.png" id="fig-predicted-rl-noise-w-gp" width="672" height="480" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-predicted-rl-noise-w-gp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="soundscape-description-per-hm_noise" class="level3">
+<h3 class="anchored" data-anchor-id="soundscape-description-per-hm_noise">Soundscape Description per HM_Noise</h3>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-soundscape-description" class="cell" data-fig-height="8" data-fig-width="7">
+<div class="cell-output cell-output-display">
+<div id="fig-soundscape-description" class="quarto-float quarto-figure quarto-figure-center anchored" height="768" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-soundscape-description-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-RL-via-HM-fig-soundscape-description-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: "><img src="index_files/figure-html/notebooks-RL-via-HM-fig-soundscape-description-output-1.png" id="fig-soundscape-description" width="672" height="768" class="figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-soundscape-description-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section>
 </section>
 </section>
@@ -929,6 +1056,38 @@ ul.task-list li input[type="checkbox"] {
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

@@ -31,4 +31,5 @@ renv/
 !docs/notebooks/*_files/
 !docs/notebooks/*_files/*
 !docs/notebooks/*_files/*.png
+!docs/index_files
 

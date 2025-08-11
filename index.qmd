@@ -147,3 +147,40 @@ Significant codes as usual: `0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1`
 #| output: asis
 readRDS("cache/ResSum4.rds")
 ```
+
+
+## Predict RL via HM
+Details/Code and results in [the notebook](notebooks/RL-via-HM.qmd).
+
+**Procedure:**
+Stepwise feature selection using BIC on training data and subsequent model fitting on test data. Performed seperately for `RL_NDVI` and `RL_NOISE`.
+
+**Predictors:**: `HM_NDVI + HM_NOISE + LANG + AGE + SEX + SPEED_log + JNYTIME_sqrt` with all two-way interactions.
+
+### RL_NDVI 
+
+{{< embed notebooks/RL-via-HM.qmd#lm-summary-rl-ndvi >}}
+
+- R² = 0.08
+- Higher HM_NDVI corresponds to slightly higher RL-NDVI
+- higher JNYTIME_sqrt corresponds to slightly higher RL-NDVI
+- The faster (or further) you travel to RL, the more the RL_NDVI differs from HM_NDVI (negative interaction effect)
+
+### RL_NOISE
+
+{{< embed notebooks/RL-via-HM.qmd#lm-summary-rl-noise >}}
+
+- R² = 0.184
+- Participants can't completely escape HM_NOISE (HM_NOISE positive predictor)
+- LANGItalians have it louder (than LANG de/fr)
+- Longer JNYTIME_sqrt leads to lower NOISE
+
+
+Visualizing the effect of `HM_NOISE` and `JNYTIME_sqrt` on `RL_NOISE`:
+
+{{< embed notebooks/RL-via-HM.qmd#fig-predicted-rl-noise-w-gp >}}
+
+### Soundscape Description per HM_Noise
+
+{{< embed notebooks/RL-via-HM.qmd#fig-soundscape-description >}}
+

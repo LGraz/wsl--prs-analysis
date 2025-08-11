@@ -126,6 +126,7 @@ Remove DIST_sqrt, as it is highly correlated with the other two.
 
 ## RL_NDVI
 ```{r}
+#| label: lm-summary-rl-ndvi
 lm_ndvi <- lm(RL_NDVI ~ (HM_NDVI + HM_NOISE + 
   #  ALONE + WITH_DOG + WITH_KID + WITH_PAR + WITH_PNT + WITH_FND +
    LANG + AGE + SEX +
@@ -146,6 +147,7 @@ ggplot(D_tst, aes(x = JNYTIME_sqrt, y=HM_NOISE, col = RL_NOISE)) +
 
 ## RL_NOISE
 ```{r}
+#| label: lm-summary-rl-noise
 lm_noise <- lm(RL_NOISE ~ (HM_NDVI + HM_NOISE + 
   #  ALONE + WITH_DOG + WITH_KID + WITH_PAR + WITH_PNT + WITH_FND +
    LANG + AGE + SEX +
@@ -186,6 +188,13 @@ grid$predicted_RL_NOISE <- predict(gp_model, as.matrix(grid[, 1:2]))
 
 # Get combined range for both scales
 combined_range <- range(c(D_tst$RL_NOISE, grid$predicted_RL_NOISE))
+```
+
+
+```{r}
+#| label: fig-predicted-rl-noise-w-gp
+#| code-fold: true
+#| message: false
 
 # Plot with matching color scales
 ggplot() +
@@ -222,6 +231,7 @@ aggregate(ES ~ HM_NOISELVL, D, summary_fun)
 
 
 ```{r}
+#| label: fig-soundscape-description
 #| code-fold: true
 #| warning: false
 #| fig-height: 8

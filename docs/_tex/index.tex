@@ -509,6 +509,147 @@ RL\_NDVI:LOC\_SCEN & & 0.024 & & & \\
 \href{https://LGraz.github.io/wsl--prs-analysis/index.qmd.html}{Article
 Notebook}}
 
+\subsection{Predict RL via HM}\label{predict-rl-via-hm}
+
+Details/Code and results in \href{notebooks/RL-via-HM.qmd}{the
+notebook}.
+
+\textbf{Procedure:} Stepwise feature selection using BIC on training
+data and subsequent model fitting on test data. Performed seperately for
+\texttt{RL\_NDVI} and \texttt{RL\_NOISE}.
+
+\textbf{Predictors:}:
+\texttt{HM\_NDVI\ +\ HM\_NOISE\ +\ LANG\ +\ AGE\ +\ SEX\ +\ SPEED\_log\ +\ JNYTIME\_sqrt}
+with all two-way interactions.
+
+\subsubsection{RL\_NDVI}\label{rl_ndvi}
+
+\begin{verbatim}
+
+Call:
+lm(formula = formula(step_ndvi), data = D_tst)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.371 -0.430  0.182  0.698  1.989 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)        -0.1690     0.0946   -1.79  0.07452 .  
+HM_NDVI             0.1581     0.0413    3.83  0.00015 ***
+LANGGerman          0.2232     0.1064    2.10  0.03633 *  
+LANGItalian         0.0028     0.1965    0.01  0.98866    
+SPEED_log          -0.0720     0.0414   -1.74  0.08277 .  
+JNYTIME_sqrt        0.1272     0.0415    3.07  0.00226 ** 
+HM_NDVI:SPEED_log  -0.1848     0.0422   -4.38  1.4e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.958 on 536 degrees of freedom
+Multiple R-squared:  0.0917,    Adjusted R-squared:  0.0815 
+F-statistic: 9.02 on 6 and 536 DF,  p-value: 2.09e-09
+\end{verbatim}
+
+\textsubscript{Source:
+\href{https://LGraz.github.io/wsl--prs-analysis/notebooks/RL-via-HM-preview.html\#cell-lm-summary-rl-ndvi}{Predict
+RL via HM}}
+
+\begin{itemize}
+\tightlist
+\item
+  R² = 0.08
+\item
+  Higher HM\_NDVI corresponds to slightly higher RL-NDVI
+\item
+  higher JNYTIME\_sqrt corresponds to slightly higher RL-NDVI
+\item
+  The faster (or further) you travel to RL, the more the RL\_NDVI
+  differs from HM\_NDVI (negative interaction effect)
+\end{itemize}
+
+\subsubsection{RL\_NOISE}\label{rl_noise}
+
+\begin{verbatim}
+
+Call:
+lm(formula = formula(step_noise), data = D_tst)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.5097 -0.7495 -0.0467  0.6473  2.8683 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(>|t|)    
+(Intercept)           -0.03379    0.08896   -0.38  0.70426    
+HM_NOISE               0.23846    0.03916    6.09  2.2e-09 ***
+LANGGerman            -0.00494    0.09968   -0.05  0.96047    
+LANGItalian            0.62198    0.18667    3.33  0.00092 ***
+SPEED_log             -0.06326    0.03902   -1.62  0.10552    
+JNYTIME_sqrt          -0.31956    0.03936   -8.12  3.2e-15 ***
+HM_NOISE:JNYTIME_sqrt -0.03423    0.04070   -0.84  0.40061    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.904 on 536 degrees of freedom
+Multiple R-squared:  0.193, Adjusted R-squared:  0.184 
+F-statistic: 21.3 on 6 and 536 DF,  p-value: <2e-16
+\end{verbatim}
+
+\textsubscript{Source:
+\href{https://LGraz.github.io/wsl--prs-analysis/notebooks/RL-via-HM-preview.html\#cell-lm-summary-rl-noise}{Predict
+RL via HM}}
+
+\begin{itemize}
+\tightlist
+\item
+  R² = 0.184
+\item
+  Participants can't completely escape HM\_NOISE (HM\_NOISE positive
+  predictor)
+\item
+  LANGItalians have it louder (than LANG de/fr)
+\item
+  Longer JNYTIME\_sqrt leads to lower NOISE
+\end{itemize}
+
+Visualizing the effect of \texttt{HM\_NOISE} and \texttt{JNYTIME\_sqrt}
+on \texttt{RL\_NOISE}:
+
+\begin{figure}[H]
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-RL-via-HM-fig-predicted-rl-noise-w-gp-output-1.png}}
+
+}
+
+\caption{\label{fig-predicted-rl-noise-w-gp}}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://LGraz.github.io/wsl--prs-analysis/notebooks/RL-via-HM-preview.html\#cell-fig-predicted-rl-noise-w-gp}{Predict
+RL via HM}}
+
+\subsubsection{Soundscape Description per
+HM\_Noise}\label{soundscape-description-per-hm_noise}
+
+\begin{figure}[H]
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-latex/notebooks-RL-via-HM-fig-soundscape-description-output-1.png}}
+
+}
+
+\caption{\label{fig-soundscape-description}}
+
+\end{figure}%
+
+\textsubscript{Source:
+\href{https://LGraz.github.io/wsl--prs-analysis/notebooks/RL-via-HM-preview.html\#cell-fig-soundscape-description}{Predict
+RL via HM}}
+
 
 
 
