@@ -12,6 +12,8 @@ manuscript:
       title: "Hypothesis Testing"
     - notebook: notebooks/RL-via-HM.qmd
       title: "Predict RL via HM"
+    - notebook: notebooks/noise-plots.qmd
+      title: "Noise Plots"
   code-links:
     - text: Code of data preparation
       icon: file-code

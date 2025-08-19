@@ -148,7 +148,6 @@ Significant codes as usual: `0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1`
 readRDS("cache/ResSum4.rds")
 ```
 
-
 ## Predict RL via HM
 Details/Code and results in [the notebook](notebooks/RL-via-HM.qmd).
 
@@ -180,7 +179,7 @@ Visualizing the effect of `HM_NOISE` and `JNYTIME_sqrt` on `RL_NOISE`:
 
 {{< embed notebooks/RL-via-HM.qmd#fig-predicted-rl-noise-w-gp >}}
 
-### Soundscape Description per HM_Noise
 
-{{< embed notebooks/RL-via-HM.qmd#fig-soundscape-description >}}
+## Plots
 
+see [the notebook](notebooks/noise-plots.qmd).

@@ -48,6 +48,10 @@ D_trn[GIS_vars] <- xfun::cache_rds({
 )$ximp |> as.data.frame()
 ```
 
+### Remove "LOC_" variables from Mediators
+```{r}
+Mediator_vars <- grep("LOC_", Mediator_vars, invert = TRUE, value = TRUE)
+```
 
 ### Scaling Test Data
 ```{r}
@@ -195,8 +199,8 @@ ggplot(D_plot, aes(x = LCARTIF_sqrt, y=RL_NDVI, col = FEELNAT)) +
 
 # Erstelle RL_NDVI Gruppen
 D_plot$RL_NDVI_group <- cut(D_plot$RL_NDVI, 
-                          breaks = c(-Inf, -0.3, 0.3, Inf),
-                          labels = c("Low (< -0.3)", "Medium (-0.3 to 0.3)", "High (> 0.3)"))
+                          breaks = c(-Inf, -0.25, 0.25, Inf),
+                          labels = c("Low (< -0.25)", "Medium (-0.25 to 0.25)", "High (> 0.25)"))
 
 ggplot(D_plot, aes(x = LCARTIF_sqrt, y = FEELNAT, 
                   col = RL_NDVI_group, shape = RL_NDVI_group)) +
@@ -254,226 +258,4 @@ ResTab3
 ResTab4 <- create_coef_table(ResSum4)
 saveRDS(ResTab4, "cache/ResSum4.rds")
 ResTab4
-```
-
-
-
-### Legacy Code
-```{r}
-#| code-fold: true
-#| code-summary: "Variable selection over multiple y (not desired)"
-#| echo: false
-#| eval: false
-
-# library(grpreg)
-# fit <- cv.grpreg(X = model.matrix(fit_MED_GIS)[,-1], y = D_trn[Mediator_vars[1:2]])
-# coef(fit) |> t()
-# fit$beta
-# plot(fit)
-```
-
-```{r}
-#| code-fold: true
-#| code-summary: "Linear models with mice"
-#| echo: false
-#| eval: false
-
-Y <- D[]
-
-library(mice, quietly = TRUE)
-library(car, quietly = TRUE)
-library(miceadds, quietly = TRUE)
-data(nhanes2, package = "mice")
-set.seed(9090)
-
-mi.res <- miceadds::mice.1chain(nhanes2, burnin = 4, iter = 20, Nimp = 8)
-an2a <- miceadds::mi.anova(mi.res = mi.res, formula = "bmi ~ age * chl")
-
-mod1 <- with(mi.res, stats::lm(bmi ~ age * chl))
-mod0 <- with(mi.res, stats::lm(bmi ~ age + chl))
-
-mitml::testModels(model = mod1$analyses, null.model = mod0$analyses, method = "D1")
-mitml::testModels(model = mod1$analyses, null.model = mod0$analyses, method = "D2")
-
-an2b <- miceadds::mi.anova(mi.res = mi.res, formula = "bmi ~ age * chl", type = 3)
-```
-
-
-```{r}
-#| code-fold: true
-#| code-summary: "Mediators ~ GIS"
-#| echo: false
-#| eval: false
-stop("this should not run")
-Res1 <- list()
-for (mediator in Mediator_vars) {
-  full_model <- lm(as.formula(paste0(
-    mediator, " ~ ", 
-    "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
-  )), D_trn)
-  small_model <- step(full_model, trace = FALSE, k = log(nrow(D_trn)))
-  Res1[[mediator]] <- lm(formula(small_model), D_tst)
-}
-lapply(Res1, summary)
-```
-
-```{r}
-#| code-fold: true
-#| code-summary: "PRS ~ Mediators"
-#| echo: false
-#| eval: false
-Res2 <- list()
-for (mediator in Mediator_vars) {
-  full_model <- lm(as.formula(paste0(
-    mediator, " ~ ", 
-    "HM_NOISE_nrm * (", paste(GIS_vars, collapse = " + "), ")"
-  )), D_trn)
-  small_model <- step(full_model, trace = FALSE, k = log(nrow(D_trn)))
-  Res2[[mediator]] <- lm(formula(small_model), D_tst)
-}
-lapply(Res2, summary)
-```
-
-
-
-
-
-
-```{r}library(dplyr)
-library(knitr)
-library(kableExtra)
-
-# Function to extract coefficients with significance indicators
-extract_coef_data <- function(model_name, coef_data) {
-  # Extract coefficient names, estimates, and p-values
-  coef_names <- rownames(coef_data)
-  estimates <- coef_data[, "Estimate"]
-  p_values <- coef_data[, "Pr(>|t|)"]
-  
-  # Format estimates with significance stars
-  formatted_coef <- sapply(1:length(estimates), function(i) {
-    est_str <- sprintf("%.3f", estimates[i])
-    if (p_values[i] < 0.001) {
-      paste0("**", est_str, "**")  # Bold for p < 0.001
-    } else {
-      est_str
-    }
-  })
-  
-  # Create data frame
-  data.frame(
-    Model = model_name,
-    Covariate = coef_names,
-    Coefficient = formatted_coef,
-    stringsAsFactors = FALSE
-  )
-}
-
-# Manual data entry based on your results
-# You would typically extract this from your model objects, but since you have text output:
-
-model_results <- list()
-
-# FEELNAT model
-feelnat_coef <- data.frame(
-  row.names = c("(Intercept)", "LCARTIF_sqrt", "RL_NDVI", "OVDIST_sqrt", "LCARTIF_sqrt:RL_NDVI"),
-  Estimate = c(0.0618, -0.1524, 0.1498, 0.0270, 0.1146),
-  `Pr(>|t|)` = c(0.13260, 0.00770, 0.00063, 0.55112, 0.00446),
-  check.names = FALSE
-)
-model_results[["FEELNAT"]] <- extract_coef_data("FEELNAT", feelnat_coef)
-
-# LNOISE model
-lnoise_coef <- data.frame(
-  row.names = c("(Intercept)", "LCARTIF_sqrt", "RL_NOISE"),
-  Estimate = c(-0.00097, -0.12357, -0.24203),
-  `Pr(>|t|)` = c(0.980, 0.011, 9.7e-07),
-  check.names = FALSE
-)
-model_results[["LNOISE"]] <- extract_coef_data("LNOISE", lnoise_coef)
-
-# LOC_SENS model
-loc_sens_coef <- data.frame(
-  row.names = c("(Intercept)", "HETER", "STRIMP999_sqrt"),
-  Estimate = c(-0.000148, 0.129769, -0.072664),
-  `Pr(>|t|)` = c(0.99678, 0.00073, 0.05837),
-  check.names = FALSE
-)
-model_results[["LOC_SENS"]] <- extract_coef_data("LOC_SENS", loc_sens_coef)
-
-# LOC_SOUN model
-loc_soun_coef <- data.frame(
-  row.names = c("(Intercept)", "LCARTIF_sqrt", "HETER"),
-  Estimate = c(0.000403, -0.175213, 0.109010),
-  `Pr(>|t|)` = c(0.9912, 2.9e-06, 0.0035),
-  check.names = FALSE
-)
-model_results[["LOC_SOUN"]] <- extract_coef_data("LOC_SOUN", loc_soun_coef)
-
-# LOC_SCEN model
-loc_scen_coef <- data.frame(
-  row.names = c("(Intercept)", "RL_NDVI"),
-  Estimate = c(-0.00114, 0.21701),
-  `Pr(>|t|)` = c(0.97, 3.5e-09),
-  check.names = FALSE
-)
-model_results[["LOC_SCEN"]] <- extract_coef_data("LOC_SCEN", loc_scen_coef)
-
-# LOC_VISE model
-loc_vise_coef <- data.frame(
-  row.names = c("(Intercept)", "LCARTIF_sqrt"),
-  Estimate = c(-0.000356, -0.071106),
-  `Pr(>|t|)` = c(0.992, 0.059),
-  check.names = FALSE
-)
-model_results[["LOC_VISE"]] <- extract_coef_data("LOC_VISE", loc_vise_coef)
-
-# LOC_VEGE model
-loc_vege_coef <- data.frame(
-  row.names = c("(Intercept)", "RL_NDVI", "JNYTIME_sqrt"),
-  Estimate = c(-0.0192, 0.2195, -0.1139),
-  `Pr(>|t|)` = c(0.6111, 1.4e-08, 0.0027),
-  check.names = FALSE
-)
-model_results[["LOC_VEGE"]] <- extract_coef_data("LOC_VEGE", loc_vege_coef)
-
-# LOC_FAUN model
-loc_faun_coef <- data.frame(
-  row.names = c("(Intercept)", "LCARTIF_sqrt"),
-  Estimate = c(-0.00127, -0.21409),
-  `Pr(>|t|)` = c(0.97, 1.1e-08),
-  check.names = FALSE
-)
-model_results[["LOC_FAUN"]] <- extract_coef_data("LOC_FAUN", loc_faun_coef)
-
-# Combine all results
-all_results <- do.call(rbind, model_results)
-
-# Create wide format table
-results_wide <- all_results %>%
-  select(Model, Covariate, Coefficient) %>%
-  tidyr::pivot_wider(names_from = Model, values_from = Coefficient, values_fill = "")
-
-# Get all unique covariates and sort them (intercept first)
-all_covariates <- unique(all_results$Covariate)
-covariate_order <- c("(Intercept)", sort(all_covariates[all_covariates != "(Intercept)"]))
-
-# Reorder rows
-results_wide <- results_wide %>%
-  slice(match(covariate_order, Covariate))
-
-# Create the final table
-print("Linear Model Results Summary")
-print("Bold coefficients indicate p < 0.001")
-print("")
-
-# Display as a nice table
-kable(results_wide, 
-      format = "pipe",
-      align = c("l", rep("c", ncol(results_wide)-1))) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
-
-# Alternative: Simple data frame for viewing
-print(results_wide)
-
 ```

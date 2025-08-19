@@ -261,8 +261,8 @@
   <ul class="collapse">
   <li><a href="#rl_ndvi" id="toc-rl_ndvi" class="nav-link" data-scroll-target="#rl_ndvi">RL_NDVI</a></li>
   <li><a href="#rl_noise" id="toc-rl_noise" class="nav-link" data-scroll-target="#rl_noise">RL_NOISE</a></li>
-  <li><a href="#soundscape-description-per-hm_noise" id="toc-soundscape-description-per-hm_noise" class="nav-link" data-scroll-target="#soundscape-description-per-hm_noise">Soundscape Description per HM_Noise</a></li>
   </ul></li>
+  <li><a href="#plots" id="toc-plots" class="nav-link" data-scroll-target="#plots">Plots</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -386,28 +386,11 @@
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">readRDS</span>(<span class="st">"cache/ResSum3.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 10%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Covariate</th>
 <th style="text-align: center;">FEELNAT</th>
 <th style="text-align: center;">LNOISE</th>
-<th style="text-align: center;">LOC_SENS</th>
-<th style="text-align: center;">LOC_SOUN</th>
-<th style="text-align: center;">LOC_SCEN</th>
-<th style="text-align: center;">LOC_VISE</th>
-<th style="text-align: center;">LOC_VEGE</th>
-<th style="text-align: center;">LOC_FAUN</th>
 </tr>
 </thead>
 <tbody>
@@ -415,100 +398,31 @@
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: center;">0.062</td>
 <td style="text-align: center;">-0.001</td>
-<td style="text-align: center;">-0.000</td>
-<td style="text-align: center;">0.000</td>
-<td style="text-align: center;">-0.001</td>
-<td style="text-align: center;">-0.000</td>
-<td style="text-align: center;">-0.019</td>
-<td style="text-align: center;">-0.001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HETER</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.130***</td>
-<td style="text-align: center;">0.109**</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">JNYTIME_sqrt</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.114**</td>
-<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LCARTIF_sqrt</td>
 <td style="text-align: center;">-0.152**</td>
 <td style="text-align: center;">-0.124*</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.175***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.071.</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.214***</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LCARTIF_sqrt:RL_NDVI</td>
 <td style="text-align: center;">0.115**</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OVDIST_sqrt</td>
 <td style="text-align: center;">0.027</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">RL_NDVI</td>
 <td style="text-align: center;">0.150***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.217***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.219***</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">RL_NOISE</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">-0.242***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">STRIMP999_sqrt</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.073.</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -522,14 +436,6 @@
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">readRDS</span>(<span class="st">"cache/ResSum4.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 14%">
-<col style="width: 16%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Covariate</th>
@@ -543,112 +449,64 @@
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-0.006</td>
+<td style="text-align: center;">0.005</td>
 <td style="text-align: center;">-0.008</td>
-<td style="text-align: center;">-0.003</td>
-<td style="text-align: center;">-0.008</td>
-<td style="text-align: center;">-0.009</td>
-<td style="text-align: center;">0.031</td>
+<td style="text-align: center;">-0.006</td>
+<td style="text-align: center;">0.028</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DISTKM_sqrt</td>
+<td style="text-align: center;">-0.019</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.081*</td>
+<td style="text-align: center;">0.073.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FEELNAT</td>
-<td style="text-align: center;">0.202***</td>
-<td style="text-align: center;">0.169***</td>
-<td style="text-align: center;">0.188***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.258***</td>
+<td style="text-align: center;">0.251***</td>
+<td style="text-align: center;">0.265***</td>
+<td style="text-align: center;">0.252***</td>
+<td style="text-align: center;">0.058</td>
+<td style="text-align: center;">0.269***</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">FEELNAT:LOC_SCEN</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.002</td>
+<td style="text-align: left;">FEELNAT:LNOISE</td>
+<td style="text-align: center;">0.022</td>
+<td style="text-align: center;">-0.036</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">FEELNAT:LOC_SENS</td>
-<td style="text-align: center;">0.054.</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">LCFOREST_sqrt</td>
+<td style="text-align: center;">-0.066.</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;">-0.113**</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.090*</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">LNOISE</td>
-<td style="text-align: center;">0.177***</td>
-<td style="text-align: center;">0.133***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.133**</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">LNOISE</td>
+<td style="text-align: center;">0.213***</td>
+<td style="text-align: center;">0.171***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.142**</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">LNOISE:FEELNAT</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.006</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">LOC_FAUN</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.176***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.012</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">LOC_SCEN</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.164***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.004</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">LOC_SENS</td>
-<td style="text-align: center;">0.104*</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.147***</td>
-<td style="text-align: center;">0.142***</td>
-<td style="text-align: center;">0.096*</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">LOC_VISE</td>
-<td style="text-align: center;">0.173***</td>
-<td style="text-align: center;">0.128**</td>
-<td style="text-align: center;">0.122**</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">RL_NDVI</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.133***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">RL_NDVI:LOC_SCEN</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.024</td>
+<td style="text-align: center;">-0.105**</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -756,18 +614,17 @@ F-statistic: 21.3 on 6 and 536 DF,  p-value: &lt;2e-16</code></pre>
 <div class="quarto-embed-nb-cell" data-notebook="/home/lukas/Work/Projects/WSL--Natalia--Kolecka/notebooks/RL-via-HM.qmd" data-notebook-title="Predict RL via HM" data-notebook-cellid="cell-fig-predicted-rl-noise-w-gp">
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-fig-predicted-rl-noise-w-gp" class="cell" data-message="false">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>Plot predicted RL_NOISE with GP</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot with matching color scales</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ggplot() <span class="op">+</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  geom_raster(data <span class="op">=</span> grid, aes(x <span class="op">=</span> JNYTIME_sqrt, y <span class="op">=</span> HM_NOISE, fill <span class="op">=</span> predicted_RL_NOISE)) <span class="op">+</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  geom_jitter(data <span class="op">=</span> D_tst, aes(x <span class="op">=</span> JNYTIME_sqrt, y <span class="op">=</span> HM_NOISE, col <span class="op">=</span> RL_NOISE, shape <span class="op">=</span> LANG), </span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>              width <span class="op">=</span> <span class="fl">0.07</span>, height <span class="op">=</span> <span class="fl">0.1</span>, alpha <span class="op">=</span> <span class="fl">0.7</span>) <span class="op">+</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  scale_fill_viridis_c(name <span class="op">=</span> <span class="st">"Predicted</span><span class="ch">\n</span><span class="st">RL_NOISE"</span>, limits <span class="op">=</span> combined_range) <span class="op">+</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  scale_color_viridis_c(name <span class="op">=</span> <span class="st">"Actual</span><span class="ch">\n</span><span class="st">RL_NOISE"</span>, limits <span class="op">=</span> combined_range) <span class="op">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  theme_minimal()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  scale_color_viridis_c(name <span class="op">=</span> <span class="st">"Actual</span><span class="ch">\n</span><span class="st">RL_NOISE"</span>, limits <span class="op">=</span> combined_range) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-predicted-rl-noise-w-gp" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" height="480">
+<div id="fig-predicted-rl-noise-w-gp" class="quarto-float quarto-figure quarto-figure-center anchored" height="480" width="672">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-predicted-rl-noise-w-gp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-RL-via-HM-fig-predicted-rl-noise-w-gp-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: "><img src="index_files/figure-html/notebooks-RL-via-HM-fig-predicted-rl-noise-w-gp-output-1.png" id="fig-predicted-rl-noise-w-gp" width="672" height="480" class="figure-img"></a>
@@ -781,155 +638,10 @@ Figure&nbsp;1
 </div></div>
 </div>
 </section>
-<section id="soundscape-description-per-hm_noise" class="level3">
-<h3 class="anchored" data-anchor-id="soundscape-description-per-hm_noise">Soundscape Description per HM_Noise</h3>
-<div class="quarto-embed-nb-cell" data-notebook="/home/lukas/Work/Projects/WSL--Natalia--Kolecka/notebooks/RL-via-HM.qmd" data-notebook-title="Predict RL via HM" data-notebook-cellid="cell-fig-soundscape-description">
-<div class="cell-container code-fold"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-fig-soundscape-description" class="cell" data-fig-height="8" data-fig-width="7">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define colors</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>colors <span class="op">&lt;-</span> c(<span class="st">"#E31A1C"</span>, <span class="st">"#1F78B4"</span>, <span class="st">"#33A02C"</span>, <span class="st">"#FF7F00"</span>, <span class="st">"#6A3D9A"</span>, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">"#B15928"</span>, <span class="st">"#A6CEE3"</span>, <span class="st">"#B2DF8A"</span>, <span class="st">"#FDBF6F"</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Plot 1: Dominating Sounds</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>suppressWarnings({</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>p1 <span class="op">&lt;-</span> ggplot(D, aes(x <span class="op">=</span> HM_NOISE)) <span class="op">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LDOMAUD1, color <span class="op">=</span> <span class="st">"Nature sounds"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LDOMAUD2, color <span class="op">=</span> <span class="st">"Human sounds"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LDOMAUD3, color <span class="op">=</span> <span class="st">"Traffic sounds"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LDOMAUD4, color <span class="op">=</span> <span class="st">"Other technical noises"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  scale_color_manual(values <span class="op">=</span> colors[<span class="dv">1</span>:<span class="dv">4</span>]) <span class="op">+</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  labs(</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">"Home Noise Level (HM_NOISE)"</span>,</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">"Response Value"</span>,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">"Sound Type"</span>,</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    title <span class="op">=</span> <span class="st">"Dominating Sounds"</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">+</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  theme_minimal() <span class="op">+</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  theme(</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    plot.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">14</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    legend.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">11</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    legend.text <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">9</span>),</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    axis.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">11</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    panel.grid.minor <span class="op">=</span> element_blank()</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Plot 2: Soundscape Attributes</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>p2 <span class="op">&lt;-</span> ggplot(D, aes(x <span class="op">=</span> HM_NOISE)) <span class="op">+</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS1, color <span class="op">=</span> <span class="st">"Pleasant"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS2, color <span class="op">=</span> <span class="st">"Chaotic"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS3, color <span class="op">=</span> <span class="st">"Vibrant"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS4, color <span class="op">=</span> <span class="st">"Uneventful"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS5, color <span class="op">=</span> <span class="st">"Tranquil"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS6, color <span class="op">=</span> <span class="st">"Bothering"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS7, color <span class="op">=</span> <span class="st">"Eventful"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS8, color <span class="op">=</span> <span class="st">"Monotone"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSOUNDS9, color <span class="op">=</span> <span class="st">"Loud"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>  scale_color_manual(values <span class="op">=</span> colors[<span class="dv">1</span>:<span class="dv">9</span>]) <span class="op">+</span></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>  labs(</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">"Home Noise Level (HM_NOISE)"</span>,</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">"Response Value"</span>,</span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">"Attribute"</span>,</span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    title <span class="op">=</span> <span class="st">"Soundscape Attributes"</span></span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">+</span></span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  theme_minimal() <span class="op">+</span></span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>  theme(</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    plot.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">14</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    legend.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">11</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    legend.text <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">9</span>),</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    axis.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">11</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    panel.grid.minor <span class="op">=</span> element_blank()</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="co"># For the noise annoyance variables, we need to handle the character values</span></span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert character annoyance values to numeric</span></span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>convert_annoyance <span class="op">&lt;-</span> function(x) {</span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  case_when(</span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"00"</span> <span class="op">~</span> <span class="dv">0</span>,</span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"01"</span> <span class="op">~</span> <span class="dv">1</span>,</span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"02"</span> <span class="op">~</span> <span class="dv">2</span>,</span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"03"</span> <span class="op">~</span> <span class="dv">3</span>,</span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"04"</span> <span class="op">~</span> <span class="dv">4</span>,</span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"05"</span> <span class="op">~</span> <span class="dv">5</span>,</span>
-<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"06"</span> <span class="op">~</span> <span class="dv">6</span>,</span>
-<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"07"</span> <span class="op">~</span> <span class="dv">7</span>,</span>
-<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"08"</span> <span class="op">~</span> <span class="dv">8</span>,</span>
-<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"09"</span> <span class="op">~</span> <span class="dv">9</span>,</span>
-<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"10"</span> <span class="op">~</span> <span class="dv">10</span>,</span>
-<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"No annoyance"</span> <span class="op">~</span> <span class="dv">0</span>,</span>
-<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"Response scale mid-point"</span> <span class="op">~</span> <span class="dv">5</span>,</span>
-<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>    x <span class="op">==</span> <span class="st">"Very annoying"</span> <span class="op">~</span> <span class="dv">10</span>,</span>
-<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>    TRUE <span class="op">~</span> <span class="im">as</span>.numeric(x)</span>
-<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a temporary data frame with converted values for noise annoyance</span></span>
-<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>D_temp <span class="op">&lt;-</span> D <span class="op">|&gt;</span></span>
-<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>  mutate(</span>
-<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>    LSANNOY1_num <span class="op">=</span> convert_annoyance(LSANNOY1),</span>
-<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>    LSANNOY2_num <span class="op">=</span> convert_annoyance(LSANNOY2),</span>
-<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>    LSANNOY3_num <span class="op">=</span> convert_annoyance(LSANNOY3),</span>
-<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>    LSANNOY4_num <span class="op">=</span> convert_annoyance(LSANNOY4),</span>
-<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>    LSANNOY5_num <span class="op">=</span> convert_annoyance(LSANNOY5),</span>
-<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>    LSANNOY6_num <span class="op">=</span> convert_annoyance(LSANNOY6),</span>
-<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>    LSANNOY7_num <span class="op">=</span> convert_annoyance(LSANNOY7)</span>
-<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Plot 3: Noise Annoyance</span></span>
-<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>p3 <span class="op">&lt;-</span> ggplot(D_temp, aes(x <span class="op">=</span> HM_NOISE)) <span class="op">+</span></span>
-<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LNOISE, color <span class="op">=</span> <span class="st">"In General"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSANNOY1_num, color <span class="op">=</span> <span class="st">"Road Traffic"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSANNOY2_num, color <span class="op">=</span> <span class="st">"Public Transport"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSANNOY3_num, color <span class="op">=</span> <span class="st">"Train"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSANNOY4_num, color <span class="op">=</span> <span class="st">"Plane"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSANNOY5_num, color <span class="op">=</span> <span class="st">"Freetime"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSANNOY6_num, color <span class="op">=</span> <span class="st">"Music of others"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>  geom_smooth(aes(y <span class="op">=</span> LSANNOY7_num, color <span class="op">=</span> <span class="st">"Works"</span>), method <span class="op">=</span> <span class="st">"gam"</span>, formula <span class="op">=</span> y <span class="op">~</span> s(x), se <span class="op">=</span> TRUE, alpha <span class="op">=</span> <span class="fl">0.3</span>, size <span class="op">=</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
-<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a>  scale_color_manual(values <span class="op">=</span> colors[<span class="dv">1</span>:<span class="dv">8</span>]) <span class="op">+</span></span>
-<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>  labs(</span>
-<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">"Home Noise Level (HM_NOISE)"</span>,</span>
-<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">"Response Value"</span>,</span>
-<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">"Annoyance Source"</span>,</span>
-<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>    title <span class="op">=</span> <span class="st">"Noise Annoyance"</span></span>
-<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">+</span></span>
-<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a>  theme_minimal() <span class="op">+</span></span>
-<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a>  theme(</span>
-<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>    plot.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">14</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>    legend.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">11</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a>    legend.text <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">9</span>),</span>
-<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a>    axis.title <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">11</span>, face <span class="op">=</span> <span class="st">"bold"</span>),</span>
-<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a>    panel.grid.minor <span class="op">=</span> element_blank()</span>
-<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a>xl <span class="op">&lt;-</span> xlim(<span class="dv">30</span>, <span class="dv">70</span>)</span>
-<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all plots vertically</span></span>
-<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a>suppressWarnings({</span>
-<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a>  combined_plot <span class="op">&lt;-</span> grid.arrange(p1<span class="op">+</span>xl, p2<span class="op">+</span>xl, p3<span class="op">+</span>xl, ncol <span class="op">=</span> <span class="dv">1</span>, </span>
-<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a>                             top <span class="op">=</span> <span class="st">"GAM Smoothing Lines: Sound Variables vs Home Noise Level"</span>)</span>
-<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the combined plot</span></span>
-<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="co"># print(combined_plot)</span></span>
-<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>ggsave(<span class="st">"cache/combinded_plot.pdf"</span>, combined_plot, height<span class="op">=</span><span class="dv">8</span>, width <span class="op">=</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-display">
-<div id="fig-soundscape-description" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" height="768">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-soundscape-description-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="index_files/figure-html/notebooks-RL-via-HM-fig-soundscape-description-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: "><img src="index_files/figure-html/notebooks-RL-via-HM-fig-soundscape-description-output-1.png" id="fig-soundscape-description" width="672" height="768" class="figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-soundscape-description-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2
-</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-</div>
 </section>
+<section id="plots" class="level2">
+<h2 class="anchored" data-anchor-id="plots">Plots</h2>
+<p>see <a href="./notebooks/noise-plots-preview.html">the notebook</a>.</p>
 </section>
 </section>
      </main>

@@ -10,17 +10,21 @@ date: 2025-07-10
 suppressPackageStartupMessages({
   library(dplyr)
   library(ggplot2)
+  library(egg)
   library(kernlab)
   library(mgcv)  # for GAM models - smoothing
   library(gridExtra)  # for combining plots
+  library(tidyr)  # for pivoting data
 })
+
+theme_set(theme_minimal())
+
+options(digits = 3)
+source("R/data_prep.R")
 ```
 
 ```{r}
 #| code-fold: true
-source("R/data_prep.R")
-options(digits = 3)
-
 D$RL_NDVI     <- pmax(0, D$RL_NDVI)
 D_trn$RL_NDVI <- pmax(0, D_trn$RL_NDVI)
 D_tst$RL_NDVI <- pmax(0, D_tst$RL_NDVI)
@@ -51,13 +55,12 @@ D_tst$SPEED_log <- log(D_tst$DISTKM / D_tst$JNYTIME)
 # D[logical_vars] <- lapply(D[logical_vars], as.numeric)
 # D_trn[logical_vars] <- lapply(D_trn[logical_vars], as.numeric)
 # D_tst[logical_vars] <- lapply(D_tst[logical_vars], as.numeric)
-
-
 ```
 
 
 ```{r}
 #| code-fold: true
+#| code-summary: "Train/test split"
 nams <- names(D)
 nams[grep("HM|RL", nams)]
 
@@ -72,11 +75,6 @@ vars <- c(
   "DISTKM_sqrt", "JNYTIME_sqrt", "SPEED_log"
 ) 
 
-
-summary(D[vars])
-
-
-
 D_trn <- D_trn[vars]
 D_tst <- D_tst[vars]
 
@@ -85,6 +83,8 @@ D_tst <- D_tst[complete.cases(D_tst), ]
 
 D_trn[] <- lapply(D_trn[], \(x) if (is.numeric(x)) scale(x) else x)
 D_tst[] <- lapply(D_tst[], \(x) if (is.numeric(x)) scale(x) else x)
+
+# summary(D[vars])
 ```
 
 <!-- 
@@ -164,8 +164,9 @@ summary(lm(formula(step_noise), D_tst))
 
 ```{r}
 #| code-fold: true
+#| code-summary: "Fit Gaussian Process for smooth plot"
 #| message: false
-
+#| output: false
 
 # Fit Gaussian Process
 X <- as.matrix(D_tst[, c("JNYTIME_sqrt", "HM_NOISE")])
@@ -194,6 +195,7 @@ combined_range <- range(c(D_tst$RL_NOISE, grid$predicted_RL_NOISE))
 ```{r}
 #| label: fig-predicted-rl-noise-w-gp
 #| code-fold: true
+#| code-summary: "Plot predicted RL_NOISE with GP"
 #| message: false
 
 # Plot with matching color scales
@@ -202,8 +204,7 @@ ggplot() +
   geom_jitter(data = D_tst, aes(x = JNYTIME_sqrt, y = HM_NOISE, col = RL_NOISE, shape = LANG), 
               width = 0.07, height = 0.1, alpha = 0.7) +
   scale_fill_viridis_c(name = "Predicted\nRL_NOISE", limits = combined_range) +
-  scale_color_viridis_c(name = "Actual\nRL_NOISE", limits = combined_range) +
-  theme_minimal()
+  scale_color_viridis_c(name = "Actual\nRL_NOISE", limits = combined_range) 
 ```
 
 
@@ -212,7 +213,6 @@ ggplot() +
 
 ```{r}
 D$PRS <- rowMeans(cbind(D$FA,D$BA,D$EC,D$ES))
-
 summary_fun <- function(x) c(mean = mean(x, na.rm = TRUE), 
                               sd = sd(x, na.rm = TRUE), 
                               median = median(x, na.rm = TRUE))
@@ -223,147 +223,3 @@ aggregate(BA ~ HM_NOISELVL, D, summary_fun)
 aggregate(EC ~ HM_NOISELVL, D, summary_fun)
 aggregate(ES ~ HM_NOISELVL, D, summary_fun)
 ```
-
-
-
-
-## Plots for soundscape description
-
-
-```{r}
-#| label: fig-soundscape-description
-#| code-fold: true
-#| warning: false
-#| fig-height: 8
-#| fig-width: 7
-
-# Define colors
-colors <- c("#E31A1C", "#1F78B4", "#33A02C", "#FF7F00", "#6A3D9A", 
-           "#B15928", "#A6CEE3", "#B2DF8A", "#FDBF6F")
-
-# Create Plot 1: Dominating Sounds
-suppressWarnings({
-p1 <- ggplot(D, aes(x = HM_NOISE)) +
-  geom_smooth(aes(y = LDOMAUD1, color = "Nature sounds"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LDOMAUD2, color = "Human sounds"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LDOMAUD3, color = "Traffic sounds"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LDOMAUD4, color = "Other technical noises"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  scale_color_manual(values = colors[1:4]) +
-  labs(
-    x = "Home Noise Level (HM_NOISE)",
-    y = "Response Value",
-    color = "Sound Type",
-    title = "Dominating Sounds"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    legend.title = element_text(size = 11, face = "bold"),
-    legend.text = element_text(size = 9),
-    axis.title = element_text(size = 11, face = "bold"),
-    panel.grid.minor = element_blank()
-  )
-})
-
-# Create Plot 2: Soundscape Attributes
-p2 <- ggplot(D, aes(x = HM_NOISE)) +
-  geom_smooth(aes(y = LSOUNDS1, color = "Pleasant"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSOUNDS2, color = "Chaotic"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSOUNDS3, color = "Vibrant"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSOUNDS4, color = "Uneventful"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSOUNDS5, color = "Tranquil"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSOUNDS6, color = "Bothering"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSOUNDS7, color = "Eventful"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSOUNDS8, color = "Monotone"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSOUNDS9, color = "Loud"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  scale_color_manual(values = colors[1:9]) +
-  labs(
-    x = "Home Noise Level (HM_NOISE)",
-    y = "Response Value",
-    color = "Attribute",
-    title = "Soundscape Attributes"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    legend.title = element_text(size = 11, face = "bold"),
-    legend.text = element_text(size = 9),
-    axis.title = element_text(size = 11, face = "bold"),
-    panel.grid.minor = element_blank()
-  )
-
-# For the noise annoyance variables, we need to handle the character values
-# Convert character annoyance values to numeric
-convert_annoyance <- function(x) {
-  case_when(
-    x == "00" ~ 0,
-    x == "01" ~ 1,
-    x == "02" ~ 2,
-    x == "03" ~ 3,
-    x == "04" ~ 4,
-    x == "05" ~ 5,
-    x == "06" ~ 6,
-    x == "07" ~ 7,
-    x == "08" ~ 8,
-    x == "09" ~ 9,
-    x == "10" ~ 10,
-    x == "No annoyance" ~ 0,
-    x == "Response scale mid-point" ~ 5,
-    x == "Very annoying" ~ 10,
-    TRUE ~ as.numeric(x)
-  )
-}
-
-
-# Create a temporary data frame with converted values for noise annoyance
-D_temp <- D |>
-  mutate(
-    LSANNOY1_num = convert_annoyance(LSANNOY1),
-    LSANNOY2_num = convert_annoyance(LSANNOY2),
-    LSANNOY3_num = convert_annoyance(LSANNOY3),
-    LSANNOY4_num = convert_annoyance(LSANNOY4),
-    LSANNOY5_num = convert_annoyance(LSANNOY5),
-    LSANNOY6_num = convert_annoyance(LSANNOY6),
-    LSANNOY7_num = convert_annoyance(LSANNOY7)
-  )
-
-# Create Plot 3: Noise Annoyance
-p3 <- ggplot(D_temp, aes(x = HM_NOISE)) +
-  geom_smooth(aes(y = LNOISE, color = "In General"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSANNOY1_num, color = "Road Traffic"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSANNOY2_num, color = "Public Transport"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSANNOY3_num, color = "Train"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSANNOY4_num, color = "Plane"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSANNOY5_num, color = "Freetime"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSANNOY6_num, color = "Music of others"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  geom_smooth(aes(y = LSANNOY7_num, color = "Works"), method = "gam", formula = y ~ s(x), se = TRUE, alpha = 0.3, size = 1.2) +
-  scale_color_manual(values = colors[1:8]) +
-  labs(
-    x = "Home Noise Level (HM_NOISE)",
-    y = "Response Value",
-    color = "Annoyance Source",
-    title = "Noise Annoyance"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold"),
-    legend.title = element_text(size = 11, face = "bold"),
-    legend.text = element_text(size = 9),
-    axis.title = element_text(size = 11, face = "bold"),
-    panel.grid.minor = element_blank()
-  )
-
-xl <- xlim(30, 70)
-
-# Combine all plots vertically
-suppressWarnings({
-  combined_plot <- grid.arrange(p1+xl, p2+xl, p3+xl, ncol = 1, 
-                             top = "GAM Smoothing Lines: Sound Variables vs Home Noise Level")
-
-})
-# Display the combined plot
-# print(combined_plot)
-ggsave("cache/combinded_plot.pdf", combined_plot, height=8, width = 7)
-```
-
-- [ ] one could add rugs to the plots above

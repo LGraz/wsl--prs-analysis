@@ -132,11 +132,11 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#rl_ndvi" id="toc-rl_ndvi" class="nav-link" data-scroll-target="#rl_ndvi">RL_NDVI</a></li>
   <li><a href="#rl_noise" id="toc-rl_noise" class="nav-link" data-scroll-target="#rl_noise">RL_NOISE</a></li>
-  <li><a href="#soundscape-description-per-hm_noise" id="toc-soundscape-description-per-hm_noise" class="nav-link" data-scroll-target="#soundscape-description-per-hm_noise">Soundscape Description per HM_Noise</a></li>
   </ul></li>
+  <li><a href="#plots" id="toc-plots" class="nav-link" data-scroll-target="#plots">Plots</a></li>
   </ul></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks/hypothethis-tests-preview.html"><i class="bi bi-journal-code"></i>Hypothesis Testing</a></li><li><a href="notebooks/RL-via-HM-preview.html"><i class="bi bi-journal-code"></i>Predict RL via HM</a></li><li><a href="notebooks/mlr3-preview.html"><i class="bi bi-journal-code"></i>Prediction Analysis</a></li></ul></div></nav>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks/hypothethis-tests-preview.html"><i class="bi bi-journal-code"></i>Hypothesis Testing</a></li><li><a href="notebooks/noise-plots-preview.html"><i class="bi bi-journal-code"></i>Noise Plots</a></li><li><a href="notebooks/RL-via-HM-preview.html"><i class="bi bi-journal-code"></i>Predict RL via HM</a></li><li><a href="notebooks/mlr3-preview.html"><i class="bi bi-journal-code"></i>Prediction Analysis</a></li></ul></div></nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -261,28 +261,11 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 10%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Covariate</th>
 <th style="text-align: center;">FEELNAT</th>
 <th style="text-align: center;">LNOISE</th>
-<th style="text-align: center;">LOC_SENS</th>
-<th style="text-align: center;">LOC_SOUN</th>
-<th style="text-align: center;">LOC_SCEN</th>
-<th style="text-align: center;">LOC_VISE</th>
-<th style="text-align: center;">LOC_VEGE</th>
-<th style="text-align: center;">LOC_FAUN</th>
 </tr>
 </thead>
 <tbody>
@@ -290,100 +273,31 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: left;">(Intercept)</td>
 <td style="text-align: center;">0.062</td>
 <td style="text-align: center;">-0.001</td>
-<td style="text-align: center;">-0.000</td>
-<td style="text-align: center;">0.000</td>
-<td style="text-align: center;">-0.001</td>
-<td style="text-align: center;">-0.000</td>
-<td style="text-align: center;">-0.019</td>
-<td style="text-align: center;">-0.001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">HETER</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.130***</td>
-<td style="text-align: center;">0.109**</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">JNYTIME_sqrt</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.114**</td>
-<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LCARTIF_sqrt</td>
 <td style="text-align: center;">-0.152**</td>
 <td style="text-align: center;">-0.124*</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.175***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.071.</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.214***</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LCARTIF_sqrt:RL_NDVI</td>
 <td style="text-align: center;">0.115**</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OVDIST_sqrt</td>
 <td style="text-align: center;">0.027</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">RL_NDVI</td>
 <td style="text-align: center;">0.150***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.217***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.219***</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">RL_NOISE</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">-0.242***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">STRIMP999_sqrt</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.073.</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -396,14 +310,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 14%">
-<col style="width: 16%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Covariate</th>
@@ -417,112 +323,64 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
+<td style="text-align: center;">-0.006</td>
+<td style="text-align: center;">0.005</td>
 <td style="text-align: center;">-0.008</td>
-<td style="text-align: center;">-0.003</td>
-<td style="text-align: center;">-0.008</td>
-<td style="text-align: center;">-0.009</td>
-<td style="text-align: center;">0.031</td>
+<td style="text-align: center;">-0.006</td>
+<td style="text-align: center;">0.028</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DISTKM_sqrt</td>
+<td style="text-align: center;">-0.019</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.081*</td>
+<td style="text-align: center;">0.073.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FEELNAT</td>
-<td style="text-align: center;">0.202***</td>
-<td style="text-align: center;">0.169***</td>
-<td style="text-align: center;">0.188***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.258***</td>
+<td style="text-align: center;">0.251***</td>
+<td style="text-align: center;">0.265***</td>
+<td style="text-align: center;">0.252***</td>
+<td style="text-align: center;">0.058</td>
+<td style="text-align: center;">0.269***</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">FEELNAT:LOC_SCEN</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">-0.002</td>
+<td style="text-align: left;">FEELNAT:LNOISE</td>
+<td style="text-align: center;">0.022</td>
+<td style="text-align: center;">-0.036</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">FEELNAT:LOC_SENS</td>
-<td style="text-align: center;">0.054.</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">LCFOREST_sqrt</td>
+<td style="text-align: center;">-0.066.</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
+<td style="text-align: center;">-0.113**</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.090*</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">LNOISE</td>
-<td style="text-align: center;">0.177***</td>
-<td style="text-align: center;">0.133***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.133**</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">LNOISE</td>
+<td style="text-align: center;">0.213***</td>
+<td style="text-align: center;">0.171***</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.142**</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">LNOISE:FEELNAT</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.006</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">LOC_FAUN</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.176***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.012</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">LOC_SCEN</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.164***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.004</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">LOC_SENS</td>
-<td style="text-align: center;">0.104*</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.147***</td>
-<td style="text-align: center;">0.142***</td>
-<td style="text-align: center;">0.096*</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">LOC_VISE</td>
-<td style="text-align: center;">0.173***</td>
-<td style="text-align: center;">0.128**</td>
-<td style="text-align: center;">0.122**</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">RL_NDVI</td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.133***</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">RL_NDVI:LOC_SCEN</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">0.024</td>
+<td style="text-align: center;">-0.105**</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -632,25 +490,10 @@ Figure&nbsp;1
 </div>
 </div>
 </section>
-<section id="soundscape-description-per-hm_noise" class="level3">
-<h3 class="anchored" data-anchor-id="soundscape-description-per-hm_noise">Soundscape Description per HM_Noise</h3>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-soundscape-description" class="cell" data-fig-height="8" data-fig-width="7">
-<div class="cell-output cell-output-display">
-<div id="fig-soundscape-description" class="quarto-float quarto-figure quarto-figure-center anchored" width="672" height="768">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-soundscape-description-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-RL-via-HM-fig-soundscape-description-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: "><img src="index_files/figure-html/notebooks-RL-via-HM-fig-soundscape-description-output-1.png" id="fig-soundscape-description" width="672" height="768" class="figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-soundscape-description-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
 </section>
+<section id="plots" class="level2">
+<h2 class="anchored" data-anchor-id="plots">Plots</h2>
+<p>see <a href="./notebooks/noise-plots-preview.html">the notebook</a>.</p>
 </section>
 </section>
 
