@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
     <meta charset="utf-8">
-    <meta name="generator" content="quarto-1.7.31">
+    <meta name="generator" content="quarto-1.7.32">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -156,7 +156,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-813c323200a87c37e262811031999de4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -256,21 +256,18 @@ JourneyTime
 Keep  1494 of 2206 observations</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'missForest' was built under R version 4.5.1</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
 <pre><code>Imputing PRS_orig_vars</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># interactive &lt;- function() FALSE</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># D_trn$HM_NOISE_nrm &lt;- scale(D_trn$HM_NOISE)</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># D_tst$HM_NOISE_nrm &lt;- scale(D_tst$HM_NOISE)</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## No suspicious patterns in missing data</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[c(Mediator_vars, GIS_vars)[nNAs&gt;0]], plot = FALSE)</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[PRS_orig_vars])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># interactive &lt;- function() FALSE</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># D_trn$HM_NOISE_nrm &lt;- scale(D_trn$HM_NOISE)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># D_tst$HM_NOISE_nrm &lt;- scale(D_tst$HM_NOISE)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## No suspicious patterns in missing data</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[c(Mediator_vars, GIS_vars)[nNAs&gt;0]], plot = FALSE)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mice::md.pattern(D[PRS_orig_vars])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div></div>
 <section id="linear-modeling" class="level2">
@@ -280,7 +277,7 @@ Keep  1494 of 2206 observations</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Number of NAs in Mediators and GIS variables</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(D[Mediator_vars], \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(D[Mediator_vars], \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code> FEELNAT   LNOISE LOC_SENS LOC_SOUN LOC_SCEN LOC_VISE LOC_VEGE LOC_FAUN 
@@ -288,7 +285,7 @@ Keep  1494 of 2206 observations</code></pre>
 </div>
 <details class="code-fold">
 <summary>Number of NAs in Mediators and GIS variables</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(D[GIS_vars], \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(D[GIS_vars], \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  LCARTIF_sqrt  LCFOREST_sqrt          HETER    OVDIST_sqrt     VIS5K_sqrt 
@@ -302,30 +299,30 @@ STRIMP999_sqrt
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Impute missing values using MissForest</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mediator imputation</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>D_trn[Mediator_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  }, </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"Mediator_imputation.rds"</span>, </span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># GIS imputation (missForest)</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>D_trn[GIS_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  }, </span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"GIS_imputation.rds"</span>, </span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mediator imputation</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>D_trn[Mediator_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  }, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"Mediator_imputation.rds"</span>, </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[Mediator_vars]))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># GIS imputation (missForest)</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>D_trn[GIS_vars] <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">missForest</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  }, </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"GIS_imputation.rds"</span>, </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(<span class="fu">as.matrix</span>(D_trn[GIS_vars]))</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>)<span class="sc">$</span>ximp <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div></div>
 </section>
 <section id="remove-loc_-variables-from-mediators" class="level3">
 <h3 class="anchored" data-anchor-id="remove-loc_-variables-from-mediators">Remove “LOC_” variables from Mediators</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Mediator_vars <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"LOC_"</span>, Mediator_vars, <span class="at">invert =</span> <span class="cn">TRUE</span>, <span class="at">value =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Mediator_vars <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"LOC_"</span>, Mediator_vars, <span class="at">invert =</span> <span class="cn">TRUE</span>, <span class="at">value =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="scaling-test-data" class="level3">
@@ -333,15 +330,15 @@ STRIMP999_sqrt
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Scaling variables and show old scale</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>all_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(Mediator_vars, GIS_vars, PRS_vars)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>old_scale <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(D_tst[<span class="fu">c</span>(all_vars)], \(x) </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">sd =</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>D_tst[<span class="fu">c</span>(all_vars)] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(D_tst[<span class="fu">c</span>(all_vars)], scale)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>D_trn_scaled <span class="ot">&lt;-</span> D_trn</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>D_trn_scaled[<span class="fu">c</span>(all_vars)] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(D_trn[<span class="fu">c</span>(all_vars)], scale)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>old_scale</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>all_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(Mediator_vars, GIS_vars, PRS_vars)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>old_scale <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">sapply</span>(D_tst[<span class="fu">c</span>(all_vars)], \(x) </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">sd =</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>D_tst[<span class="fu">c</span>(all_vars)] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(D_tst[<span class="fu">c</span>(all_vars)], scale)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>D_trn_scaled <span class="ot">&lt;-</span> D_trn</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>D_trn_scaled[<span class="fu">c</span>(all_vars)] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(D_trn[<span class="fu">c</span>(all_vars)], scale)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>old_scale</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 mean     sd
@@ -358,11 +355,11 @@ DISTKM_sqrt     1.473  1.156
 JNYTIME_sqrt    3.830  2.247
 STRIMP123_sqrt  6.555 10.739
 STRIMP999_sqrt 47.557 13.162
-MEAN            4.987  0.882
+MEAN            4.987  0.881
 FA              5.266  1.111
-BA              5.141  1.157
-EC              4.542  1.290
-ES              5.006  1.430</code></pre>
+BA              5.140  1.157
+EC              4.539  1.288
+ES              5.010  1.429</code></pre>
 </div>
 </div></div>
 </section>
@@ -371,12 +368,12 @@ ES              5.006  1.430</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>VIF: PRS ~ Mediators + GIS_vars (NO interaction)</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit_PRS_MED <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">" ~ "</span>, </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">" + "</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(GIS_vars,      <span class="at">collapse =</span> <span class="st">" + "</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>)), D_trn)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit_PRS_MED <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">" ~ "</span>, </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">" + "</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(GIS_vars,      <span class="at">collapse =</span> <span class="st">" + "</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)), D_trn)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -386,14 +383,14 @@ ES              5.006  1.430</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>VIF: PRS ~ (Mediators + GIS_vars)^2 (WITH interaction)</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit_PRS_MED <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">" ~ "</span>, </span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"("</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), </span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">" + "</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), </span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">")^2"</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)), D_trn))) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressMessages</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(fit_PRS_MED <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  PRS_vars[<span class="dv">1</span>], </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">" ~ "</span>, </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"("</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">" + "</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">")^2"</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)), D_trn))) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -407,9 +404,9 @@ ES              5.006  1.430</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code: Print Coef Table</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Elegant function to create coefficient tables from model summaries</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Elegant function to create coefficient tables from model summaries</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>
@@ -427,83 +424,83 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code: Print Coef Table</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' Create a formatted coefficient table from model summary list</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' </span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param model_summaries List of model summaries (e.g., output from lapply(models, summary))</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param sig_threshold Significance threshold for bold formatting (default: 0.001)</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param covariate_order Optional vector specifying order of covariates</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return Formatted table with models as columns and covariates as rows</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>create_coef_table <span class="ot">&lt;-</span> <span class="cf">function</span>(model_summaries, <span class="at">sig_threshold =</span> <span class="fl">0.001</span>, <span class="at">covariate_order =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract and format coefficients for all models</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  format_model_coef <span class="ot">&lt;-</span> <span class="cf">function</span>(coef_matrix, model_name) {</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    estimates <span class="ot">&lt;-</span> coef_matrix[, <span class="st">"Estimate"</span>]</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    p_values <span class="ot">&lt;-</span> coef_matrix[, <span class="st">"Pr(&gt;|t|)"</span>]</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Format with significance stars (common notation)</span></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    formatted_coef <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">seq_along</span>(estimates), <span class="cf">function</span>(i) {</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>      est_str <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>, estimates[i])</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>      stars <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>        p_values[i] <span class="sc">&lt;</span> <span class="fl">0.001</span> <span class="sc">~</span> <span class="st">"***"</span>,</span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>        p_values[i] <span class="sc">&lt;</span> <span class="fl">0.01</span> <span class="sc">~</span> <span class="st">"**"</span>,</span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>        p_values[i] <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"*"</span>,</span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>        p_values[i] <span class="sc">&lt;</span> <span class="fl">0.1</span> <span class="sc">~</span> <span class="st">"."</span>,</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">""</span></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(est_str, stars)</span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">Model =</span> model_name,</span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">Covariate =</span> <span class="fu">rownames</span>(coef_matrix),</span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">Coefficient =</span> formatted_coef</span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Process all models and create wide table</span></span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>  coef_list <span class="ot">&lt;-</span> <span class="fu">map</span>(model_summaries, coef)</span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>  results_table <span class="ot">&lt;-</span> <span class="fu">map2_dfr</span>(coef_list, <span class="fu">names</span>(coef_list), format_model_coef) <span class="sc">%&gt;%</span></span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Model, <span class="at">values_from =</span> Coefficient, <span class="at">values_fill =</span> <span class="st">""</span>)</span>
-<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Apply covariate ordering</span></span>
-<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(covariate_order)) {</span>
-<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Default: Intercept first, then alphabetical</span></span>
-<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>    all_covariates <span class="ot">&lt;-</span> <span class="fu">unique</span>(results_table<span class="sc">$</span>Covariate)</span>
-<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>    covariate_order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"(Intercept)"</span>, <span class="fu">sort</span>(all_covariates[all_covariates <span class="sc">!=</span> <span class="st">"(Intercept)"</span>]))</span>
-<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter and reorder covariates</span></span>
-<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a>  results_table <span class="ot">&lt;-</span> results_table <span class="sc">%&gt;%</span></span>
-<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Covariate <span class="sc">%in%</span> covariate_order) <span class="sc">%&gt;%</span></span>
-<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="fu">match</span>(covariate_order, Covariate))</span>
-<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(results_table, </span>
-<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"pipe"</span>,</span>
-<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a>        <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="fu">rep</span>(<span class="st">"c"</span>, <span class="fu">ncol</span>(results_table) <span class="sc">-</span> <span class="dv">1</span>)))</span>
-<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' Create a formatted coefficient table from model summary list</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' </span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param model_summaries List of model summaries (e.g., output from lapply(models, summary))</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param sig_threshold Significance threshold for bold formatting (default: 0.001)</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param covariate_order Optional vector specifying order of covariates</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return Formatted table with models as columns and covariates as rows</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>create_coef_table <span class="ot">&lt;-</span> <span class="cf">function</span>(model_summaries, <span class="at">sig_threshold =</span> <span class="fl">0.001</span>, <span class="at">covariate_order =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract and format coefficients for all models</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  format_model_coef <span class="ot">&lt;-</span> <span class="cf">function</span>(coef_matrix, model_name) {</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    estimates <span class="ot">&lt;-</span> coef_matrix[, <span class="st">"Estimate"</span>]</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    p_values <span class="ot">&lt;-</span> coef_matrix[, <span class="st">"Pr(&gt;|t|)"</span>]</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Format with significance stars (common notation)</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    formatted_coef <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">seq_along</span>(estimates), <span class="cf">function</span>(i) {</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>      est_str <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>, estimates[i])</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>      stars <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>        p_values[i] <span class="sc">&lt;</span> <span class="fl">0.001</span> <span class="sc">~</span> <span class="st">"***"</span>,</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>        p_values[i] <span class="sc">&lt;</span> <span class="fl">0.01</span> <span class="sc">~</span> <span class="st">"**"</span>,</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>        p_values[i] <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">~</span> <span class="st">"*"</span>,</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>        p_values[i] <span class="sc">&lt;</span> <span class="fl">0.1</span> <span class="sc">~</span> <span class="st">"."</span>,</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">""</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(est_str, stars)</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">Model =</span> model_name,</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">Covariate =</span> <span class="fu">rownames</span>(coef_matrix),</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">Coefficient =</span> formatted_coef</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Process all models and create wide table</span></span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>  coef_list <span class="ot">&lt;-</span> <span class="fu">map</span>(model_summaries, coef)</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>  results_table <span class="ot">&lt;-</span> <span class="fu">map2_dfr</span>(coef_list, <span class="fu">names</span>(coef_list), format_model_coef) <span class="sc">%&gt;%</span></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Model, <span class="at">values_from =</span> Coefficient, <span class="at">values_fill =</span> <span class="st">""</span>)</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Apply covariate ordering</span></span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(covariate_order)) {</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Default: Intercept first, then alphabetical</span></span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>    all_covariates <span class="ot">&lt;-</span> <span class="fu">unique</span>(results_table<span class="sc">$</span>Covariate)</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>    covariate_order <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"(Intercept)"</span>, <span class="fu">sort</span>(all_covariates[all_covariates <span class="sc">!=</span> <span class="st">"(Intercept)"</span>]))</span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter and reorder covariates</span></span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>  results_table <span class="ot">&lt;-</span> results_table <span class="sc">%&gt;%</span></span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(Covariate <span class="sc">%in%</span> covariate_order) <span class="sc">%&gt;%</span></span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="fu">match</span>(covariate_order, Covariate))</span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(results_table, </span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"pipe"</span>,</span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>        <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="fu">rep</span>(<span class="st">"c"</span>, <span class="fu">ncol</span>(results_table) <span class="sc">-</span> <span class="dv">1</span>)))</span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Res3 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mediator <span class="cf">in</span> Mediator_vars) {</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  intercept_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    mediator, <span class="st">" ~ 1"</span>)), D_trn)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      mediator, <span class="st">" ~ "</span>, </span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")^2"</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    )),</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  Res3[[mediator]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>(ResSum3 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Res3, summary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Res3 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mediator <span class="cf">in</span> Mediator_vars) {</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  intercept_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    mediator, <span class="st">" ~ 1"</span>)), D_trn)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>      mediator, <span class="st">" ~ "</span>, </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")^2"</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  Res3[[mediator]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>(ResSum3 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Res3, summary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$FEELNAT
 
@@ -556,12 +553,12 @@ F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16</code></pre>
 <section id="visualization-of-interactioneffect-of-lcartif_sqrt-rl_ndvi" class="level4">
 <h4 class="anchored" data-anchor-id="visualization-of-interactioneffect-of-lcartif_sqrt-rl_ndvi">Visualization of Interactioneffect of LCARTIF_sqrt * RL_NDVI</h4>
 <div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>D_plot <span class="ot">&lt;-</span> <span class="fu">rbind</span>(D_trn_scaled, D_tst)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>D_plot<span class="sc">$</span>FEELNAT <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="fu">pmin</span>(<span class="dv">1</span>,D_plot<span class="sc">$</span>FEELNAT))</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(D_plot, <span class="fu">aes</span>(<span class="at">x =</span> LCARTIF_sqrt, <span class="at">y=</span>RL_NDVI, <span class="at">col =</span> FEELNAT)) <span class="sc">+</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.07</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>D_plot <span class="ot">&lt;-</span> <span class="fu">rbind</span>(D_trn_scaled, D_tst)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>D_plot<span class="sc">$</span>FEELNAT <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="fu">pmin</span>(<span class="dv">1</span>,D_plot<span class="sc">$</span>FEELNAT))</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(D_plot, <span class="fu">aes</span>(<span class="at">x =</span> LCARTIF_sqrt, <span class="at">y=</span>RL_NDVI, <span class="at">col =</span> FEELNAT)) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.07</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -569,23 +566,23 @@ F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Erstelle RL_NDVI Gruppen</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>D_plot<span class="sc">$</span>RL_NDVI_group <span class="ot">&lt;-</span> <span class="fu">cut</span>(D_plot<span class="sc">$</span>RL_NDVI, </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="sc">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="cn">Inf</span>),</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Low (&lt; -0.25)"</span>, <span class="st">"Medium (-0.25 to 0.25)"</span>, <span class="st">"High (&gt; 0.25)"</span>))</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(D_plot, <span class="fu">aes</span>(<span class="at">x =</span> LCARTIF_sqrt, <span class="at">y =</span> FEELNAT, </span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col =</span> RL_NDVI_group, <span class="at">shape =</span> RL_NDVI_group)) <span class="sc">+</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="at">width =</span> <span class="fl">0.07</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">15</span>)) <span class="sc">+</span>  <span class="co"># Kreis, Dreieck, Quadrat</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>)) <span class="sc">+</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"LCARTIF_sqrt"</span>, </span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"FEELNAT"</span>,</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"RL_NDVI Group"</span>,</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> <span class="st">"RL_NDVI Group"</span>) <span class="sc">+</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Erstelle RL_NDVI Gruppen</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>D_plot<span class="sc">$</span>RL_NDVI_group <span class="ot">&lt;-</span> <span class="fu">cut</span>(D_plot<span class="sc">$</span>RL_NDVI, </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="sc">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="cn">Inf</span>),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Low (&lt; -0.25)"</span>, <span class="st">"Medium (-0.25 to 0.25)"</span>, <span class="st">"High (&gt; 0.25)"</span>))</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(D_plot, <span class="fu">aes</span>(<span class="at">x =</span> LCARTIF_sqrt, <span class="at">y =</span> FEELNAT, </span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col =</span> RL_NDVI_group, <span class="at">shape =</span> RL_NDVI_group)) <span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_point</span>(<span class="at">width =</span> <span class="fl">0.07</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">17</span>, <span class="dv">15</span>)) <span class="sc">+</span>  <span class="co"># Kreis, Dreieck, Quadrat</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"green"</span>)) <span class="sc">+</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"LCARTIF_sqrt"</span>, </span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"FEELNAT"</span>,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="st">"RL_NDVI Group"</span>,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> <span class="st">"RL_NDVI Group"</span>) <span class="sc">+</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in geom_point(width = 0.07, alpha = 0.6): Ignoring unknown parameters:
 `width`</code></pre>
@@ -614,21 +611,21 @@ F-statistic: 36.6 on 2 and 596 DF,  p-value: 9.79e-16</code></pre>
 <section id="all-interactions-prs-mediators-gis2" class="level3">
 <h3 class="anchored" data-anchor-id="all-interactions-prs-mediators-gis2">All Interactions: PRS ~ (Mediators + GIS)^2</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Res4 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (prs <span class="cf">in</span> PRS_vars) {</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  intercept_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    prs, <span class="st">" ~ 1"</span>)), D_trn)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>      prs, <span class="st">" ~ "</span>, </span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">" + "</span>, </span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")^2"</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    )),</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  Res4[[prs]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>(ResSum4 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Res4, summary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Res4 <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (prs <span class="cf">in</span> PRS_vars) {</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  intercept_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    prs, <span class="st">" ~ 1"</span>)), D_trn)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  step_model <span class="ot">&lt;-</span> <span class="fu">step</span>(intercept_model, </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">scope =</span> <span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>      prs, <span class="st">" ~ "</span>, </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"("</span>, <span class="fu">paste</span>(GIS_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">" + "</span>, </span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>), <span class="st">")^2"</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn))</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  Res4[[prs]] <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_model), D_tst)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>(ResSum4 <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Res4, summary))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$MEAN
 
@@ -637,23 +634,23 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.201 -0.589 -0.018  0.566  2.392 
+-3.204 -0.587 -0.018  0.567  2.396 
 
 Coefficients:
                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)    -0.00623    0.04014   -0.16    0.877    
-FEELNAT         0.25068    0.04538    5.52  5.0e-08 ***
-LNOISE          0.21276    0.04180    5.09  4.8e-07 ***
-LCFOREST_sqrt  -0.06571    0.03899   -1.69    0.093 .  
-DISTKM_sqrt    -0.01861    0.03877   -0.48    0.631    
-FEELNAT:LNOISE  0.02216    0.03320    0.67    0.505    
+(Intercept)    -0.00524    0.04015   -0.13    0.896    
+FEELNAT         0.25177    0.04540    5.55  4.4e-08 ***
+LNOISE          0.21239    0.04182    5.08  5.1e-07 ***
+LCFOREST_sqrt  -0.06579    0.03901   -1.69    0.092 .  
+DISTKM_sqrt    -0.01873    0.03878   -0.48    0.629    
+FEELNAT:LNOISE  0.02186    0.03321    0.66    0.511    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.925 on 586 degrees of freedom
+Residual standard error: 0.926 on 586 degrees of freedom
   (155 observations deleted due to missingness)
-Multiple R-squared:  0.136, Adjusted R-squared:  0.128 
-F-statistic: 18.4 on 5 and 586 DF,  p-value: &lt;2e-16
+Multiple R-squared:  0.136, Adjusted R-squared:  0.129 
+F-statistic: 18.5 on 5 and 586 DF,  p-value: &lt;2e-16
 
 
 $FA
@@ -667,11 +664,11 @@ Residuals:
 
 Coefficients:
                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)     0.00488    0.03999    0.12   0.9029    
-FEELNAT         0.26531    0.04522    5.87  7.4e-09 ***
-LNOISE          0.17073    0.04141    4.12  4.3e-05 ***
-RL_NDVI        -0.10488    0.03888   -2.70   0.0072 ** 
-FEELNAT:LNOISE -0.03566    0.03301   -1.08   0.2803    
+(Intercept)     0.00562    0.03998    0.14   0.8883    
+FEELNAT         0.26555    0.04521    5.87  7.1e-09 ***
+LNOISE          0.17048    0.04140    4.12  4.4e-05 ***
+RL_NDVI        -0.10495    0.03887   -2.70   0.0071 ** 
+FEELNAT:LNOISE -0.03572    0.03300   -1.08   0.2795    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -688,19 +685,19 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.777 -0.607 -0.031  0.637  2.846 
+-3.775 -0.607 -0.030  0.675  2.846 
 
 Coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -0.00847    0.03554   -0.24     0.81    
-FEELNAT      0.25242    0.03557    7.10    3e-12 ***
+(Intercept) -0.00788    0.03554   -0.22     0.82    
+FEELNAT      0.25245    0.03557    7.10    3e-12 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.966 on 736 degrees of freedom
   (9 observations deleted due to missingness)
 Multiple R-squared:  0.0641,    Adjusted R-squared:  0.0628 
-F-statistic: 50.4 on 1 and 736 DF,  p-value: 3e-12
+F-statistic: 50.4 on 1 and 736 DF,  p-value: 2.99e-12
 
 
 $EC
@@ -710,20 +707,20 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--2.8558 -0.5362 -0.0408  0.6818  2.1335 
+-2.8576 -0.5267 -0.0496  0.6828  2.1388 
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)   
-(Intercept)   -0.00632    0.03652   -0.17   0.8628   
-LCFOREST_sqrt -0.11329    0.03770   -3.01   0.0027 **
-FEELNAT        0.05780    0.03767    1.53   0.1254   
+(Intercept)   -0.00646    0.03651   -0.18   0.8595   
+LCFOREST_sqrt -0.11357    0.03769   -3.01   0.0027 **
+FEELNAT        0.05802    0.03766    1.54   0.1238   
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.992 on 735 degrees of freedom
   (9 observations deleted due to missingness)
 Multiple R-squared:  0.0131,    Adjusted R-squared:  0.0104 
-F-statistic: 4.86 on 2 and 735 DF,  p-value: 0.008
+F-statistic: 4.89 on 2 and 735 DF,  p-value: 0.00778
 
 
 $ES
@@ -733,22 +730,22 @@ lm(formula = formula(step_model), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.394 -0.542  0.154  0.699  2.366 
+-3.397 -0.533  0.159  0.693  2.365 
 
 Coefficients:
                Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)      0.0280     0.0416    0.67    0.501    
-LNOISE           0.1422     0.0431    3.30    0.001 ** 
-FEELNAT          0.2689     0.0460    5.84  8.6e-09 ***
-DISTKM_sqrt      0.0730     0.0401    1.82    0.070 .  
-LNOISE:FEELNAT  -0.0125     0.0343   -0.36    0.716    
+(Intercept)      0.0271     0.0415    0.65    0.515    
+LNOISE           0.1418     0.0430    3.29    0.001 ** 
+FEELNAT          0.2697     0.0460    5.86  7.6e-09 ***
+DISTKM_sqrt      0.0727     0.0401    1.81    0.070 .  
+LNOISE:FEELNAT  -0.0127     0.0343   -0.37    0.711    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.959 on 587 degrees of freedom
+Residual standard error: 0.958 on 587 degrees of freedom
   (155 observations deleted due to missingness)
 Multiple R-squared:  0.128, Adjusted R-squared:  0.122 
-F-statistic: 21.5 on 4 and 587 DF,  p-value: &lt;2e-16</code></pre>
+F-statistic: 21.6 on 4 and 587 DF,  p-value: &lt;2e-16</code></pre>
 </div>
 </div></div>
 </section>
@@ -758,9 +755,9 @@ F-statistic: 21.5 on 4 and 587 DF,  p-value: &lt;2e-16</code></pre>
 <section id="all-interactions-mediators-gis2-1" class="level4">
 <h4 class="anchored" data-anchor-id="all-interactions-mediators-gis2-1">All Interactions: Mediators ~ (GIS)^2</h4>
 <div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ResTab3 <span class="ot">&lt;-</span> <span class="fu">create_coef_table</span>(ResSum3)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(ResTab3, <span class="st">"cache/ResSum3.rds"</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>ResTab3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ResTab3 <span class="ot">&lt;-</span> <span class="fu">create_coef_table</span>(ResSum3)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(ResTab3, <span class="st">"cache/ResSum3.rds"</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>ResTab3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -809,9 +806,9 @@ F-statistic: 21.5 on 4 and 587 DF,  p-value: &lt;2e-16</code></pre>
 <section id="prs-mediators-gis2" class="level4">
 <h4 class="anchored" data-anchor-id="prs-mediators-gis2">PRS ~ (Mediators + GIS)^2</h4>
 <div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ResTab4 <span class="ot">&lt;-</span> <span class="fu">create_coef_table</span>(ResSum4)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(ResTab4, <span class="st">"cache/ResSum4.rds"</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>ResTab4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ResTab4 <span class="ot">&lt;-</span> <span class="fu">create_coef_table</span>(ResSum4)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(ResTab4, <span class="st">"cache/ResSum4.rds"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>ResTab4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -827,11 +824,11 @@ F-statistic: 21.5 on 4 and 587 DF,  p-value: &lt;2e-16</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">-0.006</td>
-<td style="text-align: center;">0.005</td>
+<td style="text-align: center;">-0.005</td>
+<td style="text-align: center;">0.006</td>
 <td style="text-align: center;">-0.008</td>
 <td style="text-align: center;">-0.006</td>
-<td style="text-align: center;">0.028</td>
+<td style="text-align: center;">0.027</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DISTKM_sqrt</td>
@@ -843,11 +840,11 @@ F-statistic: 21.5 on 4 and 587 DF,  p-value: &lt;2e-16</code></pre>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FEELNAT</td>
-<td style="text-align: center;">0.251***</td>
-<td style="text-align: center;">0.265***</td>
+<td style="text-align: center;">0.252***</td>
+<td style="text-align: center;">0.266***</td>
 <td style="text-align: center;">0.252***</td>
 <td style="text-align: center;">0.058</td>
-<td style="text-align: center;">0.269***</td>
+<td style="text-align: center;">0.270***</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FEELNAT:LNOISE</td>
@@ -862,13 +859,13 @@ F-statistic: 21.5 on 4 and 587 DF,  p-value: &lt;2e-16</code></pre>
 <td style="text-align: center;">-0.066.</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.113**</td>
+<td style="text-align: center;">-0.114**</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LNOISE</td>
-<td style="text-align: center;">0.213***</td>
-<td style="text-align: center;">0.171***</td>
+<td style="text-align: center;">0.212***</td>
+<td style="text-align: center;">0.170***</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">0.142**</td>
@@ -879,7 +876,7 @@ F-statistic: 21.5 on 4 and 587 DF,  p-value: &lt;2e-16</code></pre>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.012</td>
+<td style="text-align: center;">-0.013</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">RL_NDVI</td>

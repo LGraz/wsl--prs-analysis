@@ -1,6 +1,11 @@
-# Removed "LOC" Variabels
+# V1.3
+## Plots
+see https://lgraz.com/wsl--prs-analysis/notebooks/noise-plots-preview.html
 
-Updated tables: (markdown text format to be converted into Word)
+## Removed "LOC" Variables
+Updated tables: (Markdown text format to be converted into Word)
+
+also available from https://lgraz.com/wsl--prs-analysis/#results
 
 |Covariate            | FEELNAT  |  LNOISE   |
 |:--------------------|:--------:|:---------:|
@@ -23,16 +28,26 @@ Updated tables: (markdown text format to be converted into Word)
 |RL_NDVI        |          | -0.105** |          |          |          |
 
 
-# Added  LNOISE ~ HM_NOISE / RL_NOISE
-(including proportions)
-
-# Prediction analysis
+## Prediction analysis
 I left it as-is. Without changing the mediators. Removing most mediators would make the ML-models struggle a lot.
 
-# Plotting Themes
-Colour palettes and themes can be adjusted. Feel free to chose one:
+## Plotting Themes
+Color palettes and themes can be adjusted. Feel free to chose one:
 - Themes: https://ggplot2.tidyverse.org/reference/ggtheme.html
-- Palletes: https://ggplot2-book.org/scales-colour.html#brewer-scales
+- Pallets: https://ggplot2-book.org/scales-colour.html#brewer-scales
 
-# Plots
-see 
+## Access to Repository for Natalia
+https://github.com/LGraz/wsl--prs-analysis
+
+In case you are not familiar with GitHub + Quarto, feel free to contact me. I can help you to set it up, and show you how to modify the plots in the most sustainable/efficient way.
+
+
+
+# V1.4
+- [x] removed "In general"
+- [x] Implemented comments from email-attachement
+  - Comment: Initially I used HM_noise since you were looking at those HM_Noise-groups (in the big table we replaced with this plot)
+  - Implementing the fixed scaling does not change much for plot "Sound_Type" or "Attribute," but only in "Annoyance". There you nicely see the annoyance of "Road Traffic". Only the very slight increase of low-annoyance levels is hidden.
+  - The y label now includes the range. e.g. "[0-10]"
+- "I think it is enough to mention HM Noise only in the plots HM–RL for NDVI and noise level. They illustrate that people living at noisy places are s well unprivileged with available RLs."
+  - Please explain what I should do here. You just say that the NDVI-version is less interesting. Or do you want me to switch the x/y axis (right now x-axis is HM_ which is nice to answer questions of the type, do high-HM_ participants have good restorative locations)? 

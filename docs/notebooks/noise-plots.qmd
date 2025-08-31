@@ -20,6 +20,7 @@ suppressPackageStartupMessages({
 
 theme_set(theme_minimal())
 
+
 options(digits = 3)
 options(warn=-1)
 source("R/data_prep.R")
@@ -57,8 +58,11 @@ D_long$Sound_Type <- recode(D_long$Sound_Type,
   LDOMAUD3 = "Traffic sounds",
   LDOMAUD4 = "Other technical noises"
 )
-p_dominating_sound <- ggplot(D_long, aes(x = HM_NOISE, y = Value, color = Sound_Type)) +
-  geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs"))
+p_dominating_sound <- ggplot(D_long, aes(x = RL_NOISE, y = Value, color = Sound_Type)) +
+  geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs")) +
+  ylim(1, 5) +
+  ylab("Response [1-5]")
+
 
 # Create Plot 2: Soundscape Attributes
 D_long <- D |>
@@ -79,8 +83,11 @@ D_long$Attribute <- recode(D_long$Attribute,
   LSOUNDS8 = "Monotone",
   LSOUNDS9 = "Loud"
 )
-p_soundscate_attr <- ggplot(D_long, aes(x = HM_NOISE, y = Value, color = Attribute)) +
-  geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs"))
+p_soundscate_attr <- ggplot(D_long, aes(x = RL_NOISE, y = Value, color = Attribute)) +
+  geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs")) +
+  ylim(1, 5) +
+  scale_color_brewer(palette = "Set1") +
+  ylab("Response [1-5]")
 
 
 # NOISE ANNOYANCE
@@ -117,7 +124,7 @@ D_temp <- D |>
     LSANNOY7_num = convert_annoyance(LSANNOY7)
   )
 
-vars_tmp <- c("LNOISE", "LSANNOY1_num", "LSANNOY2_num", 
+vars_tmp <- c("LSANNOY1_num", "LSANNOY2_num", 
   "LSANNOY3_num", "LSANNOY4_num", "LSANNOY5_num", "LSANNOY6_num", "LSANNOY7_num")
 D_long_annoyance <- pivot_longer(
   D_temp,
@@ -127,7 +134,6 @@ D_long_annoyance <- pivot_longer(
 )
 # rename
 D_long_annoyance$Annoyance <- recode(D_long_annoyance$Annoyance,
-  LNOISE = "In General",
   LSANNOY1_num = "Road Traffic",
   LSANNOY2_num = "Public Transport",
   LSANNOY3_num = "Train",
@@ -137,11 +143,13 @@ D_long_annoyance$Annoyance <- recode(D_long_annoyance$Annoyance,
   LSANNOY7_num = "Works"
 )
 D_long_annoyance$Annoyance <- factor(D_long_annoyance$Annoyance, 
-  levels = c("In General", "Road Traffic", "Public Transport", 
+  levels = c("Road Traffic", "Public Transport", 
              "Train", "Plane", "Freetime", "Music of others", "Works")
 )
-p_noise_annoy <- ggplot(D_long_annoyance, aes(x = HM_NOISE, y = Value, color = Annoyance)) +
-  geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs"))
+p_noise_annoy <- ggplot(D_long_annoyance, aes(x = RL_NOISE, y = Value, color = Annoyance)) +
+  geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs")) +
+  ylim(0, 10) +
+  ylab("Response [0-10]")
 ```
 
 
@@ -153,9 +161,8 @@ p_noise_annoy <- ggplot(D_long_annoyance, aes(x = HM_NOISE, y = Value, color = A
 #| fig-height: 8
 #| fig-width: 7
 add_generic <- list(
-  xlim(30, 70),
-  ylab("Response Value"),
-  xlab("Home Noise Level [dB]"))
+  # xlim(30, 70),
+  xlab("RL-Noise Level [dB]"))
 
 # Combine all plots vertically
 combined_plot <- suppressWarnings({
