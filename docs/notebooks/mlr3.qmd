@@ -12,6 +12,12 @@ source("R/data_prep.R")
 ## Setup
 ```{r}
 #| code-fold: true
+#| code-summary: "Remove LOC_ variables from Mediators"
+Mediator_vars <- grep("LOC_", Mediator_vars, invert = TRUE, value = TRUE)
+```
+
+```{r}
+#| code-fold: true
 #| code-summary: "Benchmark helper function"
 library(mlr3verse, quietly = TRUE)
 

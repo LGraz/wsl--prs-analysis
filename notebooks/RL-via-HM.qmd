@@ -71,7 +71,7 @@ vars <- c(
   "HM_NDVI","HM_NOISE","RL_NDVI","RL_NOISE",
   "ALONE","WITH_DOG","WITH_KID",
   "WITH_PAR","WITH_PNT","WITH_FND",
-  "LANG","AGE","SEX",
+  "LANG", # "AGE","SEX",
   "DISTKM_sqrt", "JNYTIME_sqrt", "SPEED_log"
 ) 
 
@@ -129,7 +129,7 @@ Remove DIST_sqrt, as it is highly correlated with the other two.
 #| label: lm-summary-rl-ndvi
 lm_ndvi <- lm(RL_NDVI ~ (HM_NDVI + HM_NOISE + 
   #  ALONE + WITH_DOG + WITH_KID + WITH_PAR + WITH_PNT + WITH_FND +
-   LANG + AGE + SEX +
+   LANG + # AGE + SEX +
    SPEED_log + JNYTIME_sqrt)^2, D_trn)
 step_ndvi <- step(lm_ndvi, trace = FALSE, k = log(nrow(D_trn)))
 summary(fit <- lm(formula(step_ndvi), D_tst))
@@ -150,7 +150,7 @@ ggplot(D_tst, aes(x = JNYTIME_sqrt, y=HM_NOISE, col = RL_NOISE)) +
 #| label: lm-summary-rl-noise
 lm_noise <- lm(RL_NOISE ~ (HM_NDVI + HM_NOISE + 
   #  ALONE + WITH_DOG + WITH_KID + WITH_PAR + WITH_PNT + WITH_FND +
-   LANG + AGE + SEX +
+   LANG + # AGE + SEX +
    SPEED_log + JNYTIME_sqrt)^2, D_trn)
 step_noise <- step(lm_noise, trace = FALSE, k = log(nrow(D_trn)))
 summary(lm(formula(step_noise), D_tst))

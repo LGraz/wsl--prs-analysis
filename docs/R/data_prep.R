@@ -20,13 +20,14 @@ D_types_lookup <- setNames(D_varlookup$vartype, D_varlookup$variable)
 # Mediators
 Mediator_vars <- c(
   "FEELNAT",  # Values: [1-7]
-  "LNOISE",   # Values: [1-5]
-  "LOC_SENS", # SENS = aggregated(LOC_... values: [1-5]) > using mean (?)
+  "LNOISE"   # Values: [1-5]
+ ,"LOC_SENS", # SENS = aggregated(LOC_... values: [1-5]) > using mean (?)
   "LOC_SOUN", 
   "LOC_SCEN", 
   "LOC_VISE", 
   "LOC_VEGE", 
-  "LOC_FAUN")
+  "LOC_FAUN"
+  )
 
 PRS_orig_vars <- c(
   "LQUAL1",

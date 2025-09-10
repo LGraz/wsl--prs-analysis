@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-813c323200a87c37e262811031999de4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -323,11 +323,11 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: center;">-0.005</td>
-<td style="text-align: center;">0.006</td>
+<td style="text-align: center;">-0.006</td>
+<td style="text-align: center;">0.005</td>
 <td style="text-align: center;">-0.008</td>
 <td style="text-align: center;">-0.006</td>
-<td style="text-align: center;">0.027</td>
+<td style="text-align: center;">0.028</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">DISTKM_sqrt</td>
@@ -339,11 +339,11 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td style="text-align: left;">FEELNAT</td>
-<td style="text-align: center;">0.252***</td>
-<td style="text-align: center;">0.266***</td>
+<td style="text-align: center;">0.251***</td>
+<td style="text-align: center;">0.265***</td>
 <td style="text-align: center;">0.252***</td>
 <td style="text-align: center;">0.058</td>
-<td style="text-align: center;">0.270***</td>
+<td style="text-align: center;">0.269***</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">FEELNAT:LNOISE</td>
@@ -358,13 +358,13 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: center;">-0.066.</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.114**</td>
+<td style="text-align: center;">-0.113**</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LNOISE</td>
-<td style="text-align: center;">0.212***</td>
-<td style="text-align: center;">0.170***</td>
+<td style="text-align: center;">0.213***</td>
+<td style="text-align: center;">0.171***</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">0.142**</td>
@@ -375,7 +375,7 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
-<td style="text-align: center;">-0.013</td>
+<td style="text-align: center;">-0.012</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">RL_NDVI</td>
@@ -408,23 +408,25 @@ lm(formula = formula(step_ndvi), data = D_tst)
 
 Residuals:
    Min     1Q Median     3Q    Max 
--3.371 -0.430  0.182  0.698  1.989 
+-3.347 -0.426  0.178  0.682  1.874 
 
 Coefficients:
-                  Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)        -0.1690     0.0946   -1.79  0.07452 .  
-HM_NDVI             0.1581     0.0413    3.83  0.00015 ***
-LANGGerman          0.2232     0.1064    2.10  0.03633 *  
-LANGItalian         0.0028     0.1965    0.01  0.98866    
-SPEED_log          -0.0720     0.0414   -1.74  0.08277 .  
-JNYTIME_sqrt        0.1272     0.0415    3.07  0.00226 ** 
-HM_NDVI:SPEED_log  -0.1848     0.0422   -4.38  1.4e-05 ***
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)             -0.2041     0.0859   -2.37   0.0179 *  
+HM_NDVI                  0.1572     0.0386    4.07  5.4e-05 ***
+LANGGerman               0.2689     0.0972    2.77   0.0058 ** 
+LANGItalian             -0.0768     0.1825   -0.42   0.6740    
+SPEED_log               -0.1112     0.0416   -2.67   0.0077 ** 
+JNYTIME_sqrt             0.1059     0.0406    2.61   0.0094 ** 
+HM_NDVI:SPEED_log       -0.1619     0.0399   -4.05  5.7e-05 ***
+HM_NDVI:JNYTIME_sqrt    -0.1194     0.0395   -3.02   0.0026 ** 
+SPEED_log:JNYTIME_sqrt  -0.0854     0.0394   -2.16   0.0308 *  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.958 on 536 degrees of freedom
-Multiple R-squared:  0.0917,    Adjusted R-squared:  0.0815 
-F-statistic: 9.02 on 6 and 536 DF,  p-value: 2.09e-09</code></pre>
+Residual standard error: 0.951 on 601 degrees of freedom
+Multiple R-squared:  0.108, Adjusted R-squared:  0.0963 
+F-statistic: 9.11 on 8 and 601 DF,  p-value: 7.29e-12</code></pre>
 </div>
 </div>
 </div>
@@ -446,23 +448,21 @@ lm(formula = formula(step_noise), data = D_tst)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--2.5097 -0.7495 -0.0467  0.6473  2.8683 
+-1.9524 -0.7719 -0.0133  0.6588  2.8255 
 
 Coefficients:
-                      Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)           -0.03379    0.08896   -0.38  0.70426    
-HM_NOISE               0.23846    0.03916    6.09  2.2e-09 ***
-LANGGerman            -0.00494    0.09968   -0.05  0.96047    
-LANGItalian            0.62198    0.18667    3.33  0.00092 ***
-SPEED_log             -0.06326    0.03902   -1.62  0.10552    
-JNYTIME_sqrt          -0.31956    0.03936   -8.12  3.2e-15 ***
-HM_NOISE:JNYTIME_sqrt -0.03423    0.04070   -0.84  0.40061    
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           -0.000822   0.037211   -0.02    0.982    
+HM_NOISE               0.240824   0.037282    6.46  2.2e-10 ***
+SPEED_log             -0.065753   0.037374   -1.76    0.079 .  
+JNYTIME_sqrt          -0.314663   0.037380   -8.42  2.8e-16 ***
+HM_NOISE:JNYTIME_sqrt -0.037327   0.036309   -1.03    0.304    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.904 on 536 degrees of freedom
-Multiple R-squared:  0.193, Adjusted R-squared:  0.184 
-F-statistic: 21.3 on 6 and 536 DF,  p-value: &lt;2e-16</code></pre>
+Residual standard error: 0.919 on 605 degrees of freedom
+Multiple R-squared:  0.161, Adjusted R-squared:  0.156 
+F-statistic: 29.1 on 4 and 605 DF,  p-value: &lt;2e-16</code></pre>
 </div>
 </div>
 </div>
