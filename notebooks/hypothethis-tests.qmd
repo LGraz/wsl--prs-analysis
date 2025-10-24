@@ -49,9 +49,11 @@ D_trn[GIS_vars] <- xfun::cache_rds({
 ```
 
 ### Remove "LOC_" variables from Mediators
+<!-- 
 ```{r}
-Mediator_vars <- grep("LOC_", Mediator_vars, invert = TRUE, value = TRUE)
-```
+# Mediator_vars <- grep("LOC_", Mediator_vars, invert = TRUE, value = TRUE)
+``` 
+-->
 
 ### Scaling Test Data
 ```{r}
@@ -104,11 +106,12 @@ Since we model _with_ interactions later, the latter VIF are relevant for us. Gi
 #| code-summary: "Code: Print Coef Table"
 
 # Elegant function to create coefficient tables from model summaries
+suppressPackageStartupMessages({
 library(dplyr)
 library(tidyr)
 library(knitr)
 library(purrr)
-
+})
 #' Create a formatted coefficient table from model summary list
 #' 
 #' @param model_summaries List of model summaries (e.g., output from lapply(models, summary))

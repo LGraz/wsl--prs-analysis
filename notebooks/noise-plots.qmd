@@ -44,7 +44,7 @@ D_tst$RL_NDVI <- pmax(0, D_tst$RL_NDVI)
 #| fig-height: 8
 #| fig-width: 7
 
-# Create Plot 1: Dominating Sounds
+# Create Plot 1: Dominating Sounds ---------------
 D_long <- D |>
   pivot_longer(
     cols = starts_with("LDOMAUD"),
@@ -60,11 +60,12 @@ D_long$Sound_Type <- recode(D_long$Sound_Type,
 )
 p_dominating_sound <- ggplot(D_long, aes(x = RL_NOISE, y = Value, color = Sound_Type)) +
   geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs")) +
-  ylim(1, 5) +
-  ylab("Response [1-5]")
+  # ylim(1, 5) +
+  ylab("Response [1-5]") +
+  labs(title = "a. Sound type")
 
 
-# Create Plot 2: Soundscape Attributes
+# Create Plot 2: Soundscape Attributes ---------------
 D_long <- D |>
   pivot_longer(
     cols = starts_with("LSOUNDS"),
@@ -85,9 +86,11 @@ D_long$Attribute <- recode(D_long$Attribute,
 )
 p_soundscate_attr <- ggplot(D_long, aes(x = RL_NOISE, y = Value, color = Attribute)) +
   geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs")) +
-  ylim(1, 5) +
+  # ylim(1, 5) +
   scale_color_brewer(palette = "Set1") +
-  ylab("Response [1-5]")
+  ylab("Response [1-5]") +
+  labs(title = "b. Soundscape assessment")
+
 
 
 # NOISE ANNOYANCE
@@ -148,37 +151,10 @@ D_long_annoyance$Annoyance <- factor(D_long_annoyance$Annoyance,
 )
 p_noise_annoy <- ggplot(D_long_annoyance, aes(x = RL_NOISE, y = Value, color = Annoyance)) +
   geom_smooth(method = "gam", se = TRUE, alpha = 0.3, size = 1.2, formula = y ~ s(x, bs = "cs")) +
-  ylim(0, 10) +
-  ylab("Response [0-10]")
+  # ylim(0, 10) +
+  ylab("Response [0-10]") + 
+  labs(title = "c. Noise annoyance")
 ```
-
-
-```{r}
-#| label: fig-soundscape-description
-#| code-fold: true
-#| code-summary: "Combine/Print plots created above"
-#| warning: false
-#| fig-height: 8
-#| fig-width: 7
-add_generic <- list(
-  # xlim(30, 70),
-  xlab("RL-Noise Level [dB]"))
-
-# Combine all plots vertically
-combined_plot <- suppressWarnings({
-  ggarrange(
-    p_dominating_sound + add_generic, 
-    p_soundscate_attr + add_generic,
-    p_noise_annoy + add_generic,
-    ncol = 1)
-})
-# ggsave("cache/combinded_plot.pdf", combined_plot, height=8, width = 7)
-
-# combined_plot
-```
-
-
-## PRS ~ HM_NOISE or RL_NOISE
 
 ```{r}
 #| code-fold: true
@@ -191,6 +167,9 @@ D.plot <- pivot_longer(D.plot,
                       cols = c("FA", "BA", "EC", "ES"), 
                       names_to = "Variable", 
                       values_to = "Value")
+# order the Variable factor levels
+D.plot$Variable <- factor(D.plot$Variable, 
+                          levels = c("FA", "BA", "EC", "ES"))
 
 # plot RL_NOISE vs FA, BA, EC, ES, with a smoothing line each (one plot per y)
 ggplot(D.plot, aes(x = HM_NOISE, y = Value, color = Variable)) +
@@ -205,12 +184,51 @@ ggplot(D.plot, aes(x = HM_NOISE, y = Value, color = Variable)) +
 
 
 # reproduce the plot above with the long format data
-ggplot(D.plot, aes(x = RL_NOISE, y = Value, color = Variable)) +
-  geom_vline(xintercept = c(45, 55), linetype = "dashed", color = "gray", linewidth = 1.3) +
+p_RLNOISE_PRS <- ggplot(D.plot, aes(x = RL_NOISE, y = Value, color = Variable)) +
+  # geom_vline(xintercept = c(45, 55), linetype = "dashed", color = "gray", linewidth = 1.3) +
   geom_smooth(method = "gam", se = TRUE, alpha = 0.25, linewidth = 1.5, formula = y ~ s(x, bs = "cs")) +
-  theme(legend.position = "bottom")
+  scale_color_discrete(labels = c(
+      "BA" = "BA: Being away",
+      "EC" = "EC: Extent-coherence",
+      "ES" = "ES: Extent-scope",
+      "FA" = "FA: Fascination"
+    )) +
+  ylab("Response [1-7]") +
+  labs(title = "d. Perceived Restorativeness Scale (PRS)")
 
+
+p_RLNOISE_PRS + theme(legend.position = "bottom")
 ```
+
+
+```{r}
+#| label: fig-soundscape-description
+#| code-fold: true
+#| code-summary: "Combine/Print plots created above"
+#| warning: false
+#| fig-height: 9
+#| fig-width: 7
+add_generic <- list(
+  # xlim(30, 70),
+  xlab("RL-Noise Level [dB]"), 
+  theme(legend.title = element_blank())
+  )
+
+# Combine all plots vertically
+combined_plot <- suppressWarnings({
+  ggarrange(
+    p_dominating_sound + add_generic, 
+    p_soundscate_attr + add_generic,
+    p_noise_annoy + add_generic,
+    p_RLNOISE_PRS + add_generic,
+    ncol = 1)
+})
+# ggsave("cache/combinded_plot.pdf", combined_plot, height=8, width = 7)
+
+# combined_plot
+```
+
+
 
 ## RL ~ HM --- for NOISE and NDVI
 ```{r}
@@ -304,25 +322,25 @@ RL_prop.df$LNOISE <- as.numeric(RL_prop.df$LNOISE)
 # repeat plots, but add the marginal percentages as text
 ggplot(D, aes(x = HM_NOISE, y = LNOISE)) +
   geom_vline(xintercept = c(45, 55), linetype = "dashed", color = "gray", linewidth = 1.3) +
-  geom_jitter(width = 0.1, height = 0.2, alpha = 0.2) +
-  geom_smooth(method = "gam", se = TRUE, alpha = 0.3, formula = y ~ s(x, bs = "cs")) +
+  geom_jitter(width = 0.1, height = 0.2, alpha = 0.17) +
+  geom_smooth(method = "gam", se = TRUE, color = "#0000009a", alpha = 0.23, formula = y ~ s(x, bs = "cs")) +
   labs(
     x = "HM_NOISE [dB]",
     y = "LNOISE"
   ) +
   geom_text(data = HM_prop.df, aes(x = HM_NOISELVL, y = LNOISE, 
-                                    label = paste0(Freq, "%")), size = 7, col = "darkorange")
+                                    label = paste0(Freq, "%")), size = 7, col = "#004bfbff")
 
 ggplot(D, aes(x = RL_NOISE, y = LNOISE)) +
   geom_vline(xintercept = c(45, 55), linetype = "dashed", color = "gray", linewidth = 1.3) +
-  geom_jitter(width = 0.1, height = 0.2, alpha = 0.2) +
-  geom_smooth(method = "gam", se = TRUE, alpha = 0.3, formula = y ~ s(x, bs = "cs")) +
+  geom_jitter(width = 0.1, height = 0.2, alpha = 0.17) +
+  geom_smooth(method = "gam", se = TRUE, color = "#0000009a", alpha = 0.23, formula = y ~ s(x, bs = "cs")) +
   labs(
     x = "RL_NOISE [dB]",
     y = "LNOISE"
   ) +
   geom_text(data = RL_prop.df, aes(x = RL_NOISELVL, y = LNOISE, 
-                                    label = paste0(Freq, "%")), size = 7, col = "darkorange")
+                                    label = paste0(Freq, "%")), size = 7, col = "#004bfbff")
 ```
 
 ```{r}

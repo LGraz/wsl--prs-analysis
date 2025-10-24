@@ -13,7 +13,7 @@ source("R/data_prep.R")
 ```{r}
 #| code-fold: true
 #| code-summary: "Remove LOC_ variables from Mediators"
-Mediator_vars <- grep("LOC_", Mediator_vars, invert = TRUE, value = TRUE)
+Mediator_vars_noLOC <- grep("LOC_", Mediator_vars, invert = TRUE, value = TRUE)
 ```
 
 ```{r}
@@ -83,6 +83,13 @@ GIS_vars
 Mediator_vars
 ```
 
+**Mediators  (no sensory LOC variables):**
+
+```{r}
+#| echo: false
+Mediator_vars_noLOC
+```
+
 ### PRS ~ GIS
 ```{r}
 #| code-fold: true
@@ -108,6 +115,19 @@ tasks_GIS_MED <- lapply(PRS_vars, \(y)
 get_benchi_table(tasks_GIS_MED) 
 ```
 
+
+### PRS ~ GIS + Mediators  (no sensory LOC variables)
+```{r}
+#| code-fold: true
+tasks_GIS_MED <- lapply(PRS_vars, \(y) 
+  as_task_regr(
+    subset(Dmlr, select = c(y, Mediator_vars_noLOC, GIS_vars)),
+    target = y,
+    id = y
+  ))
+get_benchi_table(tasks_GIS_MED) 
+```
+
 ### PRS ~ Mediators
 ```{r}
 #| code-fold: true
@@ -119,6 +139,19 @@ tasks_MED <- lapply(PRS_vars, \(y)
   ))
 get_benchi_table(tasks_MED) 
 ```
+
+### PRS ~ Mediators (no sensory LOC variables)
+```{r}
+#| code-fold: true
+tasks_MED <- lapply(PRS_vars, \(y) 
+  as_task_regr(
+    subset(Dmlr, select = c(y, Mediator_vars_noLOC)),
+    target = y,
+    id = y
+  ))
+get_benchi_table(tasks_MED) 
+```
+
 
 ### Mediators ~ GIS
 ```{r}
