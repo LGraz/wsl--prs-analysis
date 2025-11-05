@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
     <meta charset="utf-8">
-    <meta name="generator" content="quarto-1.7.32">
+    <meta name="generator" content="quarto-1.8.25">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -152,14 +152,15 @@
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-813c323200a87c37e262811031999de4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4d7f0bce1131f3e5f9547cd857cfbfc8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
      <style>.quarto-notebook .cell-container .cell-decorator { display: none; }</style>  
       </head>
 
@@ -233,7 +234,7 @@
 <main class="content quarto-banner-title-block" id="quarto-document-content">      
 
        <div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/data_prep.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/data_prep.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Number of matches per filter criteria (not disjoint)
   Headphone  PRS_all_NA    Distance Activity_NA    Duration  HMNoise_NA 
@@ -241,6 +242,9 @@
 JourneyTime 
          20 
 Keep  1494 of 2206 observations</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'missForest' was built under R version 4.5.1</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Imputing PRS_orig_vars</code></pre>
@@ -251,53 +255,58 @@ Keep  1494 of 2206 observations</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Remove LOC_ variables from Mediators</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Mediator_vars_noLOC <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"LOC_"</span>, Mediator_vars, <span class="at">invert =</span> <span class="cn">TRUE</span>, <span class="at">value =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Mediator_vars_noLOC <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"LOC_"</span>, Mediator_vars, <span class="at">invert =</span> <span class="cn">TRUE</span>, <span class="at">value =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Benchmark helper function</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlr3verse, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mse <span class="ot">&lt;-</span> <span class="fu">msrs</span>(<span class="fu">c</span>(<span class="st">"regr.mse"</span>))</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">interactive</span>())</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  lgr<span class="sc">::</span><span class="fu">get_logger</span>(<span class="st">"mlr3"</span>)<span class="sc">$</span><span class="fu">set_threshold</span>(<span class="st">"warn"</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>get_benchi_table <span class="ot">&lt;-</span> <span class="cf">function</span>(tasks, <span class="at">nfolds =</span> <span class="dv">5</span>) {</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  learners <span class="ot">&lt;-</span> <span class="fu">lrns</span>(<span class="fu">c</span>(<span class="st">"regr.featureless"</span>, <span class="st">"regr.lm"</span>, <span class="st">"regr.xgboost"</span>, <span class="st">"regr.ranger"</span>))</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  learners<span class="sc">$</span>regr.xgboost<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">eta =</span> <span class="fl">0.03</span>, </span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrounds =</span> <span class="dv">300</span>, </span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_depth =</span> <span class="dv">2</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  benchi <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">benchmark</span>(<span class="fu">benchmark_grid</span>(</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      tasks, </span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>      learners, </span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> nfolds)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  }, </span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"benchmark.rds"</span>, </span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(tasks, nfolds)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(benchi<span class="sc">$</span><span class="fu">aggregate</span>(mse), </span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> task_id,</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> learner_id,</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> regr.mse</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(res) <span class="ot">&lt;-</span> res<span class="sc">$</span>task_id</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> res[, <span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(res) <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"regr."</span>, <span class="st">""</span>, <span class="fu">colnames</span>(res))</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">any</span>(<span class="fu">colnames</span>(res) <span class="sc">==</span> <span class="st">"featureless"</span>))</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> res <span class="sc">/</span> res<span class="sc">$</span>featureless</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  res[, <span class="sc">-</span><span class="dv">1</span>, drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mlr3verse, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'mlr3verse' was built under R version 4.5.1</code></pre>
+</div>
+<details class="code-fold">
+<summary>Benchmark helper function</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mse <span class="ot">&lt;-</span> <span class="fu">msrs</span>(<span class="fu">c</span>(<span class="st">"regr.mse"</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">interactive</span>())</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  lgr<span class="sc">::</span><span class="fu">get_logger</span>(<span class="st">"mlr3"</span>)<span class="sc">$</span><span class="fu">set_threshold</span>(<span class="st">"warn"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>get_benchi_table <span class="ot">&lt;-</span> <span class="cf">function</span>(tasks, <span class="at">nfolds =</span> <span class="dv">5</span>) {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  learners <span class="ot">&lt;-</span> <span class="fu">lrns</span>(<span class="fu">c</span>(<span class="st">"regr.featureless"</span>, <span class="st">"regr.lm"</span>, <span class="st">"regr.xgboost"</span>, <span class="st">"regr.ranger"</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  learners<span class="sc">$</span>regr.xgboost<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">eta =</span> <span class="fl">0.03</span>, </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">nrounds =</span> <span class="dv">300</span>, </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_depth =</span> <span class="dv">2</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  benchi <span class="ot">&lt;-</span> xfun<span class="sc">::</span><span class="fu">cache_rds</span>({</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">benchmark</span>(<span class="fu">benchmark_grid</span>(</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      tasks, </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      learners, </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> nfolds)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  }, </span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"benchmark.rds"</span>, </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">dir =</span> <span class="st">"cache/"</span>,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">hash =</span> <span class="fu">list</span>(tasks, nfolds)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(benchi<span class="sc">$</span><span class="fu">aggregate</span>(mse), </span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_cols =</span> task_id,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> learner_id,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> regr.mse</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(res) <span class="ot">&lt;-</span> res<span class="sc">$</span>task_id</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> res[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(res) <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"regr."</span>, <span class="st">""</span>, <span class="fu">colnames</span>(res))</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">any</span>(<span class="fu">colnames</span>(res) <span class="sc">==</span> <span class="st">"featureless"</span>))</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> res <span class="sc">/</span> res<span class="sc">$</span>featureless</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  res[, <span class="sc">-</span><span class="dv">1</span>, drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div></div>
 <p>Testing prediction quality of GIS_vars -&gt; Mediators -&gt; PRS_vars using</p>
@@ -309,7 +318,7 @@ Keep  1494 of 2206 observations</code></pre>
 </ul>
 <p><strong>GIS Variables:</strong></p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>GIS_vars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>GIS_vars</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "LCARTIF_sqrt"   "LCFOREST_sqrt"  "HETER"          "OVDIST_sqrt"   
  [5] "VIS5K_sqrt"     "RL_NDVI"        "RL_NOISE"       "DISTKM_sqrt"   
@@ -318,7 +327,7 @@ Keep  1494 of 2206 observations</code></pre>
 </div></div>
 <p><strong>Mediators:</strong></p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Mediator_vars</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Mediator_vars</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "FEELNAT"  "LNOISE"   "LOC_SENS" "LOC_SOUN" "LOC_SCEN" "LOC_VISE" "LOC_VEGE"
 [8] "LOC_FAUN"</code></pre>
@@ -326,7 +335,7 @@ Keep  1494 of 2206 observations</code></pre>
 </div></div>
 <p><strong>Mediators (no sensory LOC variables):</strong></p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Mediator_vars_noLOC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Mediator_vars_noLOC</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "FEELNAT" "LNOISE" </code></pre>
 </div>
@@ -336,21 +345,21 @@ Keep  1494 of 2206 observations</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tasks_GIS <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, GIS_vars)),</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_GIS) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tasks_GIS <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, GIS_vars)),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_GIS) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>         lm xgboost ranger
-MEAN -0.002  -0.003 -0.031
-FA   -0.002   0.015  0.000
-BA   -0.006  -0.009 -0.023
-EC    0.001  -0.027 -0.036
-ES    0.048   0.048  0.030</code></pre>
+MEAN -0.002  -0.005 -0.035
+FA   -0.002   0.014  0.005
+BA   -0.006  -0.009 -0.021
+EC    0.002  -0.024 -0.035
+ES    0.046   0.044  0.026</code></pre>
 </div>
 </div></div>
 <p>GIS variables alone show poor predictive performance.</p>
@@ -360,21 +369,21 @@ ES    0.048   0.048  0.030</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>tasks_GIS_MED <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, Mediator_vars, GIS_vars)),</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_GIS_MED) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tasks_GIS_MED <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, Mediator_vars, GIS_vars)),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_GIS_MED) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        lm xgboost ranger
-MEAN 0.226   0.238  0.223
-FA   0.236   0.263  0.254
-BA   0.122   0.133  0.133
-EC   0.041   0.018  0.021
-ES   0.151   0.169  0.160</code></pre>
+MEAN 0.228   0.244  0.231
+FA   0.236   0.262  0.251
+BA   0.123   0.135  0.131
+EC   0.044   0.018  0.026
+ES   0.151   0.170  0.153</code></pre>
 </div>
 </div></div>
 </section>
@@ -383,21 +392,21 @@ ES   0.151   0.169  0.160</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tasks_GIS_MED <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, Mediator_vars_noLOC, GIS_vars)),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_GIS_MED) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>tasks_GIS_MED <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, Mediator_vars_noLOC, GIS_vars)),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_GIS_MED) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        lm xgboost ranger
-MEAN 0.131   0.137  0.139
-FA   0.133   0.166  0.145
-BA   0.071   0.064  0.065
-EC   0.017  -0.014 -0.013
-ES   0.130   0.145  0.118</code></pre>
+MEAN 0.134   0.143  0.135
+FA   0.135   0.164  0.144
+BA   0.072   0.069  0.064
+EC   0.019  -0.015 -0.012
+ES   0.130   0.144  0.117</code></pre>
 </div>
 </div></div>
 </section>
@@ -406,21 +415,21 @@ ES   0.130   0.145  0.118</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tasks_MED <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, Mediator_vars)),</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_MED) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>tasks_MED <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, Mediator_vars)),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_MED) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        lm xgboost ranger
-MEAN 0.225   0.237  0.193
-FA   0.227   0.258  0.233
-BA   0.134   0.150  0.111
-EC   0.035   0.021 -0.020
-ES   0.130   0.133  0.080</code></pre>
+MEAN 0.227   0.243  0.198
+FA   0.227   0.255  0.229
+BA   0.135   0.150  0.112
+EC   0.036   0.029 -0.019
+ES   0.132   0.136  0.082</code></pre>
 </div>
 </div></div>
 </section>
@@ -429,21 +438,21 @@ ES   0.130   0.133  0.080</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>tasks_MED <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, Mediator_vars_noLOC)),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_MED) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tasks_MED <span class="ot">&lt;-</span> <span class="fu">lapply</span>(PRS_vars, \(y) </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, Mediator_vars_noLOC)),</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_MED) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        lm xgboost ranger
-MEAN 0.134   0.148  0.137
-FA   0.130   0.173  0.154
-BA   0.084   0.083  0.077
-EC   0.007  -0.002 -0.004
-ES   0.114   0.108  0.097</code></pre>
+MEAN 0.137   0.155  0.148
+FA   0.131   0.170  0.165
+BA   0.085   0.086  0.077
+EC   0.008   0.011  0.008
+ES   0.116   0.108  0.102</code></pre>
 </div>
 </div></div>
 </section>
@@ -452,24 +461,24 @@ ES   0.114   0.108  0.097</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>tasks_MED_by_GIS <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Mediator_vars, \(y) </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, GIS_vars)),</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_MED_by_GIS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tasks_MED_by_GIS <span class="ot">&lt;-</span> <span class="fu">lapply</span>(Mediator_vars, \(y) </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_task_regr</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(y, GIS_vars)),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">target =</span> y,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> y</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_benchi_table</span>(tasks_MED_by_GIS)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>            lm xgboost ranger
-FEELNAT  0.126   0.138  0.113
-LNOISE   0.097   0.072  0.084
-LOC_SENS 0.020  -0.005 -0.023
-LOC_SOUN 0.041   0.008 -0.001
-LOC_SCEN 0.039   0.050  0.025
-LOC_VISE 0.008  -0.026 -0.046
-LOC_VEGE 0.052   0.029  0.035
-LOC_FAUN 0.058   0.063  0.046</code></pre>
+FEELNAT  0.127   0.136  0.112
+LNOISE   0.096   0.068  0.081
+LOC_SENS 0.020  -0.003 -0.024
+LOC_SOUN 0.041   0.010 -0.001
+LOC_SCEN 0.040   0.051  0.024
+LOC_VISE 0.008  -0.029 -0.043
+LOC_VEGE 0.052   0.031  0.036
+LOC_FAUN 0.057   0.062  0.049</code></pre>
 </div>
 </div></div>
 </section>
@@ -478,89 +487,89 @@ LOC_FAUN 0.058   0.063  0.046</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [13]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>XGBoost - Parameter Tuning</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Get parameter estimates for XGBoost</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">as_task_regr</span>(</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(<span class="st">"FEELNAT"</span>, GIS_vars)),</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">"FEELNAT"</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">lrn</span>(<span class="st">"regr.xgboost"</span>,</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">nrounds =</span> <span class="dv">500</span>  <span class="co"># More iterations due to lower learning rate</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create search space</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>ps <span class="ot">&lt;-</span> <span class="fu">ps</span>(</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_depth =</span> <span class="fu">p_int</span>(<span class="dv">2</span>, <span class="dv">3</span>),</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">eta =</span> <span class="fu">p_dbl</span>(<span class="fl">0.001</span>, <span class="fl">0.3</span>, <span class="at">tags =</span> <span class="st">"logscale"</span>)</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup tuning</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>instance <span class="ot">&lt;-</span> <span class="fu">ti</span>(</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">task =</span> t,</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">learner =</span> l,</span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>),</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"regr.mse"</span>),</span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">terminator =</span> <span class="fu">trm</span>(<span class="st">"none"</span>),</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">search_space =</span> ps</span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid search</span></span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>tuner <span class="ot">&lt;-</span> mlr3tuning<span class="sc">::</span><span class="fu">tnr</span>(<span class="st">"grid_search"</span>)</span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>tuner<span class="sc">$</span><span class="fu">optimize</span>(instance)</span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>instance<span class="sc">$</span>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Get parameter estimates for XGBoost</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">as_task_regr</span>(</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(<span class="st">"FEELNAT"</span>, GIS_vars)),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">"FEELNAT"</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">lrn</span>(<span class="st">"regr.xgboost"</span>,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">nrounds =</span> <span class="dv">500</span>  <span class="co"># More iterations due to lower learning rate</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create search space</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>ps <span class="ot">&lt;-</span> <span class="fu">ps</span>(</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_depth =</span> <span class="fu">p_int</span>(<span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">eta =</span> <span class="fu">p_dbl</span>(<span class="fl">0.001</span>, <span class="fl">0.3</span>, <span class="at">tags =</span> <span class="st">"logscale"</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup tuning</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>instance <span class="ot">&lt;-</span> <span class="fu">ti</span>(</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">task =</span> t,</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">learner =</span> l,</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">resampling =</span> <span class="fu">rsmp</span>(<span class="st">"cv"</span>, <span class="at">folds =</span> <span class="dv">3</span>),</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">measure =</span> <span class="fu">msr</span>(<span class="st">"regr.mse"</span>),</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">terminator =</span> <span class="fu">trm</span>(<span class="st">"none"</span>),</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">search_space =</span> ps</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid search</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>tuner <span class="ot">&lt;-</span> mlr3tuning<span class="sc">::</span><span class="fu">tnr</span>(<span class="st">"grid_search"</span>)</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>tuner<span class="sc">$</span><span class="fu">optimize</span>(instance)</span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>instance<span class="sc">$</span>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [14]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Superseded setup with mlr3</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cbind("</span>, <span class="fu">paste</span>(PRS_vars, <span class="at">collapse =</span> <span class="st">", "</span>), <span class="st">")"</span>,</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">" ~ "</span>,</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>)</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  )), </span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  D)</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>rsq.lm <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">summary</span>(fit), \(x) x<span class="sc">$</span>r.sq)</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>rsq.rf <span class="ot">&lt;-</span> <span class="fu">sapply</span>(PRS_vars, \(x) {</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  rf <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    x, <span class="st">" ~ "</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>)</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  )), </span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  D, <span class="at">na.action =</span> na.omit</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  rf<span class="sc">$</span>rsq[<span class="dv">500</span>]</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">lm =</span> rsq.lm, <span class="at">rf =</span> rsq.rf) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cbind("</span>, <span class="fu">paste</span>(PRS_vars, <span class="at">collapse =</span> <span class="st">", "</span>), <span class="st">")"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">" ~ "</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  )), </span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  D)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>rsq.lm <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">summary</span>(fit), \(x) x<span class="sc">$</span>r.sq)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>rsq.rf <span class="ot">&lt;-</span> <span class="fu">sapply</span>(PRS_vars, \(x) {</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  rf <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(<span class="fu">as.formula</span>(<span class="fu">paste0</span>(</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    x, <span class="st">" ~ "</span>, <span class="fu">paste</span>(Mediator_vars, <span class="at">collapse =</span> <span class="st">" + "</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  )), </span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  D, <span class="at">na.action =</span> na.omit</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  rf<span class="sc">$</span>rsq[<span class="dv">500</span>]</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">lm =</span> rsq.lm, <span class="at">rf =</span> rsq.rf) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>First basic setup with mlr3</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(mytsk1, <span class="at">type =</span> <span class="st">"pairs"</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>mytsk1 <span class="ot">&lt;-</span> <span class="fu">as_task_regr</span>(</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(<span class="st">"FA"</span>, Mediator_vars, GIS_vars)),</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">feature =</span> <span class="fu">c</span>(Mediator_vars, GIS_vars),</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">"FA"</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="st">"bla"</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>lrn_xgb <span class="ot">&lt;-</span> <span class="fu">lrn</span>(<span class="st">"regr.xgboost"</span>)</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>lrn_avg <span class="ot">&lt;-</span> <span class="fu">lrn</span>(<span class="st">"regr.featureless"</span>)</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>splits <span class="ot">&lt;-</span> <span class="fu">partition</span>(mytsk1)</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>lrn_xgb<span class="sc">$</span><span class="fu">train</span>(mytsk1, splits<span class="sc">$</span>train)<span class="sc">$</span><span class="fu">predict</span>(mytsk1, splits<span class="sc">$</span>test)<span class="sc">$</span><span class="fu">score</span>(mse)</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>lrn_avg<span class="sc">$</span><span class="fu">train</span>(mytsk1, splits<span class="sc">$</span>train)<span class="sc">$</span><span class="fu">predict</span>(mytsk1, splits<span class="sc">$</span>test)<span class="sc">$</span><span class="fu">score</span>(mse)</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">resample</span>(mytsk1, lrn_xgb, cv3)</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(mse)</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>learners <span class="ot">&lt;-</span> <span class="fu">lrns</span>(<span class="fu">c</span>(<span class="st">"regr.featureless"</span>, <span class="st">"regr.lm"</span>, <span class="st">"regr.xgboost"</span>, <span class="st">"regr.ranger"</span>))</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>learners<span class="sc">$</span>regr.xgboost<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(<span class="at">eta =</span> <span class="fl">0.03</span>, <span class="at">nrounds =</span> <span class="dv">300</span>, <span class="at">max_depth =</span> <span class="dv">2</span>)</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>learners <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"regr.featureless"</span>, <span class="st">"regr.lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(mytsk1, <span class="at">type =</span> <span class="st">"pairs"</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>mytsk1 <span class="ot">&lt;-</span> <span class="fu">as_task_regr</span>(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Dmlr, <span class="at">select =</span> <span class="fu">c</span>(<span class="st">"FA"</span>, Mediator_vars, GIS_vars)),</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">feature =</span> <span class="fu">c</span>(Mediator_vars, GIS_vars),</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">target =</span> <span class="st">"FA"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="st">"bla"</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>lrn_xgb <span class="ot">&lt;-</span> <span class="fu">lrn</span>(<span class="st">"regr.xgboost"</span>)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>lrn_avg <span class="ot">&lt;-</span> <span class="fu">lrn</span>(<span class="st">"regr.featureless"</span>)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>splits <span class="ot">&lt;-</span> <span class="fu">partition</span>(mytsk1)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>lrn_xgb<span class="sc">$</span><span class="fu">train</span>(mytsk1, splits<span class="sc">$</span>train)<span class="sc">$</span><span class="fu">predict</span>(mytsk1, splits<span class="sc">$</span>test)<span class="sc">$</span><span class="fu">score</span>(mse)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>lrn_avg<span class="sc">$</span><span class="fu">train</span>(mytsk1, splits<span class="sc">$</span>train)<span class="sc">$</span><span class="fu">predict</span>(mytsk1, splits<span class="sc">$</span>test)<span class="sc">$</span><span class="fu">score</span>(mse)</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>rr <span class="ot">&lt;-</span> <span class="fu">resample</span>(mytsk1, lrn_xgb, cv3)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>rr<span class="sc">$</span><span class="fu">aggregate</span>(mse)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>learners <span class="ot">&lt;-</span> <span class="fu">lrns</span>(<span class="fu">c</span>(<span class="st">"regr.featureless"</span>, <span class="st">"regr.lm"</span>, <span class="st">"regr.xgboost"</span>, <span class="st">"regr.ranger"</span>))</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>learners<span class="sc">$</span>regr.xgboost<span class="sc">$</span>param_set<span class="sc">$</span><span class="fu">set_values</span>(<span class="at">eta =</span> <span class="fl">0.03</span>, <span class="at">nrounds =</span> <span class="dv">300</span>, <span class="at">max_depth =</span> <span class="dv">2</span>)</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>learners <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"regr.featureless"</span>, <span class="st">"regr.lm"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div></div>
 </section>
@@ -617,13 +626,14 @@ LOC_FAUN 0.058   0.063  0.046</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

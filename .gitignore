@@ -33,3 +33,5 @@ renv/
 !docs/notebooks/*_files/*.png
 !docs/index_files
 
+
+**/*.quarto_ipynb
