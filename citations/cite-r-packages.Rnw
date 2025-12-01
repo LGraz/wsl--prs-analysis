@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}         % the type of document and font size (default 10pt)
+\usepackage[margin=1.0in]{geometry}   % sets all margins to 1in, can be changed
+\usepackage{moreverb}                 % for verbatimtabinput -- LaTeX environment
+\usepackage{url}                      % for \url{} command
+\usepackage{amssymb}                  % for many mathematical symbols
+\usepackage[authoryear]{natbib}       % BibTeX
+\usepackage{amsfonts,amsmath}%,amssymb} %,amsthm,amstext}
+\usepackage{bm}                       % \bm{} for bold math symbols
+
+
+%% Citations
+\usepackage{hyperref}  % generates hyperlinks (has to be loaded as last package)
+\definecolor{Red}{rgb}{0.5,0,0}
+\definecolor{Blue}{rgb}{0,0,0.5}
+ \hypersetup{%
+    hyperindex = {true},
+    colorlinks = {true},
+    linktocpage = {true},
+    plainpages = {false},
+    linkcolor = {Blue},
+    citecolor = {Blue},
+    urlcolor = {Red},
+    pdfstartview = {Fit},
+    pdfpagemode = {None},
+    pdfview = {XYZ null null null}
+  }
+\newcommand{\pkg}[1]{\textbf{#1}}
+\newcommand{\proglang}[1]{\textsf{#1}}
+\newcommand{\cmd}[1]{\texttt{#1()}}
+\newcommand*{\doi}[1]{\href{http://dx.doi.org/#1}{\texttt{doi:~#1}}}
+
+\begin{document}                      % document begins here
+
+All computations were performed using \proglang{R} version
+\Sexpr{paste(version$major, version$minor, sep = ".")} \citep{R}.\\
+\citep{pkg:mlr3verse}\\
+\citep{pkg:mgcv}\\
+\citep{pkg:missForest}\\
+\citep{pkg:ranger}\\
+\citep{pkg:xgboost}
+
+<<funs, echo = FALSE, results = 'hide'>>=
+pkgs <- c("mlr3verse", "mgcv", "missForest", "ranger", "xgboost")
+
+if (file.exists("packages.bib")) file.remove("packages.bib")
+pkgversion <- function(pkg) {
+  pkgbib(pkg)
+  packageDescription(pkg)$Version
+}
+pkgbib <- function(pkg) {
+  x <- citation(package = pkg, auto = TRUE)[[1]]
+  b <- toBibtex(x)
+  
+  b <- gsub("R package", "\\\\proglang{R} package", b)
+  
+  b[1] <- paste("@article{pkg:", pkg, ",", sep = "")
+#  if (is.na(b["url"])) {
+#    b[length(b)] <- paste("   URL = {http://CRAN.R-project.org/package=",
+#                          pkg, "}", sep = "")
+#    b <- c(b, "}")
+#  }
+  b <- b[names(b) != "url"]
+  if (is.na(b["doi"])) {
+      b[length(b)] <- paste("   doi = {10.32614/CRAN.package.",
+                            pkg, "}", sep = "")
+      b <- c(b, "}")
+  }
+  b["note"] <- gsub("R package", "\\\\proglang{R} package", b["note"])
+  cat(b, sep = "\n", file = "packages.bib", append = TRUE)
+}
+pkg <- function(pkg)
+  paste("\\\\pkg{", pkg, "} \\\\citep[version~",
+        pkgversion(pkg), ",][]{pkg:", pkg, "}", sep = "")
+
+out <- sapply(pkgs, pkg)
+
+x <- readLines("packages.bib")
+for (p in pkgs)
+  x <- gsub(paste("\\{", p, ":", sep = ""), paste("\\{\\\\pkg{", p, "}:", sep = ""), x)
+cat(x, sep = "\n", file = "packages.bib", append = FALSE)
+R <- unclass(toBibtex(citation()))
+R[[1]] <- "@manual{R,"
+cat(R, file = "packages.bib", append = TRUE, sep = "\n")
+@
+
+\bibliographystyle{plainnat}
+\bibliography{packages}
+\end{document}
+
+
+
+
+
+

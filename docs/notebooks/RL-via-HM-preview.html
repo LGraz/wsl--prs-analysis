@@ -240,14 +240,12 @@
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(mgcv)  <span class="co"># for GAM models - smoothing</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(gridExtra)  <span class="co"># for combining plots</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(tidyr)  <span class="co"># for pivoting data</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'kernlab' was built under R version 4.5.1</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/data_prep.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/data_prep.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Number of matches per filter criteria (not disjoint)
   Headphone  PRS_all_NA    Distance Activity_NA    Duration  HMNoise_NA 
@@ -257,52 +255,49 @@ JourneyTime
 Keep  1494 of 2206 observations</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'missForest' was built under R version 4.5.1</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
 <pre><code>Imputing PRS_orig_vars</code></pre>
 </div>
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>RL_NDVI     <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, D<span class="sc">$</span>RL_NDVI)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>RL_NDVI <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, D_trn<span class="sc">$</span>RL_NDVI)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>RL_NDVI <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, D_tst<span class="sc">$</span>RL_NDVI)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>LANG <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D<span class="sc">$</span>LANG)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>LANG <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D_trn<span class="sc">$</span>LANG)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>LANG <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D_tst<span class="sc">$</span>LANG)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>SEX <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D<span class="sc">$</span>SEX)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>SEX <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D_trn<span class="sc">$</span>SEX)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>SEX <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D_tst<span class="sc">$</span>SEX)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>JNYTIME <span class="ot">&lt;-</span> D<span class="sc">$</span>JNYTIME <span class="sc">+</span> <span class="fu">quantile</span>(D<span class="sc">$</span>JNYTIME[D<span class="sc">$</span>JNYTIME <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>JNYTIME <span class="ot">&lt;-</span> D_trn<span class="sc">$</span>JNYTIME <span class="sc">+</span> <span class="fu">quantile</span>(D_trn<span class="sc">$</span>JNYTIME[D_trn<span class="sc">$</span>JNYTIME <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>JNYTIME <span class="ot">&lt;-</span> D_tst<span class="sc">$</span>JNYTIME <span class="sc">+</span> <span class="fu">quantile</span>(D_tst<span class="sc">$</span>JNYTIME[D_tst<span class="sc">$</span>JNYTIME <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>DISTKM <span class="ot">&lt;-</span> D<span class="sc">$</span>DISTKM <span class="sc">+</span> <span class="fu">quantile</span>(D<span class="sc">$</span>DISTKM[D<span class="sc">$</span>DISTKM <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>DISTKM <span class="ot">&lt;-</span> D_trn<span class="sc">$</span>DISTKM <span class="sc">+</span> <span class="fu">quantile</span>(D_trn<span class="sc">$</span>DISTKM[D_trn<span class="sc">$</span>DISTKM <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>DISTKM <span class="ot">&lt;-</span> D_tst<span class="sc">$</span>DISTKM <span class="sc">+</span> <span class="fu">quantile</span>(D_tst<span class="sc">$</span>DISTKM[D_tst<span class="sc">$</span>DISTKM <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>SPEED_log <span class="ot">&lt;-</span> <span class="fu">log</span>(D<span class="sc">$</span>DISTKM <span class="sc">/</span> D<span class="sc">$</span>JNYTIME)</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>SPEED_log <span class="ot">&lt;-</span> <span class="fu">log</span>(D_trn<span class="sc">$</span>DISTKM <span class="sc">/</span> D_trn<span class="sc">$</span>JNYTIME)</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>SPEED_log <span class="ot">&lt;-</span> <span class="fu">log</span>(D_tst<span class="sc">$</span>DISTKM <span class="sc">/</span> D_tst<span class="sc">$</span>JNYTIME)</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># logical_vars &lt;- c("ALONE","WITH_DOG","WITH_KID","WITH_PAR","WITH_PNT","WITH_FND")</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co"># D[logical_vars] &lt;- lapply(D[logical_vars], as.numeric)</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="co"># D_trn[logical_vars] &lt;- lapply(D_trn[logical_vars], as.numeric)</span></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co"># D_tst[logical_vars] &lt;- lapply(D_tst[logical_vars], as.numeric)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>RL_NDVI     <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, D<span class="sc">$</span>RL_NDVI)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>RL_NDVI <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, D_trn<span class="sc">$</span>RL_NDVI)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>RL_NDVI <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, D_tst<span class="sc">$</span>RL_NDVI)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>LANG <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D<span class="sc">$</span>LANG)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>LANG <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D_trn<span class="sc">$</span>LANG)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>LANG <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D_tst<span class="sc">$</span>LANG)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>SEX <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D<span class="sc">$</span>SEX)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>SEX <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D_trn<span class="sc">$</span>SEX)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>SEX <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(D_tst<span class="sc">$</span>SEX)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>JNYTIME <span class="ot">&lt;-</span> D<span class="sc">$</span>JNYTIME <span class="sc">+</span> <span class="fu">quantile</span>(D<span class="sc">$</span>JNYTIME[D<span class="sc">$</span>JNYTIME <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>JNYTIME <span class="ot">&lt;-</span> D_trn<span class="sc">$</span>JNYTIME <span class="sc">+</span> <span class="fu">quantile</span>(D_trn<span class="sc">$</span>JNYTIME[D_trn<span class="sc">$</span>JNYTIME <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>JNYTIME <span class="ot">&lt;-</span> D_tst<span class="sc">$</span>JNYTIME <span class="sc">+</span> <span class="fu">quantile</span>(D_tst<span class="sc">$</span>JNYTIME[D_tst<span class="sc">$</span>JNYTIME <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>DISTKM <span class="ot">&lt;-</span> D<span class="sc">$</span>DISTKM <span class="sc">+</span> <span class="fu">quantile</span>(D<span class="sc">$</span>DISTKM[D<span class="sc">$</span>DISTKM <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>DISTKM <span class="ot">&lt;-</span> D_trn<span class="sc">$</span>DISTKM <span class="sc">+</span> <span class="fu">quantile</span>(D_trn<span class="sc">$</span>DISTKM[D_trn<span class="sc">$</span>DISTKM <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>DISTKM <span class="ot">&lt;-</span> D_tst<span class="sc">$</span>DISTKM <span class="sc">+</span> <span class="fu">quantile</span>(D_tst<span class="sc">$</span>DISTKM[D_tst<span class="sc">$</span>DISTKM <span class="sc">&gt;</span> <span class="dv">0</span>], <span class="fl">0.05</span>, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>SPEED_log <span class="ot">&lt;-</span> <span class="fu">log</span>(D<span class="sc">$</span>DISTKM <span class="sc">/</span> D<span class="sc">$</span>JNYTIME)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>D_trn<span class="sc">$</span>SPEED_log <span class="ot">&lt;-</span> <span class="fu">log</span>(D_trn<span class="sc">$</span>DISTKM <span class="sc">/</span> D_trn<span class="sc">$</span>JNYTIME)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>D_tst<span class="sc">$</span>SPEED_log <span class="ot">&lt;-</span> <span class="fu">log</span>(D_tst<span class="sc">$</span>DISTKM <span class="sc">/</span> D_tst<span class="sc">$</span>JNYTIME)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co"># logical_vars &lt;- c("ALONE","WITH_DOG","WITH_KID","WITH_PAR","WITH_PNT","WITH_FND")</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># D[logical_vars] &lt;- lapply(D[logical_vars], as.numeric)</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># D_trn[logical_vars] &lt;- lapply(D_trn[logical_vars], as.numeric)</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># D_tst[logical_vars] &lt;- lapply(D_tst[logical_vars], as.numeric)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Train/test split</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nams <span class="ot">&lt;-</span> <span class="fu">names</span>(D)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>nams[<span class="fu">grep</span>(<span class="st">"HM|RL"</span>, nams)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nams <span class="ot">&lt;-</span> <span class="fu">names</span>(D)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>nams[<span class="fu">grep</span>(<span class="st">"HM|RL"</span>, nams)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "HM_NOISELVL" "HM_NDVI"     "HM_NOISE"    "RL_NDVI"     "RL_NOISE"   
@@ -311,27 +306,27 @@ Keep  1494 of 2206 observations</code></pre>
 </div>
 <details class="code-fold">
 <summary>Train/test split</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "HM_NOISELVL",</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "HM_COORDX","HM_COORDY","RL_COORDX","RL_COORDY","RL_GCOORD",</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "RL_GCOORDN","RL_GCOORDW",</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"HM_NDVI"</span>,<span class="st">"HM_NOISE"</span>,<span class="st">"RL_NDVI"</span>,<span class="st">"RL_NOISE"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ALONE"</span>,<span class="st">"WITH_DOG"</span>,<span class="st">"WITH_KID"</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"WITH_PAR"</span>,<span class="st">"WITH_PNT"</span>,<span class="st">"WITH_FND"</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"LANG"</span>, <span class="co"># "AGE","SEX",</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"DISTKM_sqrt"</span>, <span class="st">"JNYTIME_sqrt"</span>, <span class="st">"SPEED_log"</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>) </span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>D_trn <span class="ot">&lt;-</span> D_trn[vars]</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>D_tst <span class="ot">&lt;-</span> D_tst[vars]</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>D_trn <span class="ot">&lt;-</span> D_trn[<span class="fu">complete.cases</span>(D_trn), ]</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>D_tst <span class="ot">&lt;-</span> D_tst[<span class="fu">complete.cases</span>(D_tst), ]</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>D_trn[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(D_trn[], \(x) <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) <span class="fu">scale</span>(x) <span class="cf">else</span> x)</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>D_tst[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(D_tst[], \(x) <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) <span class="fu">scale</span>(x) <span class="cf">else</span> x)</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(D[vars])</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "HM_NOISELVL",</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "HM_COORDX","HM_COORDY","RL_COORDX","RL_COORDY","RL_GCOORD",</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># "RL_GCOORDN","RL_GCOORDW",</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"HM_NDVI"</span>,<span class="st">"HM_NOISE"</span>,<span class="st">"RL_NDVI"</span>,<span class="st">"RL_NOISE"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ALONE"</span>,<span class="st">"WITH_DOG"</span>,<span class="st">"WITH_KID"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"WITH_PAR"</span>,<span class="st">"WITH_PNT"</span>,<span class="st">"WITH_FND"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"LANG"</span>, <span class="co"># "AGE","SEX",</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"DISTKM_sqrt"</span>, <span class="st">"JNYTIME_sqrt"</span>, <span class="st">"SPEED_log"</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>D_trn <span class="ot">&lt;-</span> D_trn[vars]</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>D_tst <span class="ot">&lt;-</span> D_tst[vars]</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>D_trn <span class="ot">&lt;-</span> D_trn[<span class="fu">complete.cases</span>(D_trn), ]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>D_tst <span class="ot">&lt;-</span> D_tst[<span class="fu">complete.cases</span>(D_tst), ]</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>D_trn[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(D_trn[], \(x) <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) <span class="fu">scale</span>(x) <span class="cf">else</span> x)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>D_tst[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(D_tst[], \(x) <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) <span class="fu">scale</span>(x) <span class="cf">else</span> x)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(D[vars])</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div></div>
 <!-- 
@@ -369,7 +364,7 @@ for (formula_str in L_formulas) {
 
 -->
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">cbind</span>(D_trn[<span class="fu">c</span>(<span class="st">"DISTKM_sqrt"</span>, <span class="st">"JNYTIME_sqrt"</span>, <span class="st">"SPEED_log"</span>)]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(<span class="fu">cbind</span>(D_trn[<span class="fu">c</span>(<span class="st">"DISTKM_sqrt"</span>, <span class="st">"JNYTIME_sqrt"</span>, <span class="st">"SPEED_log"</span>)]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             DISTKM_sqrt JNYTIME_sqrt SPEED_log
 DISTKM_sqrt        1.000        0.473     0.713
@@ -382,12 +377,12 @@ SPEED_log          0.713       -0.101     1.000</code></pre>
 <section id="rl_ndvi" class="level2">
 <h2 class="anchored" data-anchor-id="rl_ndvi">RL_NDVI</h2>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>lm_ndvi <span class="ot">&lt;-</span> <span class="fu">lm</span>(RL_NDVI <span class="sc">~</span> (HM_NDVI <span class="sc">+</span> HM_NOISE <span class="sc">+</span> </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  ALONE + WITH_DOG + WITH_KID + WITH_PAR + WITH_PNT + WITH_FND +</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>   LANG <span class="sc">+</span> <span class="co"># AGE + SEX +</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>   SPEED_log <span class="sc">+</span> JNYTIME_sqrt)<span class="sc">^</span><span class="dv">2</span>, D_trn)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>step_ndvi <span class="ot">&lt;-</span> <span class="fu">step</span>(lm_ndvi, <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_ndvi), D_tst))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>lm_ndvi <span class="ot">&lt;-</span> <span class="fu">lm</span>(RL_NDVI <span class="sc">~</span> (HM_NDVI <span class="sc">+</span> HM_NOISE <span class="sc">+</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  ALONE + WITH_DOG + WITH_KID + WITH_PAR + WITH_PNT + WITH_FND +</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>   LANG <span class="sc">+</span> <span class="co"># AGE + SEX +</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>   SPEED_log <span class="sc">+</span> JNYTIME_sqrt)<span class="sc">^</span><span class="dv">2</span>, D_trn)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>step_ndvi <span class="ot">&lt;-</span> <span class="fu">step</span>(lm_ndvi, <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(step_ndvi), D_tst))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -423,8 +418,8 @@ F-statistic: 9.11 on 8 and 601 DF,  p-value: 7.29e-12</code></pre>
 <li>The faster (or further) you travel to RL, the more the RL_NDVI differs from HM_NDVI (negative interaction effect)</li>
 </ul>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(D_tst, <span class="fu">aes</span>(<span class="at">x =</span> JNYTIME_sqrt, <span class="at">y=</span>HM_NOISE, <span class="at">col =</span> RL_NOISE)) <span class="sc">+</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.07</span>, <span class="at">height =</span> <span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(D_tst, <span class="fu">aes</span>(<span class="at">x =</span> JNYTIME_sqrt, <span class="at">y=</span>HM_NOISE, <span class="at">col =</span> RL_NOISE)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.07</span>, <span class="at">height =</span> <span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="">
 <figure class="figure">
@@ -437,12 +432,12 @@ F-statistic: 9.11 on 8 and 601 DF,  p-value: 7.29e-12</code></pre>
 <section id="rl_noise" class="level2">
 <h2 class="anchored" data-anchor-id="rl_noise">RL_NOISE</h2>
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>lm_noise <span class="ot">&lt;-</span> <span class="fu">lm</span>(RL_NOISE <span class="sc">~</span> (HM_NDVI <span class="sc">+</span> HM_NOISE <span class="sc">+</span> </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  ALONE + WITH_DOG + WITH_KID + WITH_PAR + WITH_PNT + WITH_FND +</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>   LANG <span class="sc">+</span> <span class="co"># AGE + SEX +</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>   SPEED_log <span class="sc">+</span> JNYTIME_sqrt)<span class="sc">^</span><span class="dv">2</span>, D_trn)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>step_noise <span class="ot">&lt;-</span> <span class="fu">step</span>(lm_noise, <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">formula</span>(step_noise), D_tst))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>lm_noise <span class="ot">&lt;-</span> <span class="fu">lm</span>(RL_NOISE <span class="sc">~</span> (HM_NDVI <span class="sc">+</span> HM_NOISE <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  ALONE + WITH_DOG + WITH_KID + WITH_PAR + WITH_PNT + WITH_FND +</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>   LANG <span class="sc">+</span> <span class="co"># AGE + SEX +</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>   SPEED_log <span class="sc">+</span> JNYTIME_sqrt)<span class="sc">^</span><span class="dv">2</span>, D_trn)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>step_noise <span class="ot">&lt;-</span> <span class="fu">step</span>(lm_noise, <span class="at">trace =</span> <span class="cn">FALSE</span>, <span class="at">k =</span> <span class="fu">log</span>(<span class="fu">nrow</span>(D_trn)))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="fu">formula</span>(step_noise), D_tst))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -476,46 +471,46 @@ F-statistic: 29.1 on 4 and 605 DF,  p-value: &lt;2e-16</code></pre>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
 <details class="code-fold">
 <summary>Fit Gaussian Process for smooth plot</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Gaussian Process</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(D_tst[, <span class="fu">c</span>(<span class="st">"JNYTIME_sqrt"</span>, <span class="st">"HM_NOISE"</span>)])</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> D_tst<span class="sc">$</span>RL_NOISE</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit GP with RBF kernel</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>gp_model <span class="ot">&lt;-</span> <span class="fu">gausspr</span>(X, y, <span class="at">kernel =</span> <span class="st">"rbfdot"</span>, <span class="at">kpar =</span> <span class="st">"automatic"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit Gaussian Process</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(D_tst[, <span class="fu">c</span>(<span class="st">"JNYTIME_sqrt"</span>, <span class="st">"HM_NOISE"</span>)])</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> D_tst<span class="sc">$</span>RL_NOISE</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit GP with RBF kernel</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>gp_model <span class="ot">&lt;-</span> <span class="fu">gausspr</span>(X, y, <span class="at">kernel =</span> <span class="st">"rbfdot"</span>, <span class="at">kpar =</span> <span class="st">"automatic"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Using automatic sigma estimation (sigest) for RBF or laplace kernel </code></pre>
 </div>
 <details class="code-fold">
 <summary>Fit Gaussian Process for smooth plot</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create prediction grid</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>x_range <span class="ot">&lt;-</span> <span class="fu">range</span>(D_tst<span class="sc">$</span>JNYTIME_sqrt)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>y_range <span class="ot">&lt;-</span> <span class="fu">range</span>(D_tst<span class="sc">$</span>HM_NOISE)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">JNYTIME_sqrt =</span> <span class="fu">seq</span>(x_range[<span class="dv">1</span>], x_range[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="dv">50</span>),</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">HM_NOISE =</span> <span class="fu">seq</span>(y_range[<span class="dv">1</span>], y_range[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="dv">50</span>)</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on grid</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>predicted_RL_NOISE <span class="ot">&lt;-</span> <span class="fu">predict</span>(gp_model, <span class="fu">as.matrix</span>(grid[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]))</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Get combined range for both scales</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>combined_range <span class="ot">&lt;-</span> <span class="fu">range</span>(<span class="fu">c</span>(D_tst<span class="sc">$</span>RL_NOISE, grid<span class="sc">$</span>predicted_RL_NOISE))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create prediction grid</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>x_range <span class="ot">&lt;-</span> <span class="fu">range</span>(D_tst<span class="sc">$</span>JNYTIME_sqrt)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>y_range <span class="ot">&lt;-</span> <span class="fu">range</span>(D_tst<span class="sc">$</span>HM_NOISE)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">JNYTIME_sqrt =</span> <span class="fu">seq</span>(x_range[<span class="dv">1</span>], x_range[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="dv">50</span>),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">HM_NOISE =</span> <span class="fu">seq</span>(y_range[<span class="dv">1</span>], y_range[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="dv">50</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on grid</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">$</span>predicted_RL_NOISE <span class="ot">&lt;-</span> <span class="fu">predict</span>(gp_model, <span class="fu">as.matrix</span>(grid[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]))</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Get combined range for both scales</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>combined_range <span class="ot">&lt;-</span> <span class="fu">range</span>(<span class="fu">c</span>(D_tst<span class="sc">$</span>RL_NOISE, grid<span class="sc">$</span>predicted_RL_NOISE))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div></div>
 <div class="cell-container code-fold"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-predicted-rl-noise-w-gp" class="cell">
 <details class="code-fold">
 <summary>Plot predicted RL_NOISE with GP</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot with matching color scales</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>(<span class="at">data =</span> grid, <span class="fu">aes</span>(<span class="at">x =</span> JNYTIME_sqrt, <span class="at">y =</span> HM_NOISE, <span class="at">fill =</span> predicted_RL_NOISE)) <span class="sc">+</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">data =</span> D_tst, <span class="fu">aes</span>(<span class="at">x =</span> JNYTIME_sqrt, <span class="at">y =</span> HM_NOISE, <span class="at">col =</span> RL_NOISE, <span class="at">shape =</span> LANG), </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">width =</span> <span class="fl">0.07</span>, <span class="at">height =</span> <span class="fl">0.1</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">name =</span> <span class="st">"Predicted</span><span class="sc">\n</span><span class="st">RL_NOISE"</span>, <span class="at">limits =</span> combined_range) <span class="sc">+</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">name =</span> <span class="st">"Actual</span><span class="sc">\n</span><span class="st">RL_NOISE"</span>, <span class="at">limits =</span> combined_range) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot with matching color scales</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>(<span class="at">data =</span> grid, <span class="fu">aes</span>(<span class="at">x =</span> JNYTIME_sqrt, <span class="at">y =</span> HM_NOISE, <span class="at">fill =</span> predicted_RL_NOISE)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">data =</span> D_tst, <span class="fu">aes</span>(<span class="at">x =</span> JNYTIME_sqrt, <span class="at">y =</span> HM_NOISE, <span class="at">col =</span> RL_NOISE, <span class="at">shape =</span> LANG), </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">width =</span> <span class="fl">0.07</span>, <span class="at">height =</span> <span class="fl">0.1</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">name =</span> <span class="st">"Predicted</span><span class="sc">\n</span><span class="st">RL_NOISE"</span>, <span class="at">limits =</span> combined_range) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">name =</span> <span class="st">"Actual</span><span class="sc">\n</span><span class="st">RL_NOISE"</span>, <span class="at">limits =</span> combined_range) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-predicted-rl-noise-w-gp" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
@@ -530,45 +525,45 @@ F-statistic: 29.1 on 4 and 605 DF,  p-value: &lt;2e-16</code></pre>
 </div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>PRS <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(<span class="fu">cbind</span>(D<span class="sc">$</span>FA,D<span class="sc">$</span>BA,D<span class="sc">$</span>EC,D<span class="sc">$</span>ES))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>summary_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">sd =</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">median =</span> <span class="fu">median</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(PRS<span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>D<span class="sc">$</span>PRS <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(<span class="fu">cbind</span>(D<span class="sc">$</span>FA,D<span class="sc">$</span>BA,D<span class="sc">$</span>EC,D<span class="sc">$</span>ES))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>summary_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">sd =</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">median =</span> <span class="fu">median</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(PRS<span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  HM_NOISELVL PRS.mean PRS.sd PRS.median
-1           1    4.989  0.886      5.000
-2           2    4.928  0.915      4.917
-3           3    4.857  0.926      4.833</code></pre>
+1           1    4.987  0.885      5.000
+2           2    4.932  0.913      4.917
+3           3    4.862  0.924      4.792</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(FA <span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(FA <span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  HM_NOISELVL FA.mean FA.sd FA.median
 1           1    5.25  1.10      5.33
 2           2    5.16  1.21      5.21
 3           3    5.18  1.13      5.33</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(BA <span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(BA <span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  HM_NOISELVL BA.mean BA.sd BA.median
 1           1    5.11  1.20      5.00
 2           2    5.04  1.17      5.00
 3           3    4.95  1.20      5.00</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(EC <span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(EC <span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  HM_NOISELVL EC.mean EC.sd EC.median
-1           1    4.53  1.31      4.33
-2           2    4.48  1.34      4.33
+1           1    4.52  1.31      4.33
+2           2    4.48  1.33      4.33
 3           3    4.47  1.29      4.33</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(ES <span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(ES <span class="sc">~</span> HM_NOISELVL, D, summary_fun)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  HM_NOISELVL ES.mean ES.sd ES.median
-1           1    5.07  1.42      5.19
-2           2    5.04  1.38      5.00
-3           3    4.83  1.55      5.00</code></pre>
+1           1    5.07  1.41      5.23
+2           2    5.05  1.38      5.00
+3           3    4.85  1.55      5.00</code></pre>
 </div>
 </div></div>
 </section>

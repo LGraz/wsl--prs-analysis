@@ -251,6 +251,8 @@ colSums(!KeepDF) |> sort(decreasing = TRUE) |> print()
 
 KeepInd <- apply(KeepDF, 1, all)
 cat("Keep ", sum(KeepInd), "of", nrow(D), "observations\n")
+write.csv(data.frame(KeepInd=KeepInd), file="data/final_IncludedIndecies.csv", row.names=FALSE)
+
 D <- subset(D, KeepInd)
 # END FILTERING --------------------
 
@@ -272,6 +274,8 @@ if(interactive())
     sapply( \(x) c(mean=mean(x, na.rm=TRUE), sd=sd(x, na.rm=TRUE))) |> round(2)
 # ->> yes
 
+# save final dataset without PRS imputation
+write.csv(D, file="data/final_Dataset_no_PRS_imputation.csv", row.names=FALSE)
 library(missForest)
 # PRS imputation using missForest
 message("Imputing PRS_orig_vars")
@@ -301,6 +305,7 @@ D$ES <- rowMeans(D[, c("LQUAL10","LQUAL11")], na.rm=TRUE)
 D$MEAN<- rowMeans(D[PRS_orig_vars], na.rm=TRUE)
 PRS_vars <- c("MEAN", "FA", "BA", "EC", "ES")
 
+write.csv(D, file="data/final_Dataset.csv", row.names=FALSE)
 
 # Prepare data for machine learning
 Dmlr <- D
@@ -323,9 +328,13 @@ Dmlr[GIS_vars] <- xfun::cache_rds({
   hash = list(as.matrix(Dmlr[GIS_vars]))
 )$ximp |> as.data.frame()
 
+write.csv(Dmlr, file="data/final_Dataset_for_MLR_imputed-GIS-Mediators.csv", row.names=FALSE)
 
 # Split into training and test sets
 set.seed(123)
 train_ind <- sample(1:nrow(D), round(nrow(D) * 0.5))
 D_trn <- D[ train_ind,]
 D_tst <- D[-train_ind,]
+write.csv(D_trn, file="data/final_Dataset_feature_selection.csv", row.names=FALSE)
+write.csv(D_tst, file="data/final_Dataset_test_set.csv", row.names=FALSE)
+
